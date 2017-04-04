@@ -1,4 +1,4 @@
-package training.com.remoteservice.app;
+package huutho.com.remoteservice.app;
 
 import android.app.Service;
 import android.content.Intent;
@@ -23,13 +23,8 @@ public class RemoteService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        // return START_STICKY to automatic restart service after service has been destroy
+        Log.e("huutho","onStartCommand");
         return START_STICKY;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
     }
 
     private IMyAidlInterface.Stub iBinder = new IMyAidlInterface.Stub() {
@@ -38,4 +33,5 @@ public class RemoteService extends Service {
             Log.e("huutho", book.toString());
         }
     };
+
 }
