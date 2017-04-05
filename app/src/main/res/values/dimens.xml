@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="diment_system_icon_size">24dp</dimen>
+
+    <!--https://material.io/guidelines/style/typography.html-->
+    <!--text color-secondary-->
+    <dimen name="standard_display_4">112sp</dimen>
+    <dimen name="standard_display_3">56sp</dimen>
+    <dimen name="standard_display_2">45sp</dimen>
+    <dimen name="standard_display_1">34sp</dimen>
+    <dimen name="standard_caption">12sp</dimen>
+
+    <!--text color-primary-->
+    <dimen name="standard_headline">24sp</dimen>
+    <dimen name="standard_title">20sp</dimen>
+    <dimen name="standard_subHeading">16sp</dimen>
+    <dimen name="standard_body">14sp</dimen>
+    <dimen name="standard_button">14sp</dimen>
+
+
+
+
+</resources>

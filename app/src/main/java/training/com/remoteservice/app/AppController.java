@@ -5,6 +5,17 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 
 public class AppController extends Application {
+    private static AppController mInstance;
+
+    /**
+     * @return application context
+     */
+    public static synchronized AppController getInstance() {
+        if (mInstance == null) {
+            mInstance = new AppController();
+        }
+        return mInstance;
+    }
 
     @Override
     protected void attachBaseContext(Context base) {
@@ -15,6 +26,6 @@ public class AppController extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        mInstance = this;
     }
 }
