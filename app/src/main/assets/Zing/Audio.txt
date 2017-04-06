@@ -1,0 +1,94 @@
+**** Gender 
+
+04-06 22:01:34.457 29349-29349/training.com.remoteservice I/System.out: 0 {
+04-06 22:01:34.457 29349-29349/training.com.remoteservice I/System.out:    _id=1
+04-06 22:01:34.457 29349-29349/training.com.remoteservice I/System.out:    name=Fusion Jazz
+04-06 22:01:34.457 29349-29349/training.com.remoteservice I/System.out: }
+
+
+
+**** Album
+
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out: 1 {
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    _id=5
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    album=Download
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    album_key=/EUC?E)/605172610
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    minyear=null
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    maxyear=null
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    artist=<unknown>
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    artist_id=2
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    artist_key=
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    numsongs=1
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out:    album_art=null
+04-06 22:02:56.967 31297-31297/training.com.remoteservice I/System.out: }
+
+
+**** Artist
+
+04-06 22:04:23.467 2342-2342/training.com.remoteservice I/System.out: 6 {
+04-06 22:04:23.467 2342-2342/training.com.remoteservice I/System.out:    _id=3
+04-06 22:04:23.467 2342-2342/training.com.remoteservice I/System.out:    artist=Văn Trung
+04-06 22:04:23.467 2342-2342/training.com.remoteservice I/System.out:    artist_key=S*COKQC5
+04-06 22:04:23.467 2342-2342/training.com.remoteservice I/System.out:    number_of_albums=1
+04-06 22:04:23.467 2342-2342/training.com.remoteservice I/System.out:    number_of_tracks=10
+04-06 22:04:23.467 2342-2342/training.com.remoteservice I/System.out: }
+
+**** Media
+
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out: 19 {
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    _id=18574
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    _data=/storage/emulated/0/Voice Recorder/Thoại 001.m4a
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    _display_name=Thoại 001.m4a
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    _size=2018251
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    mime_type=audio/mp4
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    date_added=1487263318
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_drm=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    date_modified=1487263318
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    title=Thoại 001
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    title_key=O7E)9
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    duration=121974
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    artist_id=2
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    composer=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    album_id=6
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    track=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    year=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_ringtone=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_music=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_alarm=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_notification=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_podcast=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    bookmark=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    album_artist=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_sound=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    year_name=<unknown>
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    genre_name=<unknown>
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    recently_played=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    most_played=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    recently_added_remove_flag=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_favorite=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    bucket_id=-1341400250
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    bucket_display_name=Voice Recorder
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    recordingtype=1
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    latitude=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    longitude=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    addr=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    langagecode=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_secretbox=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_memo=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    label_id=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    weather_ID=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    sampling_rate=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    bit_depth=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    recorded_number=null
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    recording_mode=1
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_ringtone_theme=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_notification_theme=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    is_alarm_theme=0
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    datetaken=1487263318000
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    artist_id:1=2
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    artist_key=
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    artist=<unknown>
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    album_id:1=6
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    album_key=MEQC/M2016217990
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out:    album=Sounds
+04-06 22:05:22.767 4509-4509/training.com.remoteservice I/System.out: }

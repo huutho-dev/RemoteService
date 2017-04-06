@@ -1,0 +1,50 @@
+**** Image.Media
+
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out: 388 {
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    _id=21146
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    _data=/storage/emulated/0/DCIM/Camera/20170404_090821.jpg
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    _size=2760314
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    _display_name=20170404_090821.jpg
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    mime_type=image/jpeg
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    title=20170404_090821
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    date_added=1491271701
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    date_modified=1491271701
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    description=null
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    picasa_id=null
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    isprivate=null
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    latitude=null
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    longitude=null
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    datetaken=1491271701648
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    orientation=90
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    mini_thumb_magic=8589036248771407661
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    bucket_id=-1739773001
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    bucket_display_name=Camera
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    width=4128
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    height=3096
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    group_id=0
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    spherical_mosaic=0
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    addr=
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    langagecode=vi_VN
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    is_secretbox=0
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    weather_ID=0
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    sef_file_type=-1
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    reusable=0
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    is_drm=null
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    is_favorite=0
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    sef_file_sub_type=-1
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    smartcrop_rect=<unknown>
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    is_hide=-1
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out:    cloud_server_id=null
+04-06 22:07:54.197 8096-8096/training.com.remoteservice I/System.out: }
+
+
+**** Image.Thumbnail
+
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out: 347 {
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out:    _id=385
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out:    _data=/storage/emulated/0/DCIM/.thumbnails/1491271701939.jpg
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out:    image_id=21146
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out:    kind=1
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out:    width=512
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out:    height=384
+04-06 22:09:09.547 10042-10042/training.com.remoteservice I/System.out: }

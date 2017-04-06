@@ -1,0 +1,58 @@
+﻿API ZING
+link song : content="http://mp3.zing.vn/link/song/ZW79ZBE8"
+
+info song : http://mp3.zing.vn/json/get-info-media?type=song&id=ZW78DIEO
+
+info artist : http://api.mp3.zing.vn/api/mobile/artist/getartistinfo?requestdata={%22id%22:%22IWZ97DB0%22}
+
+link sugget : http://mp3.zing.vn/json/song/get-song-suggest?id=ZW79ZBE8&start=0&length=30
+
+json
+
+http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={"id":"IDBAIHAT"}
+
+"source": {
+    "128": "http:\/\/api.mp3.zing.vn\/api\/mobile\/source\/song\/LGJGTLGNQAGXLDETLDJTDGLG",
+    "lossless": "http:\/\/api.mp3.zing.vn\/api\/mobile\/source\/song\/LGJGTLGNQAGXLDETUOKKUMKKTDGLG",
+    "320": "http:\/\/api.mp3.zing.vn\/api\/mobile\/source\/song\/LGJGTLGNQAGXLDETVDGTDGLG"
+  },
+  "link_download": {
+    "128": "http:\/\/api.mp3.zing.vn\/api\/mobile\/download\/song\/LGJGTLGNQAGXLDETLDJTDGLG",
+    "lossless": "http:\/\/api.mp3.zing.vn\/api\/mobile\/download\/song\/LGJGTLGNQAGXLDETUOKKUMKKTDGLG",
+    "320": "http:\/\/api.mp3.zing.vn\/api\/mobile\/download\/song\/LGJGTLGNQAGXLDETVDGTDGLG"
+  },
+
+
+Link tổ : http://mp3.zing.vn/json/song/get-source/
+			
+			- data-xml="/json/song/get-source/ZHxGTLnNWczLxihyLbxyvmLG"
+			- data-code="ZHcHtkHsQcSkxRhyZvJtbGkn"
+			
+			{
+  "msg": 0,
+  "data": [
+    {
+      "id": "ZW79ZBE8",
+      "name": "Nơi Này Có Anh",
+      "artist": "Sơn Tùng M-TP",
+      "link": "/bai-hat/Noi-Nay-Co-Anh-Son-Tung-M-TP/ZW79ZBE8.html",
+      "cover": "http://zmp3-photo-td.zadn.vn/cover_artist/b/d/bd7115f888b12ce8c2889020dd7cdf2c_1487040734.jpg",
+      "qualities": [
+        "128",
+        "320"
+      ],
+      "source_list": [
+        "http://zmp3-mp3-s1-tr.zadn.vn/d41230d1df9536cb6f84/1181817601640857205?key=yDUG0oBi5mG4ThatrUNGww&expires=1490734380",
+        ""
+      ],
+      "source_base": "http://",
+      "lyric": "http://static.mp3.zdn.vn/lyrics/2017/0/4/04728055a4d6a1d93b6ea99884319b0f.lrc",
+      "mv_link": "/video-clip/Noi-Nay-Co-Anh-Son-Tung-M-TP/ZW79ZBE8.html"
+    }
+  ]
+}
+
+
+xml
+
+content="http://zmp3-photo-td.zadn.vn/thumb/600_600/covers/3/a/3a9e48bc4df7bbde3acea30cc267f609_1487066528.jpg" ==> cover image
