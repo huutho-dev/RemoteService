@@ -22,6 +22,7 @@
     <color name="colorDeepOrange">#FF5722</color>
     <color name="colorBrown">#795548</color>
     <color name="colorGrey">#9E9E9E</color>
+    <color name="colorBlueGrey">#607D8B</color>
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
 
@@ -44,7 +45,7 @@
     <color name="colorDeepOrangeDark">#E64A19</color>
     <color name="colorBrownDark">#5D4037</color>
     <color name="colorGreyDark">#616161</color>
-    <color name="colorBlackDark">#455A64</color>
+    <color name="colorBlueGreyDark">#455A64</color>
     <color name="colorWhiteDark">#FFFFFF</color>
 
     <!--color accent-->
@@ -110,8 +111,8 @@
     <!--**********************************************************************************************-->
 
 
-    <color name="colorPrimary">@color/colorIndigo</color>
-    <color name="colorPrimaryDark">@color/colorIndigoDark</color>
-    <color name="colorAccent">#ff4081</color>
+    <color name="colorPrimary">@color/colorBlueGrey</color>
+    <color name="colorPrimaryDark">@color/colorBlueGreyDark</color>
+    <color name="colorAccent">#FF7043</color>
     <color name="colorTransParent">#00000000</color>
 </resources>

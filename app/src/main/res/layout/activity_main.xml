@@ -1,26 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="training.com.remoteservice.ui.activity.MainActivity">
+    android:background="@color/colorBackground">
 
-    <TextView
+
+    <com.imangazaliev.circlemenu.CircleMenu
+        android:id="@+id/circleMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_centerInParent="true">
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="122dp"
-        tools:layout_editor_absoluteY="148dp" />
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/action_menu_online"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:colorNormal="#2196F3"
+            app:colorPressed="#1E88E5"
+            app:icon="@drawable/menu_main_online" />
 
-</android.support.constraint.ConstraintLayout>
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/action_menu_setting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:colorNormal="#FF9800"
+            app:colorPressed="#FB8C00"
+            app:icon="@drawable/menu_main_setting" />
+
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/action_menu_share"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:colorNormal="#795548"
+            app:colorPressed="#6D4C41"
+            app:icon="@drawable/menu_main_share" />
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/action_menu_rate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:colorNormal="#009688"
+            app:colorPressed="#00897B"
+            app:icon="@drawable/menu_main_rate" />
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/action_menu_favorite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:colorNormal="#F44336"
+            app:colorPressed="#E53935"
+            app:icon="@drawable/menu_main_favorite" />
+
+        <com.imangazaliev.circlemenu.CircleMenuButton
+            android:id="@+id/action_menu_offline"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:colorNormal="#4CAF50"
+            app:colorPressed="#43A047"
+            app:icon="@drawable/menu_main_offline" />
+
+    </com.imangazaliev.circlemenu.CircleMenu>
+
+</RelativeLayout>

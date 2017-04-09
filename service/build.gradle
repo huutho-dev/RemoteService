@@ -1,4 +1,4 @@
-apply plugin: 'com.android.library'
+apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 25
@@ -9,7 +9,7 @@ android {
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
-
+        applicationId "training.com.tplayerservice"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
