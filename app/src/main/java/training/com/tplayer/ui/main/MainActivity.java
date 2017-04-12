@@ -9,7 +9,7 @@ import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
 
 public class MainActivity extends BaseActivity<MainPresenterImpl>
-        implements MainContracts.View, CircleMenu.OnItemClickListener{
+        implements MainContracts.View, CircleMenu.OnItemClickListener {
 
     @BindView(R.id.circleMenu)
     CircleMenu mCircleMenu;
@@ -55,4 +55,6 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
                 break;
         }
     }
+
+
 }

@@ -54,7 +54,7 @@ public class Song extends BaseEntity {
 
 
     /**
-     * Genre of song (like : genre_name=<unknown>)
+     * Genre of song (like : genre_name=<rock>)
      */
     public String _genre_name;
 
@@ -63,12 +63,6 @@ public class Song extends BaseEntity {
      * Is favorite
      */
     public boolean _is_favorite;
-
-
-    /**
-     * Song belong playlists
-     */
-    public int [] _play_list;
 
 
     /**
@@ -114,6 +108,7 @@ public class Song extends BaseEntity {
         this.artist_art = in.readString();
         this.album_name = in.readString();
         this.album_art = in.readString();
+
     }
 
     @Override
