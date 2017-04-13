@@ -23,6 +23,17 @@
 
         <activity android:name=".ui.main.MainActivity" />
 
+        <activity android:name=".ui.online.OnlineActivity" />
+
+        <activity android:name=".ui.offline.OfflineActivity" />
+
+        <activity android:name=".ui.share.ShareActivity" />
+
+        <activity android:name=".ui.setting.SettingActivity" />
+
+        <activity android:name=".ui.rate.RateActivity" />
+
+
     </application>
 
 </manifest>

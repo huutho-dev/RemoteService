@@ -47,4 +47,5 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
 
     compile 'com.github.imangazalievm:circlemenu:1.0.3'
+    compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
 }
