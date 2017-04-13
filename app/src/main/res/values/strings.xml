@@ -10,6 +10,6 @@
 
     <!--fragment online hot-->
     <string name="title_group_album">Album</string>
-    <string name="title_group_topic">Topic</string>
+    <string name="title_group_topic">New</string>
     <string name="title_group_hightlight">Hight Light Songs</string>
 </resources>

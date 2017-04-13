@@ -25,7 +25,7 @@
         app:stl_drawDecorationAfterTab="false"
         app:stl_indicatorAlwaysInCenter="false"
         app:stl_indicatorColor="@color/colorPrimaryDark"
-        app:stl_indicatorCornerRadius="48dp"
+        app:stl_indicatorCornerRadius="12dp"
         app:stl_indicatorGravity="center"
         app:stl_indicatorInFront="false"
         app:stl_indicatorInterpolation="smart"
@@ -41,7 +41,11 @@
     <android.support.v4.view.ViewPager
         android:id="@+id/act_onl_viewpager"
         android:layout_width="match_parent"
+        android:layout_below="@+id/act_onl_tablayout"
         android:layout_height="match_parent"
-        android:layout_below="@+id/act_onl_tablayout" />
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+      />
 
 </RelativeLayout>

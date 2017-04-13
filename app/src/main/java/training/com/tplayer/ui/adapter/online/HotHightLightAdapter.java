@@ -13,14 +13,14 @@ import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
 import training.com.tplayer.custom.TextViewRoboto;
-import training.com.tplayer.ui.entity.DummyEntity;
+import training.com.tplayer.ui.entity.HotSongOnlEntity;
 import training.com.tplayer.utils.ImageUtils;
 
 /**
  * Created by hnc on 13/04/2017.
  */
 
-public class HotHightLightAdapter extends BaseRecyclerViewAdapter<DummyEntity, HotHightLightAdapter.ViewHolder> {
+public class HotHightLightAdapter extends BaseRecyclerViewAdapter<HotSongOnlEntity, HotHightLightAdapter.ViewHolder> {
 
     public interface HotHightLightAdapterListener extends IRecyclerViewOnItemClickListener {
 
@@ -37,10 +37,10 @@ public class HotHightLightAdapter extends BaseRecyclerViewAdapter<DummyEntity, H
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
-        DummyEntity entity = getDataItem(position);
-        ImageUtils.loadImageBasic(mContext, R.drawable.dummy_image, holder.mImage);
-        holder.mTitle.setText(entity.mTitle);
-        holder.mDesc.setText(entity.mDesc);
+        HotSongOnlEntity entity = getDataItem(position);
+        ImageUtils.loadImageBasic(mContext, entity.image, holder.mImage);
+        holder.mTitle.setText(entity.name);
+        holder.mDesc.setText(entity.artist);
     }
 
     public class ViewHolder extends BaseViewHolder {

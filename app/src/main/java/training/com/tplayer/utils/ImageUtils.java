@@ -13,4 +13,8 @@ public class ImageUtils {
     public static void loadImageBasic(Context context, int idResource, ImageView imageView) {
         Picasso.with(context).load(idResource).into(imageView);
     }
+
+    public static void loadImageBasic(Context context, String url, ImageView imageView) {
+        Picasso.with(context).load(url).into(imageView);
+    }
 }

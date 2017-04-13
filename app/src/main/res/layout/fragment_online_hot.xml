@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v4.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -27,7 +26,7 @@
             android:paddingLeft="@dimen/spacing_1_8dp" />
 
         <training.com.tplayer.custom.TextViewRoboto
-            android:id="@+id/fragment_online_hot_txt_title_topic"
+            android:id="@+id/fragment_online_hot_txt_title_new"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/spacing_2_16dp"
@@ -37,7 +36,7 @@
             app:textFonts="RobotoMedium" />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/fragment_online_hot_rv_topic"
+            android:id="@+id/fragment_online_hot_rv_new"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/spacing_1_8dp" />

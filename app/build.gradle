@@ -44,4 +44,5 @@ dependencies {
     compile 'com.github.imangazalievm:circlemenu:1.0.3'
     compile 'com.ogaclejapan.smarttablayout:library:1.6.1@aar'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'org.jsoup:jsoup:1.10.2'
 }

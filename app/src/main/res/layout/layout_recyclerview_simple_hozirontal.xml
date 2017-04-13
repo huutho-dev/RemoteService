@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/size_layout_image_recycler_simple"
     android:layout_height="wrap_content"
+    app:cardCornerRadius="2dp"
     android:layout_margin="@dimen/spacing_0_4dp"
    >
 

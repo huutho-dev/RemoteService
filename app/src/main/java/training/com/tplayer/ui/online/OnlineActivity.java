@@ -39,6 +39,7 @@ public class OnlineActivity extends BaseActivity<OnlinePresenterImpl> {
     public void onActivityCreated() {
         mAdapter = new OnlinePagerAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.setOffscreenPageLimit(4);
         mTabLayout.setViewPager(mViewPager);
 
     }
