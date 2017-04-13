@@ -18,11 +18,11 @@ import training.com.tplayer.base.mvp.BaseView;
 
 public abstract class BaseFragment<PresenterImpl extends BasePresenterImpl> extends Fragment implements BaseView {
 
-    private View mRootView;
+    public View mRootView;
 
-    private Context mContext;
+    public Context mContext;
 
-    private Activity mActivity;
+    public Activity mActivity;
 
     public PresenterImpl mPresenterImp;
 

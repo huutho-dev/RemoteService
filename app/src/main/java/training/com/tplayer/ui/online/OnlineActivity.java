@@ -5,8 +5,10 @@ import android.support.v4.view.ViewPager;
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
+import training.com.tplayer.ui.adapter.online.OnlinePagerAdapter;
 
 /**
  * Created by ThoNH on 4/13/2017.
@@ -15,10 +17,12 @@ import training.com.tplayer.base.BaseActivity;
 public class OnlineActivity extends BaseActivity<OnlinePresenterImpl> {
 
     @BindView(R.id.act_onl_tablayout)
-    SmartTabLayout mTabLayout ;
+    SmartTabLayout mTabLayout;
 
     @BindView(R.id.act_onl_viewpager)
     ViewPager mViewPager;
+
+    private OnlinePagerAdapter mAdapter;
 
 
     @Override
@@ -28,11 +32,14 @@ public class OnlineActivity extends BaseActivity<OnlinePresenterImpl> {
 
     @Override
     public void onBindView() {
-
+        ButterKnife.bind(this);
     }
 
     @Override
     public void onActivityCreated() {
+        mAdapter = new OnlinePagerAdapter(this, getSupportFragmentManager());
+        mViewPager.setAdapter(mAdapter);
+        mTabLayout.setViewPager(mViewPager);
 
     }
 

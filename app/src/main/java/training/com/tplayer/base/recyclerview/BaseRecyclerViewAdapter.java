@@ -29,8 +29,7 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        onCreateViewHolderAdapter(parent, viewType);
-        return null;
+        return  onCreateViewHolderAdapter(parent, viewType);
     }
 
     public abstract VH onCreateViewHolderAdapter(ViewGroup parent, int viewType);

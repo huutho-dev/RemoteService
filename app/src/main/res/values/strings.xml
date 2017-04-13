@@ -1,4 +1,15 @@
 <resources>
     <string name="app_name">RemoteService</string>
     <string name="act_splash_app_name">TPlayer</string>
+
+    <!--title tab online-->
+    <string name="tab_title_hot">Hot Music</string>
+    <string name="tab_title_charts">Charts Music</string>
+    <string name="tab_title_top">Top Music</string>
+    <string name="tab_title_album">Album</string>
+
+    <!--fragment online hot-->
+    <string name="title_group_album">Album</string>
+    <string name="title_group_topic">Topic</string>
+    <string name="title_group_hightlight">Hight Light Songs</string>
 </resources>

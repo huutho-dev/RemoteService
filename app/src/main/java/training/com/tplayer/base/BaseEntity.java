@@ -11,6 +11,10 @@ public class BaseEntity implements Parcelable {
     protected BaseEntity(Parcel in) {
     }
 
+    public BaseEntity() {
+
+    }
+
     @Override
     public int describeContents() {
         return 0;

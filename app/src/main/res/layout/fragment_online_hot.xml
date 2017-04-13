@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/fragment_online_hot_txt_title_album"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_1_8dp"
+            android:text="@string/title_group_album"
+            android:textColor="@color/colorTextSecondary"
+            app:textFonts="RobotoMedium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_online_hot_rv_album"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/spacing_1_8dp" />
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/fragment_online_hot_txt_title_topic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_2_16dp"
+            android:padding="@dimen/spacing_1_8dp"
+            android:text="@string/title_group_topic"
+            android:textColor="@color/colorTextSecondary"
+            app:textFonts="RobotoMedium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_online_hot_rv_topic"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/spacing_1_8dp" />
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/fragment_online_hot_txt_title_hightlight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_2_16dp"
+            android:padding="@dimen/spacing_1_8dp"
+            android:text="@string/title_group_hightlight"
+            android:textColor="@color/colorTextSecondary"
+            app:textFonts="RobotoMedium" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_online_hot_rv_hightlight"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/spacing_1_8dp" />
+
+
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>

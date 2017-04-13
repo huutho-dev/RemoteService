@@ -18,7 +18,6 @@
     <dimen name="standard_body">14sp</dimen>
     <dimen name="standard_button">14sp</dimen>
 
-
-
+    <dimen name="size_layout_image_recycler_simple">120dp</dimen>
 
 </resources>

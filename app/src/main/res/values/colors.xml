@@ -114,5 +114,6 @@
     <color name="colorPrimary">@color/colorBlueGrey</color>
     <color name="colorPrimaryDark">@color/colorBlueGreyDark</color>
     <color name="colorAccent">#FF7043</color>
+    <color name="colorAccentTransparent">#90ff7043</color>
     <color name="colorTransParent">#00000000</color>
 </resources>
