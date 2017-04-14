@@ -2,6 +2,7 @@ package training.com.tplayer.ui.online.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -15,7 +16,9 @@ import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.base.BaseFragment;
+import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.custom.GravitySnapHelper;
+import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.network.html.HotAlbumTask;
 import training.com.tplayer.network.html.HotHightLightTask;
 import training.com.tplayer.network.html.HotNewTask;
@@ -43,6 +46,15 @@ public class HotFragment extends BaseFragment {
     @BindView(R.id.fragment_online_hot_rv_hightlight)
     RecyclerView mRvHightLight;
 
+    @BindView(R.id.fragment_online_hot_txt_title_album)
+    TextViewRoboto mTitleAlbum;
+
+    @BindView(R.id.fragment_online_hot_txt_title_new)
+    TextViewRoboto mTitleNew;
+
+    @BindView(R.id.fragment_online_hot_txt_title_hightlight)
+    TextViewRoboto mTitleHightlight;
+
     private HotAlbumAdapter mAlbumAdapter;
     private HotNewAdapter mNewAdapter;
     private HotHightLightAdapter mHightLightAdapter;
@@ -66,51 +78,38 @@ public class HotFragment extends BaseFragment {
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
 
-        dummyEntities = new ArrayList<>();
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
-        dummyEntities.add(new DummyEntity("Title", R.drawable.dummy_image, "Desc"));
+        mTitleAlbum.setText(R.string.fragment_title_hot_music_album);
+        mTitleNew.setText(R.string.fragment_title_hot_music_new);
+        mTitleHightlight.setText(R.string.fragment_title_hot_music_hightlight);
 
-        GravitySnapHelper helperAlbum = new GravitySnapHelper(Gravity.START);
+        mTitleAlbum.setVisibility(View.GONE);
+        mTitleNew.setVisibility(View.GONE);
+        mTitleHightlight.setVisibility(View.GONE);
+
+
         mAlbumAdapter = new HotAlbumAdapter(mContext, albumListener);
-        mRvAlbum.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        mRvAlbum.setNestedScrollingEnabled(false);
-        mRvAlbum.setAdapter(mAlbumAdapter);
-        helperAlbum.attachToRecyclerView(mRvAlbum);
-
-        GravitySnapHelper helperTopic = new GravitySnapHelper(Gravity.START);
         mNewAdapter = new HotNewAdapter(mContext, topicListener);
-        mRvNew.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false));
-        mRvNew.setNestedScrollingEnabled(false);
-        mRvNew.setAdapter(mNewAdapter);
-        helperTopic.attachToRecyclerView(mRvNew);
-
         mHightLightAdapter = new HotHightLightAdapter(mContext, hightLightListener);
-        mRvHightLight.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
-        mRvHightLight.setNestedScrollingEnabled(false);
-        mRvHightLight.setAdapter(mHightLightAdapter);
+
+        setUpRecyclerView(mRvAlbum, mAlbumAdapter, (new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)));
+        setUpRecyclerView(mRvNew, mNewAdapter, (new GridLayoutManager(mContext,2,LinearLayoutManager.HORIZONTAL,false)));
+        setUpRecyclerView(mRvHightLight, mHightLightAdapter, (new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)));
 
 
         HotAlbumTask hotAlbumTask = new HotAlbumTask(new IOnLoadSuccess() {
             @Override
             public void onResponse(List entity) {
-               mAlbumAdapter.setDatas((ArrayList<HotAlbumEntity>) entity);
+                mAlbumAdapter.setDatas((ArrayList<HotAlbumEntity>) entity);
+                mTitleAlbum.setVisibility(View.VISIBLE);
             }
         });
-
 
 
         HotNewTask hotPlayListTask = new HotNewTask(new IOnLoadSuccess() {
             @Override
             public void onResponse(List entity) {
                 mNewAdapter.setDatas((ArrayList<HotNewEntity>) entity);
+                mTitleNew.setVisibility(View.VISIBLE);
             }
         });
 
@@ -118,6 +117,7 @@ public class HotFragment extends BaseFragment {
             @Override
             public void onResponse(List entity) {
                 mHightLightAdapter.setDatas((ArrayList<HotSongOnlEntity>) entity);
+                mTitleHightlight.setVisibility(View.VISIBLE);
             }
         });
         hotHightLightTask.execute();
@@ -151,4 +151,13 @@ public class HotFragment extends BaseFragment {
         }
     };
 
+
+    private void setUpRecyclerView(RecyclerView recyclerView, BaseRecyclerViewAdapter adapter,
+                                   RecyclerView.LayoutManager layoutManager) {
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setNestedScrollingEnabled(false);
+        recyclerView.setAdapter(adapter);
+        GravitySnapHelper gravitySnapHelper = new GravitySnapHelper(Gravity.START);
+        gravitySnapHelper.attachToRecyclerView(recyclerView);
+    }
 }

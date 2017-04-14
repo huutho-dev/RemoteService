@@ -32,4 +32,17 @@ public class ZingHtmlUtils {
 
         return titles;
     }
+
+    //title="Album Dù Anh Muốn (Single) - Sơn Tùng - MPT"
+    public static String[] splitsNameAndArtist2(String title) {
+
+        String name = title.substring(0, title.indexOf("-")).trim();
+        String artist = title.substring(title.indexOf("-") + 1).trim();
+
+        String[] titles = new String[2];
+        titles[0] = name;
+        titles[1] = artist;
+
+        return titles;
+    }
 }

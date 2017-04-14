@@ -47,7 +47,7 @@ public abstract class BaseFragment<PresenterImpl extends BasePresenterImpl> exte
         return onCreateViewFragment(inflater, container, savedInstanceState);
     }
 
-    public View onCreateViewFragment(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateViewFragment(LayoutInflater inflater, @Nullable final ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(setLayoutId(), container, false);
         return mRootView;
     }

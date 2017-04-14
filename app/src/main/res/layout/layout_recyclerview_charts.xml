@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="@dimen/spacing_1_8dp"
+    android:layout_marginLeft="@dimen/spacing_0_4dp"
+    android:layout_marginRight="@dimen/spacing_0_4dp"
+    android:orientation="vertical">
+
+    <training.com.tplayer.custom.TextViewRoboto
+        android:id="@+id/txt_order"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/colorPrimary"
+        android:gravity="center"
+        android:text="1"
+        android:textColor="@color/colorTextWhite"
+        app:textFonts="RobotoBlack" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txt_order"
+        android:layout_alignTop="@+id/txt_order"
+        android:layout_toRightOf="@+id/txt_order"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/spacing_2_16dp">
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="Chúng ta không thuộc về nhau"
+            android:textSize="@dimen/text_3_14sp"
+            app:textFonts="RobotoMedium" />
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/txt_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="Sơn Tùng - MTP"
+            android:textSize="@dimen/text_2_12sp"
+            app:textFonts="RobotoRegular" />
+
+    </LinearLayout>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@+id/txt_order"
+        android:layout_marginLeft="@dimen/spacing_9_72dp"
+        android:layout_marginTop="@dimen/spacing_1_8dp"
+        android:background="@color/colorPrimary" />
+
+
+</RelativeLayout>

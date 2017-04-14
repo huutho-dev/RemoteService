@@ -9,7 +9,6 @@ import java.util.List;
 import training.com.tplayer.network.html.base.BaseAsyncTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.entity.HotNewEntity;
-import training.com.tplayer.utils.LogUtils;
 import training.com.tplayer.utils.ZingHtmlUtils;
 
 /**
@@ -50,10 +49,8 @@ public class HotNewTask extends BaseAsyncTask<HotNewEntity> {
             hotSongOnlEntity.data_code = data_code;
             hotSongOnlEntity.data_id = data_id;
             hotSongOnlEntity.link = link;
-            hotSongOnlEntity.name = name;
+            hotSongOnlEntity.title = name;
             hotSongOnlEntity.image = src;
-
-            LogUtils.printLog(hotSongOnlEntity.toString());
 
             entities.add(hotSongOnlEntity);
         }

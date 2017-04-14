@@ -52,10 +52,8 @@ public class HotHightLightTask extends BaseAsyncTask<HotSongOnlEntity> {
             hotSongOnlEntity.data_code = data_code;
             hotSongOnlEntity.data_id = data_id;
             hotSongOnlEntity.link = link;
-            hotSongOnlEntity.name = name;
+            hotSongOnlEntity.title = name;
             hotSongOnlEntity.image = src;
-
-            LogUtils.printLog(hotSongOnlEntity.toString());
 
             entities.add(hotSongOnlEntity);
         }

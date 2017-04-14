@@ -39,7 +39,7 @@ public class HotNewAdapter extends BaseRecyclerViewAdapter<HotNewEntity, HotNewA
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
         HotNewEntity entity = getDataItem(position);
         ImageUtils.loadImageBasic(mContext, entity.image, holder.mImage);
-        holder.mTitle.setText(entity.name);
+        holder.mTitle.setText(entity.title);
         holder.mDesc.setText(entity.artist);
     }
 

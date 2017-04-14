@@ -25,16 +25,15 @@ public class OnlinePagerAdapter extends FragmentPagerAdapter {
 
     public OnlinePagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        fragments.add(HotFragment.newInstance());
         fragments.add(TopFragment.newInstance());
-        fragments.add(AlbumFragment.newInstance());
+        fragments.add(HotFragment.newInstance());
         fragments.add(ChartsFragment.newInstance());
+        fragments.add(AlbumFragment.newInstance());
 
-        titles.add(context.getResources().getString(R.string.tab_title_hot));
         titles.add(context.getResources().getString(R.string.tab_title_top));
-        titles.add(context.getResources().getString(R.string.tab_title_album));
+        titles.add(context.getResources().getString(R.string.tab_title_hot));
         titles.add(context.getResources().getString(R.string.tab_title_charts));
-
+        titles.add(context.getResources().getString(R.string.tab_title_album));
     }
 
     @Override

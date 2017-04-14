@@ -39,7 +39,7 @@ public class HotHightLightAdapter extends BaseRecyclerViewAdapter<HotSongOnlEnti
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
         HotSongOnlEntity entity = getDataItem(position);
         ImageUtils.loadImageBasic(mContext, entity.image, holder.mImage);
-        holder.mTitle.setText(entity.name);
+        holder.mTitle.setText(entity.title);
         holder.mDesc.setText(entity.artist);
     }
 

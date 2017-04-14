@@ -12,4 +12,36 @@
     <string name="title_group_album">Album</string>
     <string name="title_group_topic">New</string>
     <string name="title_group_hightlight">Hight Light Songs</string>
+
+    <!--fragment online top-->
+    <string name="title_group_vietnam">Vietnam</string>
+    <string name="title_group_national">National</string>
+
+    <string name="vietnam_music_name_type_young">Nhạc trẻ</string>
+    <string name="vietnam_music_name_type_bolero">Nhạc trữ tình</string>
+    <string name="vietnam_music_name_type_dance">Nhạc dance</string>
+    <string name="vietnam_music_name_type_rock">Nhạc rock</string>
+    <string name="vietnam_music_name_type_rap">Nhạc rap</string>
+    <string name="vietnam_music_name_type_trinhcongson">Nhạc Trịnh</string>
+
+    <string name="national_music_name_type_japan">J-pop</string>
+    <string name="national_music_name_type_kpop">K-pop</string>
+    <string name="national_music_name_type_pop">Pop</string>
+    <string name="national_music_name_type_edm">EDM</string>
+    <string name="national_music_name_type_rock">Rock</string>
+    <string name="national_music_name_type_rap">Rap</string>
+
+    <string name="fragment_title_top_music_vietnam">Top music Vietnam</string>
+    <string name="fragment_title_top_music_national">Top music National</string>
+
+    <string name="fragment_title_hot_music_album">Album hot</string>
+    <string name="fragment_title_hot_music_new">New</string>
+    <string name="fragment_title_hot_music_hightlight">Hight light</string>
+
+    <string name="fragment_title_charts_vietnam">Charts Vietnam</string>
+    <string name="fragment_title_charts_usuk">Charts US-UK</string>
+
+    <string name="fragment_title_album_vietnam">Albums Vietnam</string>
+    <string name="fragment_title_album_national">Albums National</string>
+
 </resources>

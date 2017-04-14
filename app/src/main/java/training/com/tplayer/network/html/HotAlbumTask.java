@@ -55,8 +55,6 @@ public class HotAlbumTask extends BaseAsyncTask<HotAlbumEntity> {
                 entity.image = src;
                 entity.link = linkAlbum;
 
-                LogUtils.printLog(entity.toString());
-
                 entities.add(entity);
             }
         }
