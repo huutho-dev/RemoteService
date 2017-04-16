@@ -1,5 +1,6 @@
 package training.com.tplayer.ui.online.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,6 +18,7 @@ import training.com.tplayer.network.html.ChartsSongTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.adapter.online.ChartsAdapter;
 import training.com.tplayer.ui.entity.BasicSongOnlEntity;
+import training.com.tplayer.ui.player.PlayerActivity;
 
 /**
  * Created by hnc on 13/04/2017.
@@ -97,7 +99,7 @@ public class ChartsFragment extends BaseFragment {
     ChartsAdapter.ChartsVietnamAdapterListener chartsVietnamListener = new ChartsAdapter.ChartsVietnamAdapterListener() {
         @Override
         public void onRecyclerViewItemClick(View view, BasicSongOnlEntity basicSongOnlEntity, int position) {
-
+            mContext.startActivity(new Intent(mContext, PlayerActivity.class));
         }
     };
 

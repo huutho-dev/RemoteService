@@ -32,6 +32,8 @@
 
         <activity android:name=".ui.rate.RateActivity" />
 
+        <activity android:name=".ui.player.PlayerActivity"/>
+
 
     </application>
 

@@ -23,4 +23,10 @@
     <dimen name="size_item_layout_parent_top_music_width">100dp</dimen>
     <dimen name="size_item_layout_parent_top_music_height">130dp</dimen>
 
+
+    <!--player-->
+    <dimen name="player_size_header">450dp</dimen>
+    <dimen name="player_size_header_revert">-450dp</dimen>
+
+
 </resources>
