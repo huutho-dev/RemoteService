@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.utils.LogUtils;
@@ -60,7 +61,7 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
 
     public void addData(E entity) {
         mDatas.add(entity);
-        notifyItemChanged(mDatas.indexOf(entity));
+        notifyDataSetChanged();
     }
 
     public void addData(E entity, int position) {
@@ -97,6 +98,9 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
         notifyDataSetChanged();
     }
 
+    public List<E> getDatas(){
+        return mDatas;
+    }
     public void printDatasOfAdapter() {
         LogUtils.printLog(mDatas.toString());
     }

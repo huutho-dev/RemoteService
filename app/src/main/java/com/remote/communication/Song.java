@@ -36,12 +36,6 @@ public class Song extends BaseEntity {
 
 
     /**
-     * Duration of song (like : duration=269 s)
-     */
-    public String _duration;
-
-
-    /**
      * Lyric of song (.lrc)
      */
     public String _lyric;
@@ -89,17 +83,22 @@ public class Song extends BaseEntity {
     public String album_art;
 
 
+    /**
+     * Dont care about this, default = false , this show in play list of player
+     */
+    public boolean isPlaying;
 
 
+    public Song() {
 
+    }
 
-    protected Song(Parcel in) {
+    public Song(Parcel in) {
         super(in);
         this._id = in.readInt();
         this._data = in.readString();
         this._display_name = in.readString();
         this._title = in.readString();
-        this._duration = in.readString();
         this._lyric = in.readString();
         this._art = in.readString();
         this._genre_name = in.readString();
@@ -118,7 +117,6 @@ public class Song extends BaseEntity {
         dest.writeString(this._data);
         dest.writeString(this._display_name);
         dest.writeString(this._title);
-        dest.writeString(this._duration);
         dest.writeString(this._lyric);
         dest.writeString(this._art);
         dest.writeString(this._genre_name);
@@ -147,4 +145,22 @@ public class Song extends BaseEntity {
         return 0;
     }
 
+    @Override
+    public String toString() {
+        return "Song{" +
+                "_id=" + _id +
+                ", _data='" + _data + '\'' +
+                ", _display_name='" + _display_name + '\'' +
+                ", _title='" + _title + '\'' +
+                ", _lyric='" + _lyric + '\'' +
+                ", _art='" + _art + '\'' +
+                ", _genre_name='" + _genre_name + '\'' +
+                ", _is_favorite=" + _is_favorite +
+                ", artist_name='" + artist_name + '\'' +
+                ", artist_art='" + artist_art + '\'' +
+                ", album_name='" + album_name + '\'' +
+                ", album_art='" + album_art + '\'' +
+                ", isPlaying=" + isPlaying +
+                '}';
+    }
 }

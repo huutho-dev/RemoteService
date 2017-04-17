@@ -48,12 +48,12 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     /**
      * Service
      */
-    private IMyAidlInterface mTPlayerService ;
+    private IMyAidlInterface mTPlayerService;
 
     /**
      * check service binded
      */
-    private boolean isBinded ;
+    private boolean isBinded;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,6 +61,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
         mViewRoot = LayoutInflater.from(this).inflate(setLayoutId(), null);
         setContentView(mViewRoot);
         onBindView();
+        getDataBundle(savedInstanceState);
         onActivityCreated();
 
         mThread = new Thread();
@@ -108,7 +109,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
         LogUtils.printLogDetail("onStop");
 
         // dont forget unbind service when stop activity : ahihi
-        if (isBinded && mTPlayerService !=null){
+        if (isBinded && mTPlayerService != null) {
             unbindTplayerService();
         }
 
@@ -122,36 +123,41 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     }
 
 
-
     private ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             mTPlayerService = (IMyAidlInterface) service;
-            isBinded = true ;
+            isBinded = true;
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mTPlayerService = null;
-            isBinded = false ;
+            isBinded = false;
         }
     };
 
-    public void bindTPlayerService(){
+    public void bindTPlayerService() {
         Intent intent = new Intent();
-        intent.setClassName(Config.REMOTE_PACKAGE,Config.REMOTE_CLASS_SERVICE);
-        bindService(intent,mServiceConn, Context.BIND_AUTO_CREATE);
+        intent.setClassName(Config.REMOTE_PACKAGE, Config.REMOTE_CLASS_SERVICE);
+        bindService(intent, mServiceConn, Context.BIND_AUTO_CREATE);
     }
 
-    public void startTPlayerService(){
+    public void startTPlayerService() {
         Intent intent = new Intent();
-        intent.setClassName(Config.REMOTE_PACKAGE,Config.REMOTE_CLASS_ACTIVITY);
+        intent.setClassName(Config.REMOTE_PACKAGE, Config.REMOTE_CLASS_ACTIVITY);
         startService(intent);
     }
 
-    public void unbindTplayerService(){
+    public IMyAidlInterface getPlayerService() {
+        return mTPlayerService;
+    }
+
+    public void unbindTplayerService() {
         unbindService(mServiceConn);
     }
 
+    public void getDataBundle(Bundle savedInstanceState) {
 
+    }
 }

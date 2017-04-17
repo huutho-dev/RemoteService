@@ -8,7 +8,6 @@ import java.util.List;
 import training.com.tplayer.network.html.base.BaseAsyncTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.entity.HotAlbumEntity;
-import training.com.tplayer.utils.LogUtils;
 import training.com.tplayer.utils.ZingHtmlUtils;
 
 /**
@@ -16,13 +15,13 @@ import training.com.tplayer.utils.ZingHtmlUtils;
  */
 
 public class HotAlbumTask extends BaseAsyncTask<HotAlbumEntity> {
-
+    public static final String TAG = "HotAlbumTask";
     private final String TAG_ALBUM_HOT = "div#albumHot";
     private final String TAG_ALBUM_HOT_ROW = "div.row";
     private final String TAG_ALBUM_HOT_ROW_ITEM = "div.album-item.des-inside.otr.col-3";
 
     public HotAlbumTask(IOnLoadSuccess listener) {
-        super("http://mp3.zing.vn/", listener);
+        super("http://mp3.zing.vn/", listener,TAG);
     }
 
 

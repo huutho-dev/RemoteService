@@ -9,7 +9,6 @@ import java.util.List;
 import training.com.tplayer.network.html.base.BaseAsyncTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.entity.HotSongOnlEntity;
-import training.com.tplayer.utils.LogUtils;
 import training.com.tplayer.utils.ZingHtmlUtils;
 
 /**
@@ -18,12 +17,14 @@ import training.com.tplayer.utils.ZingHtmlUtils;
 
 public class HotHightLightTask extends BaseAsyncTask<HotSongOnlEntity> {
 
+    public static final String TAG = "HotHightLightTask";
+
     private final String TAG_HOT_SONG = "div#viet-hot-song";
 
     private final String TAG_HOT_SONG_ITEM = "div.list-item.tool-song-hover.style2 > ul > li";
 
     public HotHightLightTask(IOnLoadSuccess listener) {
-        super("http://mp3.zing.vn/", listener);
+        super("http://mp3.zing.vn/", listener, TAG);
     }
 
     @Override
@@ -32,7 +33,7 @@ public class HotHightLightTask extends BaseAsyncTask<HotSongOnlEntity> {
 
         List<HotSongOnlEntity> entities = new ArrayList<>();
 
-        Element hotSongs = document.select(TAG_HOT_SONG).first();
+            Element hotSongs = document.select(TAG_HOT_SONG).first();
 
         Elements items = hotSongs.select(TAG_HOT_SONG_ITEM);
 

@@ -16,12 +16,12 @@ import training.com.tplayer.utils.ZingHtmlUtils;
  */
 
 public class ChartsSongTask extends BaseAsyncTask<BasicSongOnlEntity> {
-
+    public static final String TAG ="ChartsSongTask";
     private final String TAG_LIST = "div.wrapper-page > div.wrap-body.page-bxh.container > div.wrap-fullwidth-content";
     private final String TAG_LIST_DETAIL = "div.box-chart-ov.bordered.non-bg-rank > ul > li";
 
     public ChartsSongTask(IOnLoadSuccess listener) {
-        super("http://mp3.zing.vn/bang-xep-hang/index.html", listener);
+        super("http://mp3.zing.vn/bang-xep-hang/index.html", listener,TAG);
     }
 
     @Override

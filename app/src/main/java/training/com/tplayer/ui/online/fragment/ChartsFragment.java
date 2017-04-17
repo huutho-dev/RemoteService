@@ -24,7 +24,7 @@ import training.com.tplayer.ui.player.PlayerActivity;
  * Created by hnc on 13/04/2017.
  */
 
-public class ChartsFragment extends BaseFragment {
+public class ChartsFragment extends BaseFragment implements IOnLoadSuccess {
 
     @BindView(R.id.fragment_onl_charts_vietnam)
     RecyclerView mRvChartsVn;
@@ -57,6 +57,7 @@ public class ChartsFragment extends BaseFragment {
     @Override
     public void onViewCreatedFragment(View view, @Nullable final Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
+        new ChartsSongTask(this).execute();
 
         mTxtTitleVietnam.setText(R.string.fragment_title_charts_vietnam);
         mTxtTitleNational.setText(R.string.fragment_title_charts_usuk);
@@ -74,25 +75,6 @@ public class ChartsFragment extends BaseFragment {
         mRvChartsNational.setAdapter(mChartsNationalAdapter);
         mRvChartsNational.setNestedScrollingEnabled(false);
 
-        ChartsSongTask chartsSongTask = new ChartsSongTask(new IOnLoadSuccess() {
-            @Override
-            public void onResponse(List entity) {
-                // size = 20;
-                // viet nam : 0 - 9
-                // national : 10-19
-
-                int size = entity.size();
-                if (size != 0) {
-                    mChartsVnAdapter.setDatas(entity, 0, size / 2);
-                    mChartsNationalAdapter.setDatas(entity, size / 2, size);
-
-                    mTxtTitleVietnam.setVisibility(View.VISIBLE);
-                    mTxtTitleNational.setVisibility(View.VISIBLE);
-                }
-
-            }
-        });
-        chartsSongTask.execute();
     }
 
 
@@ -111,4 +93,19 @@ public class ChartsFragment extends BaseFragment {
     };
 
 
+    @Override
+    public void onResponse(List entity, String TAG) {
+        // size = 20;
+        // viet nam : 0 - 9
+        // national : 10-19
+
+        int size = entity.size();
+        if (size != 0) {
+            mChartsVnAdapter.setDatas(entity, 0, size / 2);
+            mChartsNationalAdapter.setDatas(entity, size / 2, size);
+
+            mTxtTitleVietnam.setVisibility(View.VISIBLE);
+            mTxtTitleNational.setVisibility(View.VISIBLE);
+        }
+    }
 }

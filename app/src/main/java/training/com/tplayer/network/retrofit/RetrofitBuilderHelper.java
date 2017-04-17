@@ -9,9 +9,9 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitBuilderHelper {
 
-    public static Retrofit getRetrofitBuilder(String baseUrl) {
+    public static Retrofit getRetrofitBuilder() {
         Retrofit builder = new Retrofit.Builder()
-                .baseUrl(baseUrl)
+                .baseUrl("http://mp3.zing.vn")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         return builder;

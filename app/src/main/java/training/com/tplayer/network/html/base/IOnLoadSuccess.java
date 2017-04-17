@@ -9,5 +9,6 @@ import training.com.tplayer.base.BaseEntity;
  */
 
 public interface IOnLoadSuccess<E extends BaseEntity> {
-    void onResponse(List<E> entity);
+    void onResponse(List<E> entity, String TAG);
+
 }

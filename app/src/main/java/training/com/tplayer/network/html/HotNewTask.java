@@ -16,11 +16,12 @@ import training.com.tplayer.utils.ZingHtmlUtils;
  */
 
 public class HotNewTask extends BaseAsyncTask<HotNewEntity> {
+    public static final String TAG = "HotNewTask";
     private final String TAG_NEW_TRACK = "div#viet-new-song";
-    private final String TAG_NEW_TRACK_ITEM =  "div.list-item.tool-song-hover.style2 > ul > li";
+    private final String TAG_NEW_TRACK_ITEM = "div.list-item.tool-song-hover.style2 > ul > li";
 
     public HotNewTask(IOnLoadSuccess listener) {
-        super("http://mp3.zing.vn/", listener);
+        super("http://mp3.zing.vn/", listener, TAG);
     }
 
     @Override
