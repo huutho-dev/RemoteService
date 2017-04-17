@@ -13,20 +13,20 @@ import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
 import training.com.tplayer.custom.TextViewRoboto;
-import training.com.tplayer.ui.entity.HotAlbumEntity;
+import training.com.tplayer.ui.entity.AlbumBasicEntity;
 import training.com.tplayer.utils.ImageUtils;
 
 /**
  * Created by hnc on 13/04/2017.
  */
 
-public class HotAlbumAdapter extends BaseRecyclerViewAdapter<HotAlbumEntity, HotAlbumAdapter.ViewHolder> {
+public class HotAlbumAdapter extends BaseRecyclerViewAdapter<AlbumBasicEntity, HotAlbumAdapter.ViewHolder> {
 
-    public interface hotAlbumAdapterListener extends IRecyclerViewOnItemClickListener {
+    public interface HotAlbumAdapterListener extends IRecyclerViewOnItemClickListener {
 
     }
 
-    public HotAlbumAdapter(Context context, hotAlbumAdapterListener listener) {
+    public HotAlbumAdapter(Context context, HotAlbumAdapterListener listener) {
         super(context, listener);
     }
 
@@ -37,7 +37,7 @@ public class HotAlbumAdapter extends BaseRecyclerViewAdapter<HotAlbumEntity, Hot
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
-        HotAlbumEntity entity = getDataItem(position);
+        AlbumBasicEntity entity = getDataItem(position);
         ImageUtils.loadImageBasic(mContext, entity.image, holder.mImage);
         holder.mTitle.setText(entity.name);
         holder.mDesc.setText(entity.artist);

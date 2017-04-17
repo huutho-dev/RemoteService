@@ -31,8 +31,8 @@ import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.adapter.online.HotAlbumAdapter;
 import training.com.tplayer.ui.adapter.online.HotHightLightAdapter;
 import training.com.tplayer.ui.adapter.online.HotNewAdapter;
+import training.com.tplayer.ui.entity.AlbumBasicEntity;
 import training.com.tplayer.ui.entity.DataCodeEntity;
-import training.com.tplayer.ui.entity.HotAlbumEntity;
 import training.com.tplayer.ui.entity.HotNewEntity;
 import training.com.tplayer.ui.entity.HotSongOnlEntity;
 import training.com.tplayer.ui.player.PlayerActivity;
@@ -41,7 +41,7 @@ import training.com.tplayer.ui.player.PlayerActivity;
  * Created by hnc on 13/04/2017.
  */
 
-public class HotFragment extends BaseFragment implements HotAlbumAdapter.hotAlbumAdapterListener,
+public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbumAdapterListener,
         HotNewAdapter.HotTopicAdapterListener, HotHightLightAdapter.HotHightLightAdapterListener, IOnLoadSuccess, View.OnClickListener {
 
     @BindView(R.id.fragment_online_hot_rv_album)
@@ -56,7 +56,7 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.hotAlbu
     @BindView(R.id.fragment_online_hot_txt_title_album)
     TextViewRoboto mTitleAlbum;
 
-    @BindView(R.id.fragment_online_hot_txt_title_new)
+    @BindView(R.id.fragment_charts_item_txt_title)
     TextViewRoboto mTitleNew;
 
     @BindView(R.id.fragment_online_hot_txt_title_hightlight)
@@ -95,7 +95,7 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.hotAlbu
 
 
         view.findViewById(R.id.fragment_onl_hot_layout_hightlight_play_all).setOnClickListener(this);
-        view.findViewById(R.id.fragment_onl_hot_layout_new_play_all).setOnClickListener(this);
+        view.findViewById(R.id.fragment_charts_item_layout_play_all).setOnClickListener(this);
 
         mTitleAlbum.setText(R.string.fragment_title_hot_music_album);
         mTitleNew.setText(R.string.fragment_title_hot_music_new);
@@ -141,7 +141,7 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.hotAlbu
     @Override
     public void onRecyclerViewItemClick(View view, BaseEntity baseEntity, int position) {
         String link = "";
-        if (baseEntity instanceof HotAlbumEntity) link = ((HotAlbumEntity) baseEntity).link;
+        if (baseEntity instanceof AlbumBasicEntity) link = ((AlbumBasicEntity) baseEntity).link;
         if (baseEntity instanceof HotSongOnlEntity) link = ((HotSongOnlEntity) baseEntity).link;
         if (baseEntity instanceof HotNewEntity) link = ((HotNewEntity) baseEntity).link;
 
@@ -176,7 +176,7 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.hotAlbu
         }
 
         if (HotAlbumTask.TAG.equals(TAG)) {
-            mAlbumAdapter.setDatas((ArrayList<HotAlbumEntity>) entity);
+            mAlbumAdapter.setDatas((ArrayList<AlbumBasicEntity>) entity);
             mTitleAlbum.setVisibility(View.VISIBLE);
             return;
         }
@@ -196,7 +196,7 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.hotAlbu
                 startActivityHasData(entitiesHightLight);
 
                 break;
-            case R.id.fragment_onl_hot_layout_new_play_all:
+            case R.id.fragment_charts_item_layout_play_all:
 
                 List<DataCodeEntity> entitiesNew = new ArrayList<>();
                 for (int i = 0; i < mNewAdapter.getSize(); i++) {

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorWhite"
+    android:clickable="true"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/layout_header"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/fragment_online_hot_rv_album">
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/fragment_charts_item_txt_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/spacing_2_16dp"
+            android:layout_marginTop="@dimen/spacing_2_16dp"
+            android:padding="@dimen/spacing_1_8dp"
+            android:text="BXH 40 bài hát top đầu"
+            android:textColor="@color/colorTextSecondary"
+            app:textFonts="RobotoMedium" />
+
+
+        <LinearLayout
+            android:id="@+id/fragment_charts_item_layout_play_all"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/spacing_2_16dp"
+                android:layout_toLeftOf="@+id/txt_play_all"
+                android:src="@drawable/ic_player_play"
+                android:tint="@color/colorAccent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/spacing_2_16dp"
+                android:text="Play all" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/layout_header"
+        android:id="@+id/fragment_charts_item_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <include layout="@layout/layout_loading" />
+
+</RelativeLayout>

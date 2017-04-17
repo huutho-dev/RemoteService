@@ -29,7 +29,6 @@ public class ZingHtmlUtils {
         String[] titles = new String[2];
         titles[0] = name;
         titles[1] = artist;
-
         return titles;
     }
 

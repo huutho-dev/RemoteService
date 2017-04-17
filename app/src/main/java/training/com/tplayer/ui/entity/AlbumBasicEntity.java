@@ -8,7 +8,7 @@ import training.com.tplayer.base.BaseEntity;
  * Created by ThoNH on 4/13/2017.
  */
 
-public class HotAlbumEntity extends BaseEntity {
+public class AlbumBasicEntity extends BaseEntity {
     public String link;
     public String image;
     public String artist;
@@ -29,10 +29,10 @@ public class HotAlbumEntity extends BaseEntity {
         dest.writeString(this.name);
     }
 
-    public HotAlbumEntity() {
+    public AlbumBasicEntity() {
     }
 
-    protected HotAlbumEntity(Parcel in) {
+    protected AlbumBasicEntity(Parcel in) {
         super(in);
         this.link = in.readString();
         this.image = in.readString();
@@ -40,21 +40,21 @@ public class HotAlbumEntity extends BaseEntity {
         this.name = in.readString();
     }
 
-    public static final Creator<HotAlbumEntity> CREATOR = new Creator<HotAlbumEntity>() {
+    public static final Creator<AlbumBasicEntity> CREATOR = new Creator<AlbumBasicEntity>() {
         @Override
-        public HotAlbumEntity createFromParcel(Parcel source) {
-            return new HotAlbumEntity(source);
+        public AlbumBasicEntity createFromParcel(Parcel source) {
+            return new AlbumBasicEntity(source);
         }
 
         @Override
-        public HotAlbumEntity[] newArray(int size) {
-            return new HotAlbumEntity[size];
+        public AlbumBasicEntity[] newArray(int size) {
+            return new AlbumBasicEntity[size];
         }
     };
 
     @Override
     public String toString() {
-        return "HotAlbumEntity{" +
+        return "AlbumBasicEntity{" +
                 "link='" + link + '\'' +
                 ", image='" + image + '\'' +
                 ", artist='" + artist + '\'' +

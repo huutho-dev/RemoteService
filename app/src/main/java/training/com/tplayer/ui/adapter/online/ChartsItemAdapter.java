@@ -1,53 +1,54 @@
 package training.com.tplayer.ui.adapter.online;
 
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import java.util.List;
+import android.widget.ImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
-import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
 import training.com.tplayer.custom.TextViewRoboto;
-import training.com.tplayer.ui.entity.BasicSongOnlEntity;
+import training.com.tplayer.ui.entity.HotSongOnlEntity;
+import training.com.tplayer.utils.ImageUtils;
 
 /**
- * Created by hnc on 14/04/2017.
+ * Created by ThoNH on 4/17/2017.
  */
 
-public class ChartsAdapter extends BaseRecyclerViewAdapter<BasicSongOnlEntity, ChartsAdapter.ViewHolder> {
+public class ChartsItemAdapter extends BaseRecyclerViewAdapter<HotSongOnlEntity, ChartsItemAdapter.ViewHolder> {
 
-    public interface ChartsVietnamAdapterListener extends IRecyclerViewOnItemClickListener<BasicSongOnlEntity> {
+    public interface ChartsItemAdapterListener extends IRecyclerViewOnItemClickListener {
 
     }
 
-    public ChartsAdapter(Context context, ChartsVietnamAdapterListener listener) {
+    public ChartsItemAdapter(Context context, ChartsItemAdapterListener listener) {
         super(context, listener);
     }
 
     @Override
     public ViewHolder onCreateViewHolderAdapter(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_recyclerview_charts, parent, false));
+        return new ViewHolder(LayoutInflater.from(mContext).inflate(R.layout.layout_item_charts_item, parent, false));
     }
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
-        BasicSongOnlEntity entity = getDataItem(position);
-        holder.mTxtOrder.setText(entity.order+"");
+        HotSongOnlEntity entity = getDataItem(position);
+        ImageUtils.loadImageBasic(mContext, entity.image, holder.mImvSong);
+        holder.mOrder.setText(entity.order + "");
         holder.mTxtTitle.setText(entity.title);
         holder.mTxtArtist.setText(entity.artist);
+
     }
 
     public class ViewHolder extends BaseViewHolder {
+
         @BindView(R.id.txt_order)
-        TextViewRoboto mTxtOrder;
+        TextViewRoboto mOrder;
 
         @BindView(R.id.txt_title)
         TextViewRoboto mTxtTitle;
@@ -55,19 +56,12 @@ public class ChartsAdapter extends BaseRecyclerViewAdapter<BasicSongOnlEntity, C
         @BindView(R.id.txt_artist)
         TextViewRoboto mTxtArtist;
 
+        @BindView(R.id.imv_image_song)
+        ImageView mImvSong;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-        }
-    }
-
-
-    public void setDatas(List<BaseEntity> mDatas, int startPositionSplit, int endPositionSplit) {
-        for (int i = 0; i < mDatas.size(); i++) {
-            if (i >= startPositionSplit && i < endPositionSplit) {
-                addData((BasicSongOnlEntity) mDatas.get(i));
-            }
         }
     }
 }

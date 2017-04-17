@@ -7,14 +7,14 @@ import java.util.List;
 
 import training.com.tplayer.network.html.base.BaseAsyncTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
-import training.com.tplayer.ui.entity.HotAlbumEntity;
+import training.com.tplayer.ui.entity.AlbumBasicEntity;
 import training.com.tplayer.utils.ZingHtmlUtils;
 
 /**
  * Created by ThoNH on 4/13/2017.
  */
 
-public class HotAlbumTask extends BaseAsyncTask<HotAlbumEntity> {
+public class HotAlbumTask extends BaseAsyncTask<AlbumBasicEntity> {
     public static final String TAG = "HotAlbumTask";
     private final String TAG_ALBUM_HOT = "div#albumHot";
     private final String TAG_ALBUM_HOT_ROW = "div.row";
@@ -26,10 +26,10 @@ public class HotAlbumTask extends BaseAsyncTask<HotAlbumEntity> {
 
 
     @Override
-    protected List<HotAlbumEntity> doInBackground(Void... params) {
+    protected List<AlbumBasicEntity> doInBackground(Void... params) {
         super.doInBackground(params);
 
-        List<HotAlbumEntity> entities = new ArrayList<>();
+        List<AlbumBasicEntity> entities = new ArrayList<>();
 
         Elements albumHot = document.select(TAG_ALBUM_HOT);
         Elements rows = albumHot.select(TAG_ALBUM_HOT_ROW);
@@ -48,7 +48,7 @@ public class HotAlbumTask extends BaseAsyncTask<HotAlbumEntity> {
                 String name = ZingHtmlUtils.splitsNameAndArtist(title)[0];
                 String artist = ZingHtmlUtils.splitsNameAndArtist(title)[1];
 
-                HotAlbumEntity entity = new HotAlbumEntity();
+                AlbumBasicEntity entity = new AlbumBasicEntity();
                 entity.artist = artist ;
                 entity.name = name;
                 entity.image = src;

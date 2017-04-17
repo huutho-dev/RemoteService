@@ -26,14 +26,14 @@
             android:paddingLeft="@dimen/spacing_1_8dp" />
 
         <RelativeLayout
-            android:layout_marginTop="@dimen/spacing_2_16dp"
             android:id="@+id/layout_new_play_all"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_online_hot_rv_album">
+            android:layout_below="@+id/fragment_online_hot_rv_album"
+            android:layout_marginTop="@dimen/spacing_2_16dp">
 
             <training.com.tplayer.custom.TextViewRoboto
-                android:id="@+id/fragment_online_hot_txt_title_new"
+                android:id="@+id/fragment_charts_item_txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/spacing_2_16dp"
@@ -45,7 +45,7 @@
 
 
             <LinearLayout
-                android:id="@+id/fragment_onl_hot_layout_new_play_all"
+                android:id="@+id/fragment_charts_item_layout_play_all"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
@@ -83,11 +83,11 @@
             android:paddingLeft="@dimen/spacing_1_8dp" />
 
         <RelativeLayout
-            android:layout_marginTop="@dimen/spacing_2_16dp"
             android:id="@+id/layout_hightlight_play_all"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/fragment_online_hot_rv_new">
+            android:layout_below="@+id/fragment_online_hot_rv_new"
+            android:layout_marginTop="@dimen/spacing_2_16dp">
 
             <training.com.tplayer.custom.TextViewRoboto
                 android:id="@+id/fragment_online_hot_txt_title_hightlight"
@@ -138,7 +138,13 @@
             android:paddingLeft="@dimen/spacing_1_8dp" />
 
 
-        <include layout="@layout/layout_loading" />
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true">
+
+            <include layout="@layout/layout_loading" />
+        </FrameLayout>
 
     </RelativeLayout>
 

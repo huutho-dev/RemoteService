@@ -2,6 +2,8 @@ package training.com.tplayer.ui.online.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 
 import butterknife.BindView;
@@ -36,7 +38,7 @@ public class TopFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
 
-        ButterKnife.bind(this,getView());
+        ButterKnife.bind(this, getView());
         txtTitleNational.setText(R.string.fragment_title_top_music_national);
         txtTitleVietnam.setText(R.string.fragment_title_top_music_vietnam);
 
@@ -60,54 +62,56 @@ public class TopFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.vietnam_young:
-                //http://mp3.zing.vn/top100/Nhac-Tre/IWZ9Z088.html
-
+                addFragment("http://mp3.zing.vn/top100/Nhac-Tre/IWZ9Z088.html");
                 break;
             case R.id.vietnam_bolero:
-                //http://mp3.zing.vn/top100/Nhac-Tru-Tinh/IWZ9Z08B.html
-
+                addFragment("http://mp3.zing.vn/top100/Nhac-Tru-Tinh/IWZ9Z08B.html");
                 break;
             case R.id.vietnam_dance:
-                //http://mp3.zing.vn/top100/Nhac-Dance/IWZ9Z0CW.html
-
+                addFragment("http://mp3.zing.vn/top100/Nhac-Dance/IWZ9Z0CW.html");
                 break;
             case R.id.vietnam_rap:
-                //http://mp3.zing.vn/top100/Rap-Viet/IWZ9Z089.html
-
+                addFragment("http://mp3.zing.vn/top100/Rap-Viet/IWZ9Z089.html");
                 break;
             case R.id.vietnam_rock:
-                //http://mp3.zing.vn/top100/Rock-Viet/IWZ9Z08A.html
-
+                addFragment("http://mp3.zing.vn/top100/Rock-Viet/IWZ9Z08A.html");
                 break;
             case R.id.vietnam_trinh:
-                //http://mp3.zing.vn/top100/Nhac-Trinh/IWZ9Z08E.html
-
+                addFragment("http://mp3.zing.vn/top100/Nhac-Trinh/IWZ9Z08E.html");
                 break;
 
             case R.id.nation_japan:
-                //http://mp3.zing.vn/top100/Nhat-Ban/IWZ9Z08Z.html
-
+                addFragment("http://mp3.zing.vn/top100/Nhat-Ban/IWZ9Z08Z.html");
                 break;
             case R.id.nation_rap:
-                //http://mp3.zing.vn/top100/Rap-Hip-Hop/IWZ9Z09B.html
-
+                addFragment("http://mp3.zing.vn/top100/Rap-Hip-Hop/IWZ9Z09B.html");
                 break;
             case R.id.national_edm:
-                //http://mp3.zing.vn/top100/Electronic-Dance/IWZ9Z09A.html
-
+                addFragment("http://mp3.zing.vn/top100/Electronic-Dance/IWZ9Z09A.html");
                 break;
             case R.id.national_kpop:
-                //http://mp3.zing.vn/top100/Han-Quoc/IWZ9Z08W.html
-
+                addFragment("http://mp3.zing.vn/top100/Han-Quoc/IWZ9Z08W.html");
                 break;
             case R.id.national_rock:
-                //http://mp3.zing.vn/top100/Rock/IWZ9Z099.html
-
+                addFragment("http://mp3.zing.vn/top100/Rock/IWZ9Z099.html");
                 break;
             case R.id.national_pop:
-                //http://mp3.zing.vn/top100/Pop/IWZ9Z097.html
-
+                addFragment("http://mp3.zing.vn/top100/Pop/IWZ9Z097.html");
                 break;
         }
+    }
+
+    private void addFragment(String url) {
+        String tag = ChartsItemFragment.class.getSimpleName();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.setCustomAnimations(R.anim.enter_from_left,
+                R.anim.exit_to_right,
+                R.anim.enter_from_right,
+                R.anim.exit_to_left);
+        ft.add(R.id.layout_main, ChartsItemFragment.newInstance(url), tag);
+        ft.addToBackStack(tag);
+        ft.commit();
+
     }
 }
