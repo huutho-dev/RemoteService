@@ -31,7 +31,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name="training.com.tplayerservice.StartServiceWhenCompleteBootReceiver">
+        <receiver android:name="training.com.tplayerservice.broadcast.StartServiceWhenCompleteBootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>

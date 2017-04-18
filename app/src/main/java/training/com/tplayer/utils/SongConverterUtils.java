@@ -26,7 +26,6 @@ public class SongConverterUtils {
         song.album_art = "";
         song.isPlaying = false;
 
-        LogUtils.printLog(song.toString());
         return song;
     }
 }

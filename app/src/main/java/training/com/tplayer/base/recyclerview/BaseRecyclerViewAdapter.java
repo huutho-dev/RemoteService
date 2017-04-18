@@ -30,7 +30,7 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
 
     @Override
     public VH onCreateViewHolder(ViewGroup parent, int viewType) {
-        return  onCreateViewHolderAdapter(parent, viewType);
+        return onCreateViewHolderAdapter(parent, viewType);
     }
 
     public abstract VH onCreateViewHolderAdapter(ViewGroup parent, int viewType);
@@ -59,9 +59,14 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
         notifyDataSetChanged();
     }
 
+    public void addAll(ArrayList<E> datas) {
+        mDatas.addAll(datas);
+        notifyDataSetChanged();
+    }
+
     public void addData(E entity) {
         mDatas.add(entity);
-        notifyDataSetChanged();
+        notifyItemChanged(mDatas.size());
     }
 
     public void addData(E entity, int position) {
@@ -85,6 +90,13 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
         notifyItemChanged(position);
     }
 
+    public void notifyItem(E e){
+        boolean contains = mDatas.contains(e);
+        if (contains){
+            updateData(e,mDatas.indexOf(e));
+        }
+    }
+
     public E getDataItem(int position) {
         return mDatas.get(position);
     }
@@ -98,9 +110,10 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
         notifyDataSetChanged();
     }
 
-    public List<E> getDatas(){
+    public List<E> getDatas() {
         return mDatas;
     }
+
     public void printDatasOfAdapter() {
         LogUtils.printLog(mDatas.toString());
     }

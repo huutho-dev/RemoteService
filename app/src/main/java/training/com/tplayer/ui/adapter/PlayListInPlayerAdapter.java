@@ -41,8 +41,9 @@ public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<Song, PlayL
         Song song = getDataItem(position);
         holder.mTxtSongName.setText(song._title);
         holder.mTxtSongArtist.setText(song.artist_name);
+        holder.mImvStatePlay.setActivated(song.isPlaying);
         holder.mImvStatePlay.setBackground(mContext.getResources().getDrawable(R.drawable.background_play_state));
-        ImageUtils.loadImagePlayList(mContext,song._art, holder.mImvArtist);
+        ImageUtils.loadImagePlayList(mContext, song._art, holder.mImvArtist);
     }
 
     public class ViewHolder extends BaseViewHolder {

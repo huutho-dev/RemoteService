@@ -1,8 +1,10 @@
 package training.com.tplayer.network.retrofit;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Url;
 import training.com.tplayer.ui.entity.SongOnlineEntity;
 
 /**
@@ -10,6 +12,12 @@ import training.com.tplayer.ui.entity.SongOnlineEntity;
  */
 
 public interface RetrofitApiRequest {
-    @GET("/json/song/get-source/{dataCode}")
+    @GET("json/song/get-source/{dataCode}")
     Call<SongOnlineEntity> getDataSource(@Path("dataCode")  String dataCode);
+
+
+
+    @GET
+    Call<ResponseBody> download(@Url String fileUrl);
+
 }

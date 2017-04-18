@@ -21,7 +21,7 @@ public class ImageUtils {
 
     public static void loadImageBasic(Context context, String url, ImageView imageView) {
         Picasso.with(context).load(url)
-                .transform(new CircleTransform())
+
                 .into(imageView);
     }
 
@@ -32,6 +32,12 @@ public class ImageUtils {
     }
 
     public static void loadRoundImage(Context context,int resId, ImageView imageView){
+        Picasso.with(context).load(resId)
+                .transform(new CircleTransform())
+                .into(imageView);
+    }
+
+    public static void loadRoundImage(Context context,String resId, ImageView imageView){
         Picasso.with(context).load(resId)
                 .transform(new CircleTransform())
                 .into(imageView);

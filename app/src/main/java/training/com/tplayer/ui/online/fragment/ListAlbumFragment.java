@@ -1,6 +1,8 @@
 package training.com.tplayer.ui.online.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,18 +17,19 @@ import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.base.BaseFragment;
+import training.com.tplayer.network.html.ListAlbumTask;
+import training.com.tplayer.network.html.GetDataCodeTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
-import training.com.tplayer.network.html.base.ListAlbumTask;
-import training.com.tplayer.ui.adapter.online.HotAlbumAdapter;
+import training.com.tplayer.ui.adapter.online.ListAlbumAdapter;
 import training.com.tplayer.ui.entity.AlbumBasicEntity;
-import training.com.tplayer.utils.LogUtils;
+import training.com.tplayer.ui.player.PlayerActivity;
 
 /**
  * Created by ThoNH on 4/17/2017.
  */
 
 public class ListAlbumFragment extends BaseFragment
-        implements HotAlbumAdapter.HotAlbumAdapterListener, IOnLoadSuccess {
+        implements IOnLoadSuccess, ListAlbumAdapter.ListAlbumAdapterListener {
 
 
     public static final String BUNDLE_ALBUM_TYPE = "bundle.album.type";
@@ -34,21 +37,21 @@ public class ListAlbumFragment extends BaseFragment
     @BindView(R.id.fragment_list_album_rv)
     RecyclerView mRvListAlbum;
 
-    HotAlbumAdapter mAdapter;
+    ListAlbumAdapter mAdapter;
     ArrayList<AlbumBasicEntity> mListAlbum;
 
-    int pageIndex = 1;
+    int pageIndex = 0;
 
     private int previousTotal = 0;
     private boolean loading = true;
     private int visibleThreshold = 5;
     int firstVisibleItem, visibleItemCount, totalItemCount;
 
-    private String urlType ;
+    private String urlType;
 
     public static ListAlbumFragment newInstance(String urlType) {
         Bundle args = new Bundle();
-        args.putString(BUNDLE_ALBUM_TYPE,urlType);
+        args.putString(BUNDLE_ALBUM_TYPE, urlType);
         ListAlbumFragment fragment = new ListAlbumFragment();
         fragment.setArguments(args);
         return fragment;
@@ -70,12 +73,11 @@ public class ListAlbumFragment extends BaseFragment
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
         mListAlbum = new ArrayList<>();
-        final GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 3);
-        mAdapter = new HotAlbumAdapter(mContext, this);
+        final GridLayoutManager mLayoutManager = new GridLayoutManager(mContext, 2);
+        mAdapter = new ListAlbumAdapter(mContext, this);
         mRvListAlbum.setLayoutManager(mLayoutManager);
         mRvListAlbum.setAdapter(mAdapter);
         mAdapter.setDatas(mListAlbum);
-        LogUtils.printLog("onViewCreatedFragment");
         mRvListAlbum.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -90,7 +92,7 @@ public class ListAlbumFragment extends BaseFragment
                         previousTotal = totalItemCount;
                     }
                 }
-                if (!loading && (totalItemCount - visibleItemCount)<= (firstVisibleItem + visibleThreshold)) {
+                if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold)) {
                     loadNextPage();
                     Log.i("Yaeye!", "end called");
                     loading = true;
@@ -100,15 +102,10 @@ public class ListAlbumFragment extends BaseFragment
 
     }
 
-    @Override
-    public void onRecyclerViewItemClick(View view, BaseEntity baseEntity, int position) {
-
-    }
-
 
     @Override
     public void onResponse(List entity, String TAG) {
-        mListAlbum.addAll(entity);
+        mAdapter.addAll((ArrayList<AlbumBasicEntity>) entity);
         mAdapter.notifyDataSetChanged();
     }
 
@@ -116,6 +113,27 @@ public class ListAlbumFragment extends BaseFragment
     private void loadNextPage() {
         pageIndex++;
         String urlPage = urlType + "?view=list&sort=total_play&filter=day&page=" + pageIndex;
-        new ListAlbumTask(urlPage, this, "ListAlbumTask");
+        new ListAlbumTask(urlPage, this, "ListAlbumTask").execute();
+    }
+
+    @Override
+    public void onRecyclerViewItemClick(View view, BaseEntity baseEntity, int position) {
+        if (baseEntity instanceof AlbumBasicEntity) {
+            AlbumBasicEntity albumBasicEntity = (AlbumBasicEntity) baseEntity;
+            GetDataCodeTask getDataCodeTask = new GetDataCodeTask(albumBasicEntity.link, new IOnLoadSuccess() {
+                @Override
+                public void onResponse(List entity, String TAG) {
+                    Intent intent = new Intent(mContext, PlayerActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelableArrayList(PlayerActivity.BUNDLE_DATA_ONLINE, (ArrayList<? extends Parcelable>) entity);
+                    intent.putExtra(PlayerActivity.EXTRA_DATA_PLAYER, bundle);
+                    startActivity(intent);
+                }
+            }, "getDataCodeTask");
+
+            getDataCodeTask.execute();
+        }
+
+
     }
 }

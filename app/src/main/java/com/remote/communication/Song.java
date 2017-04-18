@@ -1,8 +1,10 @@
 package com.remote.communication;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import training.com.tplayer.base.BaseEntity;
+
 
 /**
  * Created by ThoNH on 10/04/2017.
@@ -58,6 +60,11 @@ public class Song extends BaseEntity {
      */
     public boolean _is_favorite;
 
+
+    /**
+     * Leght of song
+     */
+    public long duration ;
 
     /**
      * Name artist of song (like: Sơn Tùng - MTP)
@@ -127,7 +134,7 @@ public class Song extends BaseEntity {
         dest.writeString(this.album_art);
     }
 
-    public static final Creator<Song> CREATOR = new Creator<Song>() {
+    public static final Parcelable.Creator<Song> CREATOR = new Parcelable.Creator<Song>() {
         @Override
         public Song createFromParcel(Parcel source) {
             return new Song(source);
@@ -156,6 +163,7 @@ public class Song extends BaseEntity {
                 ", _art='" + _art + '\'' +
                 ", _genre_name='" + _genre_name + '\'' +
                 ", _is_favorite=" + _is_favorite +
+                ", duration=" + duration +
                 ", artist_name='" + artist_name + '\'' +
                 ", artist_art='" + artist_art + '\'' +
                 ", album_name='" + album_name + '\'' +

@@ -1,9 +1,17 @@
 package training.com.tplayer.ui.player;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Parcelable;
+import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.WakefulBroadcastReceiver;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -21,22 +29,17 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import me.zhengken.lyricview.LyricView;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-import retrofit2.Retrofit;
 import training.com.tplayer.R;
+import training.com.tplayer.app.Config;
 import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.base.BaseEntity;
+import training.com.tplayer.custom.TLyricView;
 import training.com.tplayer.custom.TextViewRoboto;
-import training.com.tplayer.network.retrofit.RetrofitApiRequest;
-import training.com.tplayer.network.retrofit.RetrofitBuilderHelper;
+import training.com.tplayer.network.service.LoadListDataCodeService;
 import training.com.tplayer.ui.adapter.PlayListInPlayerAdapter;
 import training.com.tplayer.ui.entity.DataCodeEntity;
-import training.com.tplayer.ui.entity.SongOnlineEntity;
 import training.com.tplayer.utils.ImageUtils;
 import training.com.tplayer.utils.LogUtils;
-import training.com.tplayer.utils.SongConverterUtils;
 
 /**
  * Created by ThoNH on 4/16/2017.
@@ -56,7 +59,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl> implements
     TextViewRoboto mTxtSongName;
 
     @BindView(R.id.act_player_txt_songs_artist)
-    TextViewRoboto mTxtTotalSongArtist;
+    TextViewRoboto mTxtSongArtist;
 
     @BindView(R.id.act_player_image_artist)
     ImageView mImvArtist;
@@ -80,17 +83,20 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl> implements
     ImageView mImvShuffle;
 
     @BindView(R.id.lyricView)
-    LyricView mLyricView;
+    TLyricView mLyricView;
 
     @BindView(R.id.act_player_play_list)
     RecyclerView mRvPlayList;
 
+    private BroadcastReceiver broadcastReceiver;
 
     private PlayListInPlayerAdapter mAdapter;
 
     private List<DataCodeEntity> mListDataCode = new ArrayList<>();
 
     private ArrayList<Song> songs = new ArrayList<>();
+
+    private int currentSeekbar;
 
 
     @Override
@@ -108,31 +114,36 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl> implements
     @Override
     public void getDataBundle(Bundle savedInstanceState) {
         super.getDataBundle(savedInstanceState);
+
+        bindTPlayerService();
+
         Intent in = getIntent();
         Bundle bundle = in.getBundleExtra(EXTRA_DATA_PLAYER);
         if (bundle != null) mListDataCode = bundle.getParcelableArrayList(BUNDLE_DATA_ONLINE);
-        mTxtTotalSong.setText(mListDataCode.size() + " Songs");
-        Retrofit retrofit = RetrofitBuilderHelper.getRetrofitBuilder();
-        RetrofitApiRequest retrofitApiRequest = retrofit.create(RetrofitApiRequest.class);
-        for (DataCodeEntity code : mListDataCode) {
-            LogUtils.printLog(code.dataCode);
-
-            Call<SongOnlineEntity> call = retrofitApiRequest.getDataSource(code.dataCode);
-            call.enqueue(new Callback<SongOnlineEntity>() {
-                @Override
-                public void onResponse(Call<SongOnlineEntity> call, Response<SongOnlineEntity> response) {
-                    Song song = SongConverterUtils.convert(response.body());
-                    songs.add(song);
-                   mAdapter.setDatas(songs);
-                }
-
-                @Override
-                public void onFailure(Call<SongOnlineEntity> call, Throwable t) {
-                    LogUtils.printLog(t.getMessage());
-                }
-            });
+        LogUtils.printLog(mListDataCode.size() + "");
+        for (DataCodeEntity dataCodeEntity : mListDataCode) {
+            LogUtils.printLog(dataCodeEntity.dataCode + " - ");
         }
+        Intent intent = new Intent(this, LoadListDataCodeService.class);
+        intent.putParcelableArrayListExtra(LoadListDataCodeService.EXTRA_DATA_CODE,
+                (ArrayList<? extends Parcelable>) mListDataCode);
 
+        startService(intent);
+        LocalBroadcastManager.getInstance(this).registerReceiver(new WakefulBroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                ArrayList<Song> parcelableArrayListExtra = intent.getParcelableArrayListExtra(LoadListDataCodeService.EXTRA_CALL_BACK);
+                mAdapter.setDatas(parcelableArrayListExtra);
+                mTxtTotalSong.setText(parcelableArrayListExtra.size() + "");
+                if (getPlayerService() != null) {
+                    try {
+                        getPlayerService().setPlayList(parcelableArrayListExtra);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new IntentFilter(LoadListDataCodeService.ACTION_CALL_BACK_SONG));
     }
 
 
@@ -148,8 +159,8 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl> implements
         mSeekbar.setOnProgressChangeListener(this);
         mLyricView.setOnPlayerClickListener(this);
         mAdapter = new PlayListInPlayerAdapter(this, this);
-
-        ImageUtils.loadRoundImage(this.getApplicationContext(),R.drawable.dummy_image,mImvArtist);
+        mAdapter.setDatas(songs);
+        ImageUtils.loadRoundImage(this.getApplicationContext(), R.drawable.dummy_image, mImvArtist);
     }
 
     @Override
@@ -157,6 +168,42 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl> implements
         mRvPlayList.setLayoutManager(new LinearLayoutManager(this));
         mRvPlayList.setNestedScrollingEnabled(false);
         mRvPlayList.setAdapter(mAdapter);
+
+        broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (Config.ACTION_PLAYER_COMPLETE.equals(intent.getAction())) {
+                    LogUtils.printLog("ACTION_PLAYER_COMPLETE");
+
+                } else if (Config.ACTION_PLAYER_START_PLAY.equals(intent.getAction())) {
+                    LogUtils.printLog("ACTION_PLAYER_START_PLAY");
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                int duration = getPlayerService().getDuration();
+                                mSeekbar.setMax(duration);
+                                mHandler.post(updateSeekbar);
+                                LogUtils.printLog(duration + "");
+                            } catch (RemoteException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }, 1000);
+
+                    Song song = intent.getParcelableExtra(Config.ACTION_PLAYER_START_PLAY);
+                    updateUi(song);
+                }
+            }
+
+        };
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Config.ACTION_PLAYER_COMPLETE);
+        filter.addAction(Config.ACTION_PLAYER_START_PLAY);
+
+        registerReceiver(broadcastReceiver, filter);
 
     }
 
@@ -212,4 +259,27 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl> implements
     }
 
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(broadcastReceiver);
+    }
+
+    private void updateUi(Song song) {
+        mTxtSongName.setText(song._title);
+        mTxtSongArtist.setText(song.artist_name);
+        mSeekbar.setMax((int) song.duration);
+        mAdapter.notifyItem(song);
+        LogUtils.printLog(song.toString());
+    }
+
+
+    private Runnable updateSeekbar = new Runnable() {
+        @Override
+        public void run() {
+            mSeekbar.setProgress(currentSeekbar);
+            currentSeekbar += 1000 ;
+            mHandler.postDelayed(this, 1000);
+        }
+    };
 }

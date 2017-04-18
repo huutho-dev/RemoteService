@@ -26,7 +26,7 @@ import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.network.html.HotAlbumTask;
 import training.com.tplayer.network.html.HotHightLightTask;
 import training.com.tplayer.network.html.HotNewTask;
-import training.com.tplayer.network.html.base.GetDataCodeTask;
+import training.com.tplayer.network.html.GetDataCodeTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.adapter.online.HotAlbumAdapter;
 import training.com.tplayer.ui.adapter.online.HotHightLightAdapter;

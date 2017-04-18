@@ -37,7 +37,7 @@ public class TPlayer extends MediaPlayer {
      */
 
     public TPlayer(Context context) {
-        this.setWakeMode(context.getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+
     }
 
 

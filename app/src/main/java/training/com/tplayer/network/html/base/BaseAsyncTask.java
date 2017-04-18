@@ -18,7 +18,7 @@ public abstract class BaseAsyncTask<E extends BaseEntity> extends AsyncTask<Void
 
     private IOnLoadSuccess<E> listener;
     public Document document;
-    private String url;
+    public String url;
     private String tag ;
 
     public BaseAsyncTask(String url, IOnLoadSuccess listener, String tag) {

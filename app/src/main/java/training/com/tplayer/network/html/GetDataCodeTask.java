@@ -1,4 +1,6 @@
-package training.com.tplayer.network.html.base;
+package training.com.tplayer.network.html;
+
+import android.text.TextUtils;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -6,6 +8,8 @@ import org.jsoup.select.Elements;
 import java.util.ArrayList;
 import java.util.List;
 
+import training.com.tplayer.network.html.base.BaseAsyncTask;
+import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.entity.DataCodeEntity;
 
 /**
@@ -28,11 +32,13 @@ public class GetDataCodeTask extends BaseAsyncTask<DataCodeEntity> {
         if (list.hasText())
         for (Element element : list) {
             String dataCode = element.attr("data-code");
+            if ( dataCode!=null &&!TextUtils.isEmpty(dataCode))
             entities.add(new DataCodeEntity(dataCode));
         }
 
 
         String dataCode = document.select("a#tabService").attr("data-code");
+        if ( dataCode!=null &&!TextUtils.isEmpty(dataCode))
         entities.add(new DataCodeEntity(dataCode));
         return entities;
     }

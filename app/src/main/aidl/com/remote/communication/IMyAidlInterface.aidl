@@ -1,11 +1,14 @@
-// IMyAidlInterface.aidl
 package com.remote.communication;
 
-import com.remote.communication.Book;
-// Declare any non-default types here with import statements
+import com.remote.communication.Song;
 
 interface IMyAidlInterface {
 
-   void setBook(in Book book);
+   void setSong(in Song book);
 
+   void setPlayList(in List<Song> playLists);
+
+   int getDuration();
+
+   int getCurrentPosition();
 }

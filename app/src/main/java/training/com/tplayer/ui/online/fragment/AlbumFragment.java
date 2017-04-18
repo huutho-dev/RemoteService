@@ -105,13 +105,13 @@ public class AlbumFragment extends BaseFragment implements View.OnClickListener 
 
     private void addFragment(String url) {
         String tag = ListAlbumFragment.class.getSimpleName();
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         ft.setCustomAnimations(R.anim.enter_from_left,
                 R.anim.exit_to_right,
                 R.anim.enter_from_right,
                 R.anim.exit_to_left);
-        ft.add(R.id.layout_main, ChartsItemFragment.newInstance(url),tag);
+        ft.add(R.id.layout_main33, ListAlbumFragment.newInstance(url),tag);
         ft.addToBackStack(tag);
         ft.commit();
     }

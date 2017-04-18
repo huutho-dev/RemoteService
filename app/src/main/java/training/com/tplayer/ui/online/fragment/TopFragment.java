@@ -102,16 +102,16 @@ public class TopFragment extends BaseFragment implements View.OnClickListener {
     }
 
     private void addFragment(String url) {
+         ChartsItemFragment fragment = ChartsItemFragment.newInstance(url) ;
         String tag = ChartsItemFragment.class.getSimpleName();
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
+        final FragmentManager fm = getFragmentManager();
+        final FragmentTransaction ft = fm.beginTransaction();
         ft.setCustomAnimations(R.anim.enter_from_left,
                 R.anim.exit_to_right,
                 R.anim.enter_from_right,
                 R.anim.exit_to_left);
-        ft.add(R.id.layout_main, ChartsItemFragment.newInstance(url), tag);
+        ft.add(R.id.layout_main,fragment, tag);
         ft.addToBackStack(tag);
         ft.commit();
-
     }
 }

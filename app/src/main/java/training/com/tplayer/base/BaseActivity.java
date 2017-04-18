@@ -107,33 +107,32 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     protected void onStop() {
         super.onStop();
         LogUtils.printLogDetail("onStop");
-
-        // dont forget unbind service when stop activity : ahihi
-        if (isBinded && mTPlayerService != null) {
-            unbindTplayerService();
-        }
-
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LogUtils.printLogDetail("onDestroy");
-
+        if (isBinded && mTPlayerService != null) {
+            unbindTplayerService();
+        }
     }
 
 
     private ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-            mTPlayerService = (IMyAidlInterface) service;
+//                mTPlayerService = (IMyAidlInterface) service;
+                mTPlayerService = IMyAidlInterface.Stub.asInterface(service);
             isBinded = true;
+            LogUtils.printLog("onServiceConnected");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mTPlayerService = null;
             isBinded = false;
+            LogUtils.printLog("onServiceDisconnected");
         }
     };
 

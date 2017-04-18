@@ -6,14 +6,16 @@ import android.os.IBinder;
 import android.os.RemoteException;
 import android.util.Log;
 
-import com.remote.communication.Book;
 import com.remote.communication.IMyAidlInterface;
+import com.remote.communication.Song;
+
+import java.util.List;
 
 
 public class TPlayerService extends Service {
     public static final String TAG = "[ThoNH]";
 
-    private PlayerManager mPlayerManager ;
+    private PlayerManager mPlayerManager;
 
     public TPlayerService() {
         Log.e(TAG, "Contructor");
@@ -58,9 +60,25 @@ public class TPlayerService extends Service {
 
 
     private IMyAidlInterface.Stub iBinder = new IMyAidlInterface.Stub() {
-        @Override
-        public void setBook(Book book) throws RemoteException {
 
+        @Override
+        public void setSong(Song song) throws RemoteException {
+            mPlayerManager.playSong(song);
+        }
+
+        @Override
+        public void setPlayList(List<Song> playLists) throws RemoteException {
+            mPlayerManager.setListSong(playLists);
+        }
+
+        @Override
+        public int getDuration() throws RemoteException {
+            return mPlayerManager.getDuration();
+        }
+
+        @Override
+        public int getCurrentPosition() throws RemoteException {
+            return mPlayerManager.getCurrentPosition();
         }
     };
 }
