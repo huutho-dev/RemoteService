@@ -17,6 +17,7 @@ import com.remote.communication.IMyAidlInterface;
 import training.com.tplayer.app.Config;
 import training.com.tplayer.base.mvp.BasePresenterImpl;
 import training.com.tplayer.base.mvp.BaseView;
+import training.com.tplayer.ui.player.PlayerPresenterImpl;
 import training.com.tplayer.utils.LogUtils;
 
 /**
@@ -83,7 +84,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     @Override
     protected void onStart() {
         super.onStart();
-        LogUtils.printLogDetail("onStart");
+        LogUtils.printLogDetail("onRemotePlayNewSong");
     }
 
     @Override
@@ -122,10 +123,13 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     private ServiceConnection mServiceConn = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
-//                mTPlayerService = (IMyAidlInterface) service;
-                mTPlayerService = IMyAidlInterface.Stub.asInterface(service);
+            mTPlayerService = IMyAidlInterface.Stub.asInterface(service);
             isBinded = true;
             LogUtils.printLog("onServiceConnected");
+//            serviceConnected();
+            if (mPresenter instanceof PlayerPresenterImpl){
+                ((PlayerPresenterImpl) mPresenter).setService(mTPlayerService);
+            }
         }
 
         @Override
@@ -133,6 +137,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
             mTPlayerService = null;
             isBinded = false;
             LogUtils.printLog("onServiceDisconnected");
+//            serviceDisconnected();
         }
     };
 
@@ -159,4 +164,6 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     public void getDataBundle(Bundle savedInstanceState) {
 
     }
+
+
 }

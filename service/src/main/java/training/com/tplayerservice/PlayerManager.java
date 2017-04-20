@@ -73,12 +73,13 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         }
     }
 
-    public void changePlayStatus() {
+    public boolean changePlayStatus() {
         if (mTPlayer.isPlayerPlaying()) {
             mTPlayer.pausePlayer();
-            return;
+            return false;
         }
         mTPlayer.startPlayer();
+        return true;
     }
 
     public int getDuration() {

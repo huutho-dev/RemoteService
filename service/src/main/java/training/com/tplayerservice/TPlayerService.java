@@ -80,5 +80,35 @@ public class TPlayerService extends Service {
         public int getCurrentPosition() throws RemoteException {
             return mPlayerManager.getCurrentPosition();
         }
+
+        @Override
+        public void setPosition(int value) throws RemoteException {
+            mPlayerManager.seek(value);
+        }
+
+        @Override
+        public void forward() throws RemoteException {
+            mPlayerManager.nextSong();
+        }
+
+        @Override
+        public void backward() throws RemoteException {
+            mPlayerManager.previousSong();
+        }
+
+        @Override
+        public void setVolume(float value) throws RemoteException {
+            mPlayerManager.setVolume(value);
+        }
+
+        @Override
+        public boolean playPause() throws RemoteException {
+           return mPlayerManager.changePlayStatus();
+        }
+
+        @Override
+        public void repeat() throws RemoteException {
+
+        }
     };
 }

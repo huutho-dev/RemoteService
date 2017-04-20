@@ -11,4 +11,16 @@ interface IMyAidlInterface {
    int getDuration();
 
    int getCurrentPosition();
+
+   void setPosition(int value);
+
+   void forward();
+
+   void backward();
+
+   void setVolume(float value);
+
+   boolean playPause();
+
+   void repeat();
 }
