@@ -5,10 +5,12 @@ import android.os.RemoteException;
 import com.remote.communication.IMyAidlInterface;
 import com.remote.communication.Song;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 import training.com.tplayer.base.mvp.BasePresenterImpl;
+import training.com.tplayer.utils.LogUtils;
 
 /**
  * Created by ThoNH on 4/16/2017.
@@ -17,7 +19,7 @@ import training.com.tplayer.base.mvp.BasePresenterImpl;
 public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, PlayerInteractorImpl>
         implements PlayerContracts.Presenter, PlayerContracts.IOnPlayerListener {
 
-    private IMyAidlInterface mService ;
+    private IMyAidlInterface mService;
 
     @Override
     public void onSubcireView(PlayerActivity view) {
@@ -31,7 +33,7 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     }
 
     @Override
-    public void setPlayLists(List<Song>playLists) {
+    public void setPlayLists(List<Song> playLists) {
         try {
             mService.setPlayList(playLists);
         } catch (RemoteException e) {
@@ -40,12 +42,13 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     }
 
     @Override
-    public void playPause() {
+    public boolean playPause() {
         try {
-            mService.playPause();
+            return mService.playPause();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     @Override
@@ -93,11 +96,44 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
         }
     }
 
+    @Override
+    public int getCurrentPosition() {
+        try {
+            return mService.getCurrentPosition();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
 
+    @Override
+    public int getDuration() {
+        try {
+            return mService.getDuration();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public void startSongPosition(int position) {
+        try {
+            mService.startSongPosition(position);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onRemotePlayNewSong(Song song) {
         mView.onRemotePlayNewSong(song);
+    }
+
+    @Override
+    public void onBufferPlayNewSong(int percent) {
+        LogUtils.printLog("percen = " + percent);
+        mView.onBufferPlaySong(percent);
     }
 
     @Override
@@ -110,11 +146,17 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
         mView.onLoadDataZingComplete(songs);
     }
 
+    @Override
+    public void onDownloadLyricComplete(File lyric) {
+        mView.onDownloadLyricComplete(lyric);
+    }
+
 
     @Override
     public void onUnregisterBroadcast() {
         mInteractor.onUnregisterBroadcast();
     }
+
 
     public void setService(IMyAidlInterface playerService) {
         this.mService = playerService;

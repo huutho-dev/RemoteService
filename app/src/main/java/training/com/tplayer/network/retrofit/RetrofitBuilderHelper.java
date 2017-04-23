@@ -28,13 +28,4 @@ public class RetrofitBuilderHelper {
         return builder;
     }
 
-    public static Retrofit getLrc(){
-        Retrofit retrofit =
-                new Retrofit.Builder()
-                        .baseUrl("http://static.mp3.zdn.vn/lyrics/") // REMEMBER TO END with /
-                        .addConverterFactory(GsonConverterFactory.create())
-                        .build();
-        return retrofit;
-    }
-
 }

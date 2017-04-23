@@ -26,141 +26,155 @@
                 app:expandedTitleTextAppearance="@android:color/transparent"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-                <RelativeLayout
-                    android:id="@+id/layout_all_control"
+
+                <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/player_size_header"
-                    android:layout_marginBottom="@dimen/spacing_3_24dp"
-                    android:background="@drawable/background_player"
-                    app:layout_collapseMode="pin">
-
-                    <training.com.tplayer.custom.TextViewRoboto
-                        android:id="@+id/act_player_song_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/spacing_7_56dp"
-                        android:gravity="center"
-                        android:text="Lạc Trôi"
-                        android:textColor="#fff"
-                        android:textSize="@dimen/text_4_medium_16sp"
-                        app:textFonts="RobotoBold" />
-
-                    <training.com.tplayer.custom.TextViewRoboto
-                        android:id="@+id/act_player_txt_songs_artist"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/act_player_song_name"
-                        android:gravity="center"
-                        android:text="Sơn Tùng - MTP"
-                        android:textColor="#fff"
-                        android:textSize="@dimen/text_3_14sp"
-                        app:textFonts="RobotoRegular" />
+                    android:layout_height="@dimen/player_size_header">
 
                     <ImageView
-                        android:id="@+id/act_player_control_imv_repeat"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentLeft="true"
-                        android:layout_below="@+id/act_player_txt_songs_artist"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/spacing_3_24dp"
-                        android:src="@drawable/ic_player_repeat" />
-
-
-                    <ImageView
-                        android:id="@+id/act_player_control_imv_volume"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_below="@+id/act_player_txt_songs_artist"
-                        android:layout_centerVertical="true"
-                        android:layout_marginRight="@dimen/spacing_3_24dp"
-                        android:src="@drawable/ic_player_volume" />
-
-
-                    <training.com.tplayer.custom.TLyricView
-                        android:id="@+id/lyricView"
+                        android:id="@+id/act_player_cover_image"
+                        android:src="@drawable/dummy_image"
+                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
-                        android:layout_height="130dp"
-                        android:layout_above="@+id/act_player_control_seekbar"
-                        android:layout_marginBottom="@dimen/spacing_1_8dp"
-                        android:background="@color/colorTransParent"
-                        app:fadeInFadeOut="true"
-                        app:hint="No Lyrics"
-                        app:textSize="@dimen/text_3_14sp" />
-
-
-                    <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
-                        android:id="@+id/act_player_control_seekbar"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/layout_control"
-                        app:dsb_max="160000"
-                        android:layout_marginLeft="@dimen/spacing_4_32dp"
-                        android:layout_marginRight="@dimen/spacing_4_32dp"
-                        android:scrollbarStyle="insideInset"
-                        app:dsb_indicatorPopupEnabled="false"
-                        app:dsb_progressColor="@color/colorAccent"
-                        app:dsb_rippleColor="@color/colorPrimaryDark" />
+                        android:layout_height="match_parent" />
 
                     <RelativeLayout
-                        android:id="@+id/layout_control"
+                        android:id="@+id/layout_all_control"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_above="@+id/act_player_image_artist">
+                        android:layout_height="@dimen/player_size_header"
+                        android:layout_marginBottom="@dimen/spacing_3_24dp"
+                        android:background="@drawable/background_player"
+                        app:layout_collapseMode="pin">
+
+                        <training.com.tplayer.custom.TextViewRoboto
+                            android:id="@+id/act_player_song_name"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/spacing_7_56dp"
+                            android:gravity="center"
+                            android:text="Lạc Trôi"
+                            android:textColor="#fff"
+                            android:textSize="@dimen/text_4_medium_16sp"
+                            app:textFonts="RobotoBold" />
+
+                        <training.com.tplayer.custom.TextViewRoboto
+                            android:id="@+id/act_player_txt_songs_artist"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/act_player_song_name"
+                            android:gravity="center"
+                            android:text="Sơn Tùng - MTP"
+                            android:textColor="#fff"
+                            android:textSize="@dimen/text_3_14sp"
+                            app:textFonts="RobotoRegular" />
 
                         <ImageView
-                            android:id="@+id/act_player_control_imv_play_pause"
+                            android:id="@+id/act_player_control_imv_repeat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginBottom="@dimen/spacing_3_24dp"
-                            android:layout_marginLeft="@dimen/spacing_6_default_48dp"
-                            android:layout_marginRight="@dimen/spacing_6_default_48dp"
-                            android:src="@drawable/background_play_state" />
+                            android:layout_alignParentLeft="true"
+                            android:layout_below="@+id/act_player_txt_songs_artist"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="@dimen/spacing_3_24dp"
+                            android:src="@drawable/ic_player_repeat" />
+
 
                         <ImageView
-                            android:id="@+id/act_player_control_imv_forward"
+                            android:id="@+id/act_player_control_imv_volume"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginRight="@dimen/spacing_5_40dp"
-                            android:layout_toRightOf="@+id/act_player_control_imv_play_pause"
-                            android:src="@drawable/ic_player_forward" />
+                            android:layout_alignParentRight="true"
+                            android:layout_below="@+id/act_player_txt_songs_artist"
+                            android:layout_centerVertical="true"
+                            android:layout_marginRight="@dimen/spacing_3_24dp"
+                            android:src="@drawable/ic_player_volume" />
+
+
+                        <me.zhengken.lyricview.LyricView
+                            android:id="@+id/lyricView"
+                            android:layout_width="match_parent"
+                            android:layout_height="130dp"
+                            android:layout_above="@+id/act_player_control_seekbar"
+                            android:layout_marginBottom="@dimen/spacing_1_8dp"
+                            android:background="@color/colorTransParent"
+                            app:fadeInFadeOut="true"
+                            app:hint="No Lyrics"
+                            app:textSize="@dimen/text_3_14sp" />
+
+
+                        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+                            android:id="@+id/act_player_control_seekbar"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/layout_control"
+                            android:layout_marginLeft="@dimen/spacing_4_32dp"
+                            android:layout_marginRight="@dimen/spacing_4_32dp"
+                            android:scrollbarStyle="insideInset"
+                            app:dsb_indicatorPopupEnabled="true"
+                            app:dsb_progressColor="@color/colorAccent"
+                            android:soundEffectsEnabled="true"
+                            app:dsb_rippleColor="@color/colorPrimaryDark" />
+
+                        <RelativeLayout
+                            android:id="@+id/layout_control"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_above="@+id/act_player_image_artist">
+
+                            <ImageView
+                                android:id="@+id/act_player_control_imv_play_pause"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginBottom="@dimen/spacing_3_24dp"
+                                android:layout_marginLeft="@dimen/spacing_6_default_48dp"
+                                android:layout_marginRight="@dimen/spacing_6_default_48dp"
+                                android:src="@drawable/background_play_state" />
+
+                            <ImageView
+                                android:id="@+id/act_player_control_imv_forward"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginRight="@dimen/spacing_5_40dp"
+                                android:layout_toRightOf="@+id/act_player_control_imv_play_pause"
+                                android:src="@drawable/ic_player_forward" />
+
+                            <ImageView
+                                android:id="@+id/act_player_control_imv_backward"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_marginLeft="@dimen/spacing_5_40dp"
+                                android:layout_toLeftOf="@+id/act_player_control_imv_play_pause"
+                                android:src="@drawable/ic_player_backward" />
+
+                        </RelativeLayout>
 
                         <ImageView
-                            android:id="@+id/act_player_control_imv_backward"
+                            android:id="@+id/act_player_image_artist"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerInParent="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/dummy_image" />
+
+                        <training.com.tplayer.custom.TextViewRoboto
+                            android:id="@+id/act_player_total_song"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_centerInParent="true"
-                            android:layout_marginLeft="@dimen/spacing_5_40dp"
-                            android:layout_toLeftOf="@+id/act_player_control_imv_play_pause"
-                            android:src="@drawable/ic_player_backward" />
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/spacing_4_32dp"
+                            android:layout_marginRight="@dimen/spacing_4_32dp"
+                            android:textSize="@dimen/text_2_12sp"
+                            app:textFonts="RobotoRegular" />
+
 
                     </RelativeLayout>
+                </FrameLayout>
 
-                    <ImageView
-                        android:id="@+id/act_player_image_artist"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerInParent="true"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/dummy_image" />
-
-                    <training.com.tplayer.custom.TextViewRoboto
-                        android:id="@+id/act_player_total_song"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginBottom="@dimen/spacing_4_32dp"
-                        android:layout_marginRight="@dimen/spacing_4_32dp"
-                        android:textSize="@dimen/text_2_12sp"
-                        app:textFonts="RobotoRegular" />
-
-
-                </RelativeLayout>
 
 
             </android.support.design.widget.CollapsingToolbarLayout>

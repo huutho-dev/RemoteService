@@ -163,6 +163,7 @@ public class Song extends BaseEntity {
                 ", _art='" + _art + '\'' +
                 ", _genre_name='" + _genre_name + '\'' +
                 ", _is_favorite=" + _is_favorite +
+                ", duration=" + duration +
                 ", artist_name='" + artist_name + '\'' +
                 ", artist_art='" + artist_art + '\'' +
                 ", album_name='" + album_name + '\'' +

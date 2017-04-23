@@ -1,4 +1,4 @@
-package training.com.tplayer.utils;
+package training.com.utils;
 
 import android.util.Log;
 

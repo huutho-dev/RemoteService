@@ -2,6 +2,7 @@ package training.com.tplayer.ui.player;
 
 import com.remote.communication.Song;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,18 +19,20 @@ public class PlayerContracts {
 
         void onRemotePlayNewSong(Song song);
 
+        void onBufferPlaySong(int percent);
+
         void onRemotePlayCompleteASong();
 
         void onLoadDataZingComplete(ArrayList<Song> songs);
 
-
+        void onDownloadLyricComplete(File lyric);
     }
 
     public interface Presenter extends BasePresenter {
 
         void setPlayLists(List<Song> playLists);
 
-        void playPause();
+        boolean playPause();
 
         void forward();
 
@@ -40,6 +43,12 @@ public class PlayerContracts {
         void setVolume(float volume);
 
         void seekToPosition(int value);
+
+        int getCurrentPosition();
+
+        int getDuration();
+
+        void startSongPosition(int position);
 
         void onUnregisterBroadcast();
     }
@@ -53,8 +62,12 @@ public class PlayerContracts {
 
         void onRemotePlayNewSong(Song song);
 
+        void onBufferPlayNewSong(int percent);
+
         void onRemoteCompleteASong();
 
         void onLoadZingComplete(ArrayList<Song> songs);
+
+        void onDownloadLyricComplete(File lyric);
     }
 }

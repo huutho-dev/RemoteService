@@ -20,8 +20,8 @@ public class ImageUtils {
     }
 
     public static void loadImageBasic(Context context, String url, ImageView imageView) {
-        Picasso.with(context).load(url)
-
+        Picasso.with(context)
+                .load(url)
                 .into(imageView);
     }
 

@@ -4,7 +4,9 @@ import com.remote.communication.Song;
 
 interface IMyAidlInterface {
 
-   void setSong(in Song book);
+   void setSong(in Song song);
+
+   void startSongPosition(int position);
 
    void setPlayList(in List<Song> playLists);
 
@@ -23,5 +25,4 @@ interface IMyAidlInterface {
    boolean playPause();
 
    void repeat();
-
 }

@@ -84,7 +84,6 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     @Override
     protected void onStart() {
         super.onStart();
-        LogUtils.printLogDetail("onRemotePlayNewSong");
     }
 
     @Override
@@ -137,7 +136,6 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
             mTPlayerService = null;
             isBinded = false;
             LogUtils.printLog("onServiceDisconnected");
-//            serviceDisconnected();
         }
     };
 
