@@ -5,6 +5,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 
 import butterknife.BindView;
@@ -40,9 +42,11 @@ public class ListAlbumAdapter  extends BaseRecyclerViewAdapter<AlbumBasicEntity,
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
         AlbumBasicEntity entity = getDataItem(position);
-        ImageUtils.loadImageBasic(mContext, entity.image, holder.mImage);
+        ImageUtils.loadRoundImage(mContext, entity.image, holder.mImage);
         holder.mTitle.setText(entity.name);
         holder.mDesc.setText(entity.artist);
+
+        setFadeAnim(holder.mImage);
     }
 
 
@@ -59,5 +63,12 @@ public class ListAlbumAdapter  extends BaseRecyclerViewAdapter<AlbumBasicEntity,
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private void setFadeAnim(View view) {
+        ScaleAnimation animation = new ScaleAnimation(0.5f, 1.0f, 0.5f, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(500);
+        view.startAnimation(animation);
     }
 }

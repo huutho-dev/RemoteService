@@ -23,10 +23,10 @@ import training.com.tplayer.base.BaseFragment;
 import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.custom.GravitySnapHelper;
 import training.com.tplayer.custom.TextViewRoboto;
+import training.com.tplayer.network.html.GetDataCodeTask;
 import training.com.tplayer.network.html.HotAlbumTask;
 import training.com.tplayer.network.html.HotHightLightTask;
 import training.com.tplayer.network.html.HotNewTask;
-import training.com.tplayer.network.html.GetDataCodeTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.adapter.online.HotAlbumAdapter;
 import training.com.tplayer.ui.adapter.online.HotHightLightAdapter;
@@ -36,13 +36,19 @@ import training.com.tplayer.ui.entity.DataCodeEntity;
 import training.com.tplayer.ui.entity.HotNewEntity;
 import training.com.tplayer.ui.entity.HotSongOnlEntity;
 import training.com.tplayer.ui.player.PlayerActivity;
+import training.com.tplayer.utils.FileUtils;
 
 /**
  * Created by hnc on 13/04/2017.
  */
 
 public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbumAdapterListener,
-        HotNewAdapter.HotTopicAdapterListener, HotHightLightAdapter.HotHightLightAdapterListener, IOnLoadSuccess, View.OnClickListener {
+        HotNewAdapter.HotTopicAdapterListener, HotHightLightAdapter.HotHightLightAdapterListener,
+        IOnLoadSuccess, View.OnClickListener {
+
+    private final String FILE_NAME_CACHE_HOT_ALBUM = "cache_album_hot";
+    private final String FILE_NAME_CACHE_NEW_SONG = "cache_new_song";
+    private final String FILE_NAME_CACHE_HIGHT_LIGHT = "cache_hight_light";
 
     @BindView(R.id.fragment_online_hot_rv_album)
     RecyclerView mRvAlbum;
@@ -66,10 +72,10 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbu
     RelativeLayout mLayoutNew;
 
     @BindView(R.id.layout_hightlight_play_all)
-    RelativeLayout mLayoutHightLight ;
+    RelativeLayout mLayoutHightLight;
 
     @BindView(R.id.loading)
-    ProgressBar mLoading ;
+    ProgressBar mLoading;
 
 
     private HotAlbumAdapter mAlbumAdapter;
@@ -93,39 +99,77 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbu
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
 
-
         view.findViewById(R.id.fragment_onl_hot_layout_hightlight_play_all).setOnClickListener(this);
         view.findViewById(R.id.fragment_charts_item_layout_play_all).setOnClickListener(this);
 
+        initAlbum();
+
+        initNew();
+
+        initHightLight();
+
+    }
+
+    private void initAlbum() {
         mTitleAlbum.setText(R.string.fragment_title_hot_music_album);
-        mTitleNew.setText(R.string.fragment_title_hot_music_new);
-        mTitleHightlight.setText(R.string.fragment_title_hot_music_hightlight);
-
         mTitleAlbum.setVisibility(View.GONE);
-        mTitleNew.setVisibility(View.GONE);
-        mTitleHightlight.setVisibility(View.GONE);
-
         mAlbumAdapter = new HotAlbumAdapter(mContext, this);
-        mNewAdapter = new HotNewAdapter(mContext, this);
-        mHightLightAdapter = new HotHightLightAdapter(mContext, this);
-
         setUpRecyclerView(mRvAlbum, mAlbumAdapter, (new LinearLayoutManager(mContext, LinearLayoutManager.HORIZONTAL, false)));
+
+        if (FileUtils.CacheFile.isFileExist(mContext, FILE_NAME_CACHE_HOT_ALBUM)) {
+            List<AlbumBasicEntity> listAlbum = new FileUtils.CacheFile<AlbumBasicEntity>()
+                    .readCacheFile(mContext, FILE_NAME_CACHE_HOT_ALBUM, AlbumBasicEntity[].class);
+            if (listAlbum != null && listAlbum.size() != 0) {
+                mAlbumAdapter.setDatas(listAlbum);
+                mLoading.setVisibility(View.GONE);
+            } else {
+                new HotAlbumTask(this).execute();
+            }
+        } else {
+            new HotAlbumTask(this).execute();
+        }
+    }
+
+    private void initNew() {
+        mTitleNew.setText(R.string.fragment_title_hot_music_new);
+        mTitleNew.setVisibility(View.GONE);
+        mNewAdapter = new HotNewAdapter(mContext, this);
         setUpRecyclerView(mRvNew, mNewAdapter, (new GridLayoutManager(mContext, 2, LinearLayoutManager.HORIZONTAL, false)));
-        setUpRecyclerView(mRvHightLight, mHightLightAdapter, (new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)));
 
-
-        new HotHightLightTask(this).execute();
-        new HotNewTask(this).execute();
-        new HotAlbumTask(this).execute();
-
-        if (mHightLightAdapter.getSize()==0){
-            mLayoutHightLight.setVisibility(View.GONE);
+        if (FileUtils.CacheFile.isFileExist(mContext, FILE_NAME_CACHE_NEW_SONG)) {
+            List<HotNewEntity> listNew = new FileUtils.CacheFile<HotNewEntity>()
+                    .readCacheFile(mContext, FILE_NAME_CACHE_NEW_SONG,HotNewEntity[].class);
+            if (listNew != null && listNew.size() != 0) {
+                mNewAdapter.setDatas(listNew);
+                mLayoutNew.setVisibility(View.VISIBLE);
+            } else {
+                new HotNewTask(this).execute();
+            }
+        } else {
+            new HotNewTask(this).execute();
         }
+    }
 
-        if (mNewAdapter.getSize() == 0){
-            mLayoutNew.setVisibility(View.GONE);
+    private void initHightLight() {
+
+        mTitleHightlight.setText(R.string.fragment_title_hot_music_hightlight);
+        mTitleHightlight.setVisibility(View.GONE);
+        mHightLightAdapter = new HotHightLightAdapter(mContext, this);
+        setUpRecyclerView(mRvHightLight, mHightLightAdapter,
+                (new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)));
+
+        if (FileUtils.CacheFile.isFileExist(mContext, FILE_NAME_CACHE_HIGHT_LIGHT)) {
+            List<HotSongOnlEntity> listHightLight = new FileUtils.CacheFile<HotSongOnlEntity>()
+                    .readCacheFile(mContext, FILE_NAME_CACHE_HIGHT_LIGHT,HotSongOnlEntity[].class);
+            if (listHightLight != null && listHightLight.size() != 0) {
+                mHightLightAdapter.setDatas(listHightLight);
+                mLayoutHightLight.setVisibility(View.VISIBLE);
+            } else {
+                new HotHightLightTask(this).execute();
+            }
+        } else {
+            new HotHightLightTask(this).execute();
         }
-
     }
 
     private void setUpRecyclerView(RecyclerView recyclerView, BaseRecyclerViewAdapter adapter,
@@ -166,19 +210,33 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbu
             mNewAdapter.setDatas((ArrayList<HotNewEntity>) entity);
             mTitleNew.setVisibility(View.VISIBLE);
             mLayoutNew.setVisibility(View.VISIBLE);
+
+            // save cache new song online
+            new FileUtils.CacheFile<HotNewEntity>()
+                    .writeCacheFile(mContext, FILE_NAME_CACHE_NEW_SONG, (ArrayList<HotNewEntity>) entity);
+
             return;
         }
+
         if (HotHightLightTask.TAG.equals(TAG)) {
             mHightLightAdapter.setDatas((ArrayList<HotSongOnlEntity>) entity);
             mTitleHightlight.setVisibility(View.VISIBLE);
-            mLayoutHightLight.setVisibility(View.VISIBLE);
+
+            // save cache hight light song online
+            new FileUtils.CacheFile<HotSongOnlEntity>()
+                    .writeCacheFile(mContext, FILE_NAME_CACHE_HIGHT_LIGHT, (ArrayList<HotSongOnlEntity>) entity);
+
             return;
         }
 
         if (HotAlbumTask.TAG.equals(TAG)) {
             mAlbumAdapter.setDatas((ArrayList<AlbumBasicEntity>) entity);
             mTitleAlbum.setVisibility(View.VISIBLE);
-            return;
+
+            // save cache albums hot online
+            new FileUtils.CacheFile<AlbumBasicEntity>()
+                    .writeCacheFile(mContext, FILE_NAME_CACHE_HOT_ALBUM,(ArrayList<AlbumBasicEntity>) entity);
+
         }
     }
 
@@ -204,8 +262,6 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbu
                     entitiesNew.add(dataCodeEntity);
                 }
                 startActivityHasData(entitiesNew);
-
-
                 break;
         }
     }
@@ -218,5 +274,4 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbu
         intent.putExtra(PlayerActivity.EXTRA_DATA_PLAYER, bundle);
         startActivity(intent);
     }
-
 }

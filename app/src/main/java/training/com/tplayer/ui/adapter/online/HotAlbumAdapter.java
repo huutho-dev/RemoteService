@@ -4,6 +4,8 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 
 import butterknife.BindView;
@@ -38,9 +40,11 @@ public class HotAlbumAdapter extends BaseRecyclerViewAdapter<AlbumBasicEntity, H
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
         AlbumBasicEntity entity = getDataItem(position);
-        ImageUtils.loadImageBasic(mContext, entity.image, holder.mImage);
+        ImageUtils.loadRoundImage(mContext, entity.image, holder.mImage);
         holder.mTitle.setText(entity.name);
         holder.mDesc.setText(entity.artist);
+
+        setRotateAnim(holder.mImage);
     }
 
     public class ViewHolder extends BaseViewHolder {
@@ -55,5 +59,12 @@ public class HotAlbumAdapter extends BaseRecyclerViewAdapter<AlbumBasicEntity, H
             super(itemView);
             ButterKnife.bind(this, itemView);
         }
+    }
+
+    private void setRotateAnim(View view){
+        RotateAnimation rotateAnimation = new RotateAnimation(-180,0,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        rotateAnimation.setDuration(600);
+        view.startAnimation(rotateAnimation);
     }
 }

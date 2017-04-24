@@ -18,7 +18,7 @@
     <dimen name="standard_body">14sp</dimen>
     <dimen name="standard_button">14sp</dimen>
 
-    <dimen name="size_layout_image_recycler_simple">120dp</dimen>
+    <dimen name="size_layout_image_recycler_simple">160dp</dimen>
 
     <dimen name="size_item_layout_parent_top_music_width">100dp</dimen>
     <dimen name="size_item_layout_parent_top_music_height">130dp</dimen>

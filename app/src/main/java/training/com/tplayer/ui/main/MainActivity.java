@@ -5,22 +5,17 @@ import android.content.Intent;
 import com.imangazaliev.circlemenu.CircleMenu;
 import com.imangazaliev.circlemenu.CircleMenuButton;
 
-import java.util.ArrayList;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.ui.MyCM;
-import training.com.tplayer.ui.entity.BasicSongOnlEntity;
 import training.com.tplayer.ui.favorite.FavoriteActivity;
 import training.com.tplayer.ui.offline.OfflineActivity;
 import training.com.tplayer.ui.online.OnlineActivity;
 import training.com.tplayer.ui.rate.RateActivity;
 import training.com.tplayer.ui.setting.SettingActivity;
 import training.com.tplayer.ui.share.ShareActivity;
-import training.com.tplayer.utils.FileUtils;
-import training.com.tplayer.utils.LogUtils;
 
 import static training.com.tplayer.R.id.action_menu_offline;
 
@@ -65,33 +60,6 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
 
     @Override
     public void onActivityCreated() {
-        BasicSongOnlEntity songOnlEntity = new BasicSongOnlEntity();
-        songOnlEntity.title = "title";
-        songOnlEntity.link = "link";
-        songOnlEntity.artist = "artist";
-        songOnlEntity.order = 0;
-
-
-        BasicSongOnlEntity songOnlEntity2 = new BasicSongOnlEntity();
-        songOnlEntity2.title = "title2";
-        songOnlEntity2.link = "link2";
-        songOnlEntity2.artist = "artist2";
-        songOnlEntity2.order = 2;
-
-        ArrayList<BasicSongOnlEntity> entities = new ArrayList<>();
-        entities.add(songOnlEntity);
-        entities.add(songOnlEntity2);
-
-       new FileUtils.CacheFile<BasicSongOnlEntity>().writeCacheFile(this,"abc",entities);
-
-        ArrayList<BasicSongOnlEntity> datas = new FileUtils.CacheFile<BasicSongOnlEntity>().readCacheFile(this,"abc");
-
-        LogUtils.printLog(datas.toString());
-
-        LogUtils.printLog(entities.toString());
-
-
-
     }
 
 

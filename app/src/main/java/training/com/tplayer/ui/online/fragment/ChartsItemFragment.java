@@ -21,9 +21,11 @@ import training.com.tplayer.base.BaseFragment;
 import training.com.tplayer.network.html.ChartsItemSongTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.adapter.online.ChartsItemAdapter;
+import training.com.tplayer.ui.entity.AlbumBasicEntity;
 import training.com.tplayer.ui.entity.DataCodeEntity;
 import training.com.tplayer.ui.entity.HotSongOnlEntity;
 import training.com.tplayer.ui.player.PlayerActivity;
+import training.com.tplayer.utils.FileUtils;
 
 /**
  * Created by ThoNH on 4/17/2017.
@@ -31,6 +33,10 @@ import training.com.tplayer.ui.player.PlayerActivity;
 
 public class ChartsItemFragment extends BaseFragment
         implements IOnLoadSuccess, ChartsItemAdapter.ChartsItemAdapterListener, View.OnClickListener {
+
+    private final String FILE_NAME_CACHE_CHARTS_VN = "cache_charts_vn";
+    private final String FILE_NAME_CACHE_CHARTS_NATIONAL = "cache_charts_national";
+
     public static final String BUNDLE_TAG_CHARTS = "bundle.tag.charts";
     public static final String TAG_VN = "TAG_VN";
     public static final String TAG_NATIONAL = "TAG_NATIONAL";
@@ -49,6 +55,8 @@ public class ChartsItemFragment extends BaseFragment
 
     private ChartsItemAdapter mAdapter;
 
+    private List<HotSongOnlEntity> mDatas;
+
     public static ChartsItemFragment newInstance(String tag) {
         Bundle args = new Bundle();
         args.putString(BUNDLE_TAG_CHARTS, tag);
@@ -66,13 +74,27 @@ public class ChartsItemFragment extends BaseFragment
     public void getDataBundle(@Nullable Bundle savedInstanceState) {
         super.getDataBundle(savedInstanceState);
         tag = getArguments().getString(BUNDLE_TAG_CHARTS);
+
         if (TAG_VN.equals(tag)) {
-            new ChartsItemSongTask("http://mp3.zing.vn/bang-xep-hang/bai-hat-Viet-Nam/IWZ9Z08I.html", this).execute();
+
+            if (FileUtils.CacheFile.isFileExist(mContext, FILE_NAME_CACHE_CHARTS_VN)) {
+                mDatas = new FileUtils.CacheFile<HotSongOnlEntity>()
+                        .readCacheFile(mContext, FILE_NAME_CACHE_CHARTS_VN, HotSongOnlEntity[].class);
+            } else {
+                new ChartsItemSongTask("http://mp3.zing.vn/bang-xep-hang/bai-hat-Viet-Nam/IWZ9Z08I.html", this)
+                        .execute();
+            }
+
+
         } else if (TAG_NATIONAL.equals(tag)) {
-            new ChartsItemSongTask("http://mp3.zing.vn/bang-xep-hang/bai-hat-Au-My/IWZ9Z0BW.html", this).execute();
-        } else {
-            // top fragment add this
-            new ChartsItemSongTask(tag,this).execute();
+
+            if (FileUtils.CacheFile.isFileExist(mContext, FILE_NAME_CACHE_CHARTS_NATIONAL)) {
+                mDatas = new FileUtils.CacheFile<HotSongOnlEntity>()
+                        .readCacheFile(mContext, FILE_NAME_CACHE_CHARTS_NATIONAL, HotSongOnlEntity[].class);
+            } else {
+                new ChartsItemSongTask("http://mp3.zing.vn/bang-xep-hang/bai-hat-Au-My/IWZ9Z0BW.html", this).execute();
+            }
+
         }
     }
 
@@ -86,11 +108,26 @@ public class ChartsItemFragment extends BaseFragment
         mRvChartsItem.setLayoutManager(new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false));
         mRvChartsItem.setNestedScrollingEnabled(false);
         mRvChartsItem.setAdapter(mAdapter);
+
+        if (mDatas != null && mDatas.size() != 0) {
+            mAdapter.setDatas(mDatas);
+            mLoading.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onResponse(List entity, String TAG) {
         mAdapter.setDatas((ArrayList<HotSongOnlEntity>) entity);
+
+        if (TAG_VN.equals(tag))
+            new FileUtils.CacheFile<AlbumBasicEntity>()
+                    .writeCacheFile(mContext, FILE_NAME_CACHE_CHARTS_VN, entity);
+
+        else if (TAG_NATIONAL.equals(tag))
+            new FileUtils.CacheFile<AlbumBasicEntity>()
+                    .writeCacheFile(mContext, FILE_NAME_CACHE_CHARTS_NATIONAL, entity);
+
+
         mLoading.setVisibility(View.GONE);
     }
 

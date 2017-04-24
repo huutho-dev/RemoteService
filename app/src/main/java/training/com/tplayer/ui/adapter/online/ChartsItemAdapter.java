@@ -4,6 +4,9 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 
 import butterknife.BindView;
@@ -43,7 +46,27 @@ public class ChartsItemAdapter extends BaseRecyclerViewAdapter<HotSongOnlEntity,
         holder.mTxtTitle.setText(entity.title);
         holder.mTxtArtist.setText(entity.artist);
 
+        setTranslateFromLeftAnim(holder.mTxtArtist);
+        setTranslateFromLeftAnim(holder.mTxtTitle);
+        setTranslateFromLeftAnim(holder.mOrder);
+        setFadeAnim(holder.mImvSong);
+
     }
+
+    private void setTranslateFromLeftAnim(View view){
+        TranslateAnimation translateAnimation = new TranslateAnimation(400,view.getX(),view.getY(),view.getY());
+        view.startAnimation(translateAnimation);
+        translateAnimation.setDuration(300);
+    }
+
+
+    private void setFadeAnim(View view) {
+        ScaleAnimation animation = new ScaleAnimation(0.0f, 1.0f, 0.0f, 1.0f,
+                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+        animation.setDuration(300);
+        view.startAnimation(animation);
+    }
+
 
     public class ViewHolder extends BaseViewHolder {
 

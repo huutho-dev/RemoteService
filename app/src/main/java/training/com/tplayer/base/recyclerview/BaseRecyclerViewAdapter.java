@@ -53,13 +53,13 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
         return mDatas.size();
     }
 
-    public void setDatas(ArrayList<E> datas) {
+    public void setDatas(List<E> datas) {
         mDatas.clear();
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }
 
-    public void addAll(ArrayList<E> datas) {
+    public void addAll(List<E> datas) {
         mDatas.addAll(datas);
         notifyDataSetChanged();
     }

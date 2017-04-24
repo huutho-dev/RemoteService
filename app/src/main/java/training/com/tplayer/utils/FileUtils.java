@@ -7,7 +7,6 @@ import android.media.MediaScannerConnection;
 import android.net.Uri;
 
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,7 +19,7 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import training.com.tplayer.base.BaseEntity;
@@ -30,6 +29,8 @@ import training.com.tplayer.base.BaseEntity;
  */
 
 public class FileUtils {
+
+
 
     public void downloadFile(String link, String dir, String name, String suffix) {
         InputStream input = null;
@@ -104,7 +105,14 @@ public class FileUtils {
 
     public static class CacheFile<E extends BaseEntity> {
 
-        public void writeCacheFile(Context context, String name, ArrayList<E> entities) {
+
+        public static boolean isFileExist(Context context, String name) {
+            File myFile = new File(context.getApplicationContext().getCacheDir(), name + ".tmp");
+            return myFile.exists();
+        }
+
+
+        public void writeCacheFile(Context context, String name, List<E> entities) {
 
             String data = new Gson().toJson(entities);
             LogUtils.printLog(data);
@@ -122,7 +130,7 @@ public class FileUtils {
             }
         }
 
-        public ArrayList<E> readCacheFile(Context context, String name) {
+        public <E extends BaseEntity>List<E> readCacheFile(Context context, String name, Class<E[]> clazz) {
 
             String s = "";
             String fileContent = "";
@@ -136,18 +144,19 @@ public class FileUtils {
                     fileContent += s + "\n";
                 }
 
-                LogUtils.printLog(fileContent);
+                LogUtils.printLog("File content :"+fileContent);
 
                 myReader.close();
 
-                TypeToken<List<E>> token = new TypeToken<List<E>>() {
-                };
-                return new Gson().fromJson(fileContent, token.getType());
+                E[] arr = new Gson().fromJson(fileContent, clazz);
+                return Arrays.asList(arr);
+
+//                TypeToken<ArrayList<E>> token = new TypeToken<ArrayList<E>>(){};
+//                return new Gson().fromJson(fileContent, token.getType());
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return null;
         }
 

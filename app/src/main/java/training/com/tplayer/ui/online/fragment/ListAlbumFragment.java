@@ -17,8 +17,8 @@ import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.base.BaseFragment;
-import training.com.tplayer.network.html.ListAlbumTask;
 import training.com.tplayer.network.html.GetDataCodeTask;
+import training.com.tplayer.network.html.ListAlbumTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.adapter.online.ListAlbumAdapter;
 import training.com.tplayer.ui.entity.AlbumBasicEntity;
@@ -78,6 +78,7 @@ public class ListAlbumFragment extends BaseFragment
         mRvListAlbum.setLayoutManager(mLayoutManager);
         mRvListAlbum.setAdapter(mAdapter);
         mAdapter.setDatas(mListAlbum);
+
         mRvListAlbum.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
@@ -133,7 +134,6 @@ public class ListAlbumFragment extends BaseFragment
 
             getDataCodeTask.execute();
         }
-
-
     }
+
 }
