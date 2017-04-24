@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="training.com.tplayer">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
@@ -32,10 +33,10 @@
 
         <activity android:name=".ui.rate.RateActivity" />
 
-        <activity android:name=".ui.player.PlayerActivity"/>
+        <activity android:name=".ui.player.PlayerActivity" />
 
 
-        <service android:name=".network.service.LoadListDataCodeService"/>
+        <service android:name=".network.service.LoadListDataCodeService" />
     </application>
 
 </manifest>

@@ -6,13 +6,24 @@ import android.database.DatabaseUtils;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
+import training.com.tplayer.base.BaseEntity;
 
 /**
  * Created by hnc on 12/04/2017.
@@ -89,4 +100,57 @@ public class FileUtils {
                     }
                 });
     }
+
+
+    public static class CacheFile<E extends BaseEntity> {
+
+        public void writeCacheFile(Context context, String name, ArrayList<E> entities) {
+
+            String data = new Gson().toJson(entities);
+            LogUtils.printLog(data);
+
+            try {
+                File myFile = new File(context.getApplicationContext().getCacheDir(), name + ".tmp");
+                FileOutputStream fOut = new FileOutputStream(myFile);
+                OutputStreamWriter myOutWriter = new OutputStreamWriter(fOut);
+                myOutWriter.append(data);
+                myOutWriter.close();
+                fOut.close();
+                LogUtils.printLog("Path file : " + myFile.getAbsolutePath());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
+        public ArrayList<E> readCacheFile(Context context, String name) {
+
+            String s = "";
+            String fileContent = "";
+            try {
+                File myFile = new File(context.getApplicationContext().getCacheDir(), name + ".tmp");
+                FileInputStream fIn = new FileInputStream(myFile);
+                BufferedReader myReader = new BufferedReader(
+                        new InputStreamReader(fIn));
+
+                while ((s = myReader.readLine()) != null) {
+                    fileContent += s + "\n";
+                }
+
+                LogUtils.printLog(fileContent);
+
+                myReader.close();
+
+                TypeToken<List<E>> token = new TypeToken<List<E>>() {
+                };
+                return new Gson().fromJson(fileContent, token.getType());
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+    }
+
 }

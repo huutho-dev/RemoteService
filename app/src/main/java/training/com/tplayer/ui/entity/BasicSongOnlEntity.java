@@ -51,4 +51,14 @@ public class BasicSongOnlEntity extends BaseEntity {
             return new BasicSongOnlEntity[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "BasicSongOnlEntity{" +
+                "order=" + order +
+                ", link='" + link + '\'' +
+                ", title='" + title + '\'' +
+                ", artist='" + artist + '\'' +
+                '}';
+    }
 }
