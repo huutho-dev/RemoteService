@@ -67,13 +67,13 @@ public class Song extends BaseEntity {
     public long duration ;
 
     /**
-     * Name artist of song (like: Sơn Tùng - MTP)
+     * Name author of song (like: Sơn Tùng - MTP)
      */
     public String artist_name;
 
 
     /**
-     * Image of artist (save as url)
+     * Image of author (save as url)
      */
     public String artist_art;
 

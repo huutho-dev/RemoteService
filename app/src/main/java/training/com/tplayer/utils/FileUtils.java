@@ -30,7 +30,9 @@ import training.com.tplayer.base.BaseEntity;
 
 public class FileUtils {
 
-
+    public interface IOnScanMediaComplete {
+        void scanComplete(String path, Uri uri);
+    }
 
     public void downloadFile(String link, String dir, String name, String suffix) {
         InputStream input = null;
@@ -86,18 +88,19 @@ public class FileUtils {
     }
 
 
-    public void scanFileAfterDownloaded(final Context applicationContext, File file) {
+    public static void scanFileAfterDownloaded(final Context context, File file, final IOnScanMediaComplete scanMediaComplete) {
         MediaScannerConnection.scanFile(
-                applicationContext,
+                context.getApplicationContext(),
                 new String[]{file.getAbsolutePath()},
                 null,
                 new MediaScannerConnection.OnScanCompletedListener() {
                     @Override
                     public void onScanCompleted(String path, Uri uri) {
                         LogUtils.printLog("file " + path + " was scanned seccessfully: " + uri);
-                        Cursor cursor = applicationContext.getContentResolver().query(uri, null, null, null, null);
+                        Cursor cursor = context.getApplicationContext().getContentResolver().query(uri, null, null, null, null);
                         cursor.moveToFirst();
                         DatabaseUtils.dumpCurrentRow(cursor);
+                        scanMediaComplete.scanComplete(path, uri);
                     }
                 });
     }
@@ -130,7 +133,7 @@ public class FileUtils {
             }
         }
 
-        public <E extends BaseEntity>List<E> readCacheFile(Context context, String name, Class<E[]> clazz) {
+        public <E extends BaseEntity> List<E> readCacheFile(Context context, String name, Class<E[]> clazz) {
 
             String s = "";
             String fileContent = "";
@@ -144,7 +147,7 @@ public class FileUtils {
                     fileContent += s + "\n";
                 }
 
-                LogUtils.printLog("File content :"+fileContent);
+                LogUtils.printLog("File content :" + fileContent);
 
                 myReader.close();
 

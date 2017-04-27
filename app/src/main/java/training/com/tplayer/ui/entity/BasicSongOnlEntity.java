@@ -58,7 +58,7 @@ public class BasicSongOnlEntity extends BaseEntity {
                 "order=" + order +
                 ", link='" + link + '\'' +
                 ", title='" + title + '\'' +
-                ", artist='" + artist + '\'' +
+                ", author='" + artist + '\'' +
                 '}';
     }
 }

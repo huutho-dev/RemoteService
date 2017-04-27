@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by hnc on 12/04/2017.
  */
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+public class  DatabaseHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase sqLiteDatabase;
 
@@ -18,12 +18,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        db.execSQL(DataBaseUtils.CREATE_TABLE_SONG);
+        db.execSQL(DataBaseUtils.CREATE_TABLE_MEDIA);
+        db.execSQL(DataBaseUtils.CREATE_TABLE_ALBUM);
+        db.execSQL(DataBaseUtils.CREATE_TABLE_ARTIST);
+        db.execSQL(DataBaseUtils.CREATE_TABLE_PLAYLIST);
+        db.execSQL(DataBaseUtils.CREATE_TABLE_PLAYLIST_MEMBER);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-//        db.execSQL("drop table if exist " + DataBaseUtils.CREATE_TABLE_SONG);
+        db.execSQL("drop table if exist " + DataBaseUtils.CREATE_TABLE_MEDIA);
+        db.execSQL("drop table if exist " + DataBaseUtils.CREATE_TABLE_ALBUM);
+        db.execSQL("drop table if exist " + DataBaseUtils.CREATE_TABLE_ARTIST);
+        db.execSQL("drop table if exist " + DataBaseUtils.CREATE_TABLE_PLAYLIST);
+        db.execSQL("drop table if exist " + DataBaseUtils.CREATE_TABLE_PLAYLIST_MEMBER);
         onCreate(db);
     }
 
@@ -32,7 +40,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public void closeDatabase() {
+        if (sqLiteDatabase.isOpen())
         sqLiteDatabase.close();
+    }
+
+    public SQLiteDatabase getSqlDatabase(){
+        return sqLiteDatabase;
     }
 
 }

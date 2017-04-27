@@ -57,7 +57,7 @@ public class AlbumBasicEntity extends BaseEntity {
         return "AlbumBasicEntity{" +
                 "link='" + link + '\'' +
                 ", image='" + image + '\'' +
-                ", artist='" + artist + '\'' +
+                ", author='" + artist + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

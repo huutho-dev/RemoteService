@@ -21,7 +21,6 @@ public class OfflineActivity extends BaseActivity<OfflinePresenterImpl>
 
     @Override
     public void onActivityCreated() {
-
     }
 
     @Override
