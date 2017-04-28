@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme">
 
 
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.main.MainActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -25,7 +26,9 @@
 
         <activity android:name=".ui.online.OnlineActivity" />
 
-        <activity android:name=".ui.offline.OfflineActivity" />
+        <activity
+            android:screenOrientation="fullSensor"
+            android:name=".ui.offline.OfflineActivity" />
 
         <activity android:name=".ui.share.ShareActivity" />
 
@@ -35,6 +38,7 @@
 
         <activity android:name=".ui.player.PlayerActivity" />
 
+        <activity android:name=".ui.offline.activity.TabOfflineActivity"/>
 
         <service android:name=".network.service.LoadListDataCodeService" />
     </application>

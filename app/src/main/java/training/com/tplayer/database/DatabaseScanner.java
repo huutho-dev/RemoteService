@@ -254,6 +254,23 @@ public class DatabaseScanner {
                     entity.album = cursor.getString(albumIndex);
                     entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
 
+                    // Query --> get[Db of OS]Row of artist mabe changed after download
+                    // Update --> [Update to my DB]
+
+                    AlbumEntity rowAlbumOfOs = SourceTableAlbum
+                            .getInstance(mContext)
+                            .getRow(DataBaseUtils.DbStoreAlbumColumn._ID,
+                                    new String[]{String.valueOf(entity.albumId)});
+
+
+                    ArtistEntity rowArtistOfOs = SourceTableArtist
+                            .getInstance(mContext)
+                            .getRow(DataBaseUtils.DbStoreArtistColumn._ID,
+                                    new String[]{String.valueOf(entity.artistId)});
+
+
+                    SourceTableArtist.getInstance(mContext).updateRow(rowArtistOfOs);
+                    SourceTableAlbum.getInstance(mContext).updateRow(rowAlbumOfOs);
                     SourceTableMedia.getInstance(mContext).insertRow(entity);
 
 

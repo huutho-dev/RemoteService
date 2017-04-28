@@ -1,6 +1,7 @@
 package training.com.tplayer.database;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 
 import com.remote.communication.PlaylistEntity;
@@ -16,21 +17,22 @@ public class SourceTablePlaylist extends DatabaseSource<PlaylistEntity> {
 
     private static SourceTablePlaylist mInstance;
 
-    public synchronized static SourceTablePlaylist getInstance(DatabaseHelper databaseHelper) {
+    public synchronized static SourceTablePlaylist getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new SourceTablePlaylist(databaseHelper);
+            mInstance = new SourceTablePlaylist(context);
         }
         return mInstance;
     }
 
-    private SourceTablePlaylist(DatabaseHelper databaseHelper) {
-        super(databaseHelper);
+    private SourceTablePlaylist(Context context) {
+        super(context);
     }
 
     @Override
-    public List<PlaylistEntity> getList(Cursor cursor) {
+    public List<PlaylistEntity> getList() {
         List<PlaylistEntity> entities = new ArrayList<>();
-
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_PLAYLIST, null, null, null, null, null, null);
+        openDb();
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn._ID);
         int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn._DATA);
@@ -52,14 +54,35 @@ public class SourceTablePlaylist extends DatabaseSource<PlaylistEntity> {
 
             cursor.moveToNext();
         }
+        closeDb();
         if (!cursor.isClosed())
             cursor.close();
         return entities;
     }
 
     @Override
-    public PlaylistEntity getRow(Cursor cursor) {
-        return getList(cursor).get(0);
+    public PlaylistEntity getRow(String selection, String[] selectionArgs) {
+        PlaylistEntity entity = new PlaylistEntity();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_PLAYLIST,null,selection,selectionArgs,null,null, null);
+        openDb();
+        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MID);
+        int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn._ID);
+        int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn._DATA);
+        int nameIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn._NAME);
+        int dateAddedIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.DATE_ADDED);
+
+        cursor.moveToFirst();
+
+        entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+        entity.id = Integer.parseInt(cursor.getString(idIndex));
+        entity.data = cursor.getString(dataIndex);
+        entity.name = cursor.getString(nameIndex);
+        entity.dateAdded = Integer.parseInt(cursor.getString(dateAddedIndex));
+
+        closeDb();
+        if (!cursor.isClosed())
+            cursor.close();
+        return entity;
     }
 
     @Override

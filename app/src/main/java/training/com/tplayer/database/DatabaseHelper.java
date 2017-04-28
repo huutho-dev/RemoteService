@@ -8,11 +8,19 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Created by hnc on 12/04/2017.
  */
 
-public class  DatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
+    private static DatabaseHelper mInstance;
     private SQLiteDatabase sqLiteDatabase;
 
-    public DatabaseHelper(Context context) {
+    public synchronized static DatabaseHelper getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new DatabaseHelper(context);
+        }
+        return mInstance;
+    }
+
+    private DatabaseHelper(Context context) {
         super(context, DataBaseUtils.DATABASE_NAME, null, DataBaseUtils.DATABASE_VERSION);
     }
 
@@ -41,10 +49,10 @@ public class  DatabaseHelper extends SQLiteOpenHelper {
 
     public void closeDatabase() {
         if (sqLiteDatabase.isOpen())
-        sqLiteDatabase.close();
+            sqLiteDatabase.close();
     }
 
-    public SQLiteDatabase getSqlDatabase(){
+    public SQLiteDatabase getSqlDatabase() {
         return sqLiteDatabase;
     }
 

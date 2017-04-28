@@ -17,7 +17,7 @@ import training.com.tplayer.ui.adapter.online.ChartsPagerAdapter;
  * Created by hnc on 13/04/2017.
  */
 
-public class ChartsFragment extends BaseFragment {
+public class ChartsOnlineFragment extends BaseFragment {
 
     @BindView(R.id.fragment_charts_viewpager)
     ViewPager mViewpager;
@@ -26,9 +26,9 @@ public class ChartsFragment extends BaseFragment {
     SmartTabLayout mTabLayout;
 
 
-    public static ChartsFragment newInstance() {
+    public static ChartsOnlineFragment newInstance() {
         Bundle args = new Bundle();
-        ChartsFragment fragment = new ChartsFragment();
+        ChartsOnlineFragment fragment = new ChartsOnlineFragment();
         fragment.setArguments(args);
         return fragment;
     }

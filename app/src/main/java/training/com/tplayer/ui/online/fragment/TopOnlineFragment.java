@@ -16,16 +16,16 @@ import training.com.tplayer.custom.TextViewRoboto;
  * Created by ThoNH on 13/04/2017.
  */
 
-public class TopFragment extends BaseFragment implements View.OnClickListener {
+public class TopOnlineFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.textViewRobotoVietnam)
     TextViewRoboto txtTitleVietnam;
     @BindView(R.id.textViewRobotoNational)
     TextViewRoboto txtTitleNational;
 
-    public static TopFragment newInstance() {
+    public static TopOnlineFragment newInstance() {
         Bundle args = new Bundle();
-        TopFragment fragment = new TopFragment();
+        TopOnlineFragment fragment = new TopOnlineFragment();
         fragment.setArguments(args);
         return fragment;
     }

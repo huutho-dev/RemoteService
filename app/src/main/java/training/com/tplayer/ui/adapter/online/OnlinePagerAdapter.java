@@ -9,10 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import training.com.tplayer.R;
-import training.com.tplayer.ui.online.fragment.AlbumFragment;
-import training.com.tplayer.ui.online.fragment.ChartsFragment;
-import training.com.tplayer.ui.online.fragment.HotFragment;
-import training.com.tplayer.ui.online.fragment.TopFragment;
+import training.com.tplayer.ui.online.fragment.AlbumOnlineFragment;
+import training.com.tplayer.ui.online.fragment.ChartsOnlineFragment;
+import training.com.tplayer.ui.online.fragment.HotOnlineFragment;
+import training.com.tplayer.ui.online.fragment.TopOnlineFragment;
 
 /**
  * Created by ThoNH on 4/13/2017.
@@ -25,10 +25,10 @@ public class OnlinePagerAdapter extends FragmentPagerAdapter {
 
     public OnlinePagerAdapter(Context context, FragmentManager fm) {
         super(fm);
-        fragments.add(TopFragment.newInstance());
-        fragments.add(HotFragment.newInstance());
-        fragments.add(ChartsFragment.newInstance());
-        fragments.add(AlbumFragment.newInstance());
+        fragments.add(TopOnlineFragment.newInstance());
+        fragments.add(HotOnlineFragment.newInstance());
+        fragments.add(ChartsOnlineFragment.newInstance());
+        fragments.add(AlbumOnlineFragment.newInstance());
 
         titles.add(context.getResources().getString(R.string.tab_title_top));
         titles.add(context.getResources().getString(R.string.tab_title_hot));

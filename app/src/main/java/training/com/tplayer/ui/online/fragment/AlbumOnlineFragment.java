@@ -18,16 +18,16 @@ import training.com.tplayer.utils.LogUtils;
  * Created by hnc on 13/04/2017.
  */
 
-public class AlbumFragment extends BaseFragment implements View.OnClickListener {
+public class AlbumOnlineFragment extends BaseFragment implements View.OnClickListener {
 
     @BindView(R.id.textViewRobotoVietnam)
     TextViewRoboto txtTitleVietnam;
     @BindView(R.id.textViewRobotoNational)
     TextViewRoboto txtTitleNational;
 
-    public static AlbumFragment newInstance() {
+    public static AlbumOnlineFragment newInstance() {
         Bundle args = new Bundle();
-        AlbumFragment fragment = new AlbumFragment();
+        AlbumOnlineFragment fragment = new AlbumOnlineFragment();
         fragment.setArguments(args);
         return fragment;
     }

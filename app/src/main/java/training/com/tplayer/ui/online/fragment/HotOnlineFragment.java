@@ -42,7 +42,7 @@ import training.com.tplayer.utils.FileUtils;
  * Created by hnc on 13/04/2017.
  */
 
-public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbumAdapterListener,
+public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.HotAlbumAdapterListener,
         HotNewAdapter.HotTopicAdapterListener, HotHightLightAdapter.HotHightLightAdapterListener,
         IOnLoadSuccess, View.OnClickListener {
 
@@ -83,9 +83,9 @@ public class HotFragment extends BaseFragment implements HotAlbumAdapter.HotAlbu
     private HotHightLightAdapter mHightLightAdapter;
 
 
-    public static HotFragment newInstance() {
+    public static HotOnlineFragment newInstance() {
         Bundle args = new Bundle();
-        HotFragment fragment = new HotFragment();
+        HotOnlineFragment fragment = new HotOnlineFragment();
         fragment.setArguments(args);
         return fragment;
     }

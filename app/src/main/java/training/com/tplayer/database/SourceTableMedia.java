@@ -31,9 +31,10 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
     }
 
     @Override
-    public List<MediaEntity> getList(Cursor cursor) {
+    public List<MediaEntity> getList() {
         List<MediaEntity> entities = new ArrayList<>();
-
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, null, null, null, null, null);
+        openDb();
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ID);
         int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA);
@@ -76,14 +77,59 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
 
             cursor.moveToNext();
         }
+        closeDb();
         if (!cursor.isClosed())
             cursor.close();
         return entities;
     }
 
     @Override
-    public MediaEntity getRow(Cursor cursor) {
-        return getList(cursor).get(0);
+    public MediaEntity getRow(String selection, String[] selectionArgs) {
+        MediaEntity mediaEntity = new MediaEntity();
+
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, selection, selectionArgs, null, null, null);
+        openDb();
+        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn.MID);
+        int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ID);
+        int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA);
+        int displayNameIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DISPLAY_NAME);
+        int sizeIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._SIZE);
+        int mimeTypeIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._MIME_TYPE);
+        int dateAddedIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATE_ADDED);
+        int titleIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._TITLE);
+        int durationIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DURATION);
+        int artistIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ARTIST_ID);
+        int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ARTIST);
+        int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ALBUM);
+        int albumIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ALBUM_ID);
+        int isFavoriteIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._IS_FAVORITE);
+        int lyricIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA_LYRIC);
+        int artIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ART_MEDIA);
+
+        cursor.moveToFirst();
+        MediaEntity entity = new MediaEntity();
+        entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+        entity.id = Integer.parseInt(cursor.getString(idIndex));
+        entity.data = cursor.getString(dataIndex);
+        entity.displayName = cursor.getString(displayNameIndex);
+        entity.size = Integer.parseInt(cursor.getString(sizeIndex));
+        entity.mimeType = cursor.getString(mimeTypeIndex);
+        entity.dateAdded = Integer.parseInt(cursor.getString(dateAddedIndex));
+        entity.title = cursor.getString(titleIndex);
+        entity.duration = Integer.parseInt(cursor.getString(durationIndex));
+        entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
+        entity.artist = cursor.getString(artistIndex);
+        entity.album = cursor.getString(albumIndex);
+        entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
+        entity.isFavorite = Boolean.parseBoolean(cursor.getString(isFavoriteIndex));
+        entity.lyric = cursor.getString(lyricIndex);
+        entity.art = cursor.getString(artIndex);
+
+
+        closeDb();
+        if (!cursor.isClosed())
+            cursor.close();
+        return mediaEntity;
     }
 
     @Override

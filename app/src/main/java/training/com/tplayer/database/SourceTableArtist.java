@@ -28,16 +28,18 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
     }
 
     @Override
-    public List<ArtistEntity> getList(Cursor cursor) {
+    public List<ArtistEntity> getList() {
         List<ArtistEntity> entities = new ArrayList<>();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ARTIST, null, null, null, null, null, null);
 
-        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn.MID );
+        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._ID);
         int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._ARTIST);
         int numberOfAlbumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_ALBUMS);
         int numberOfTrackIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_TRACK);
 
-        while (!cursor.isAfterLast()){
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
 
             ArtistEntity entity = new ArtistEntity();
             entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
@@ -55,8 +57,28 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
     }
 
     @Override
-    public ArtistEntity getRow(Cursor cursor) {
-        return getList(cursor).get(0);
+    public ArtistEntity getRow(String selection, String[] selectionArgs) {
+        ArtistEntity entity = new ArtistEntity();
+        openDb();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ARTIST,null,selection,selectionArgs,null,null, null);
+        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn.MID);
+        int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._ID);
+        int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._ARTIST);
+        int numberOfAlbumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_ALBUMS);
+        int numberOfTrackIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_TRACK);
+
+        cursor.moveToFirst();
+
+        entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+        entity.id = Integer.parseInt(cursor.getString(idIndex));
+        entity.author = cursor.getString(artistIndex);
+        entity.numberOfAlbum = Integer.parseInt(cursor.getString(numberOfAlbumIndex));
+        entity.numberOfTrack = Integer.parseInt(cursor.getString(numberOfTrackIndex));
+
+        if (!cursor.isClosed())
+            cursor.close();
+        closeDb();
+        return entity;
     }
 
     @Override
@@ -82,7 +104,7 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
     @Override
     public ContentValues convertEntity2ContentValue(ArtistEntity entity) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseUtils.DbStoreArtistColumn.MID ,entity.mId);
+        values.put(DataBaseUtils.DbStoreArtistColumn.MID, entity.mId);
         values.put(DataBaseUtils.DbStoreArtistColumn._ID, entity.id);
         values.put(DataBaseUtils.DbStoreArtistColumn._ARTIST, entity.author);
         values.put(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_ALBUMS, entity.numberOfAlbum);

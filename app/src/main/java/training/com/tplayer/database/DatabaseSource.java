@@ -2,7 +2,6 @@ package training.com.tplayer.database;
 
 import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
@@ -14,16 +13,16 @@ import training.com.tplayer.base.BaseEntity;
  */
 
 public abstract class DatabaseSource<E extends BaseEntity> {
-    public DatabaseHelper mDatabaseHelper;
+    private Context mContext;
 
     public DatabaseSource(Context context) {
-        mDatabaseHelper = new DatabaseHelper(context);
+        this.mContext = context;
     }
 
 
-    public abstract List<E> getList(Cursor cursor);
+    public abstract List<E> getList();
 
-    public abstract E getRow(Cursor cursor);
+    public abstract E getRow(String selection, String[] selectionArgs);
 
     public abstract long insertRow(E entity);
 
@@ -34,14 +33,14 @@ public abstract class DatabaseSource<E extends BaseEntity> {
     public abstract ContentValues convertEntity2ContentValue(E e);
 
     public void openDb() {
-        mDatabaseHelper.openDatabase();
+        DatabaseHelper.getInstance(mContext).openDatabase();
     }
 
     public void closeDb() {
-        mDatabaseHelper.closeDatabase();
+        DatabaseHelper.getInstance(mContext).close();
     }
 
     public SQLiteDatabase getSqlDb() {
-        return mDatabaseHelper.getSqlDatabase();
+        return DatabaseHelper.getInstance(mContext).getSqlDatabase();
     }
 }

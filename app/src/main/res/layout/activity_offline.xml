@@ -1,288 +1,284 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/act_offline_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimary"
+        android:elevation="@dimen/spacing_2_16dp"
+        app:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar" />
+
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/act_offline_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:elevation="@dimen/spacing_1_8dp"
-            app:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar" />
-
-        <ImageView
-            android:id="@+id/act_offline_image_header"
-            android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:background="@color/colorPrimary" />
+        android:layout_below="@+id/act_offline_toolbar">
 
         <LinearLayout
-            android:id="@+id/act_offline_item_songs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/act_offline_image_header"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
 
             <ImageView
-                android:layout_width="@dimen/spacing_9_72dp"
-                android:layout_height="@dimen/spacing_9_72dp"
-                android:layout_margin="@dimen/spacing_0_4dp"
-                android:background="@color/colorAccent"
-                android:scaleType="centerCrop" />
+                android:id="@+id/act_offline_image_header"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:background="@drawable/background_logo_header" />
 
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_1_8dp"
-                android:text="Songs"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-            <training.com.tplayer.custom.TextViewRoboto
+            <LinearLayout
+                android:id="@+id/act_offline_item_songs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_6_default_48dp"
-                android:text="30"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
+                android:layout_below="@+id/act_offline_image_header"
+                android:layout_marginTop="@dimen/spacing_2_16dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_7_56dp"
+                    android:layout_height="@dimen/spacing_7_56dp"
+                    android:layout_margin="@dimen/spacing_0_4dp"
+                    android:background="@drawable/background_offline_icon_round"
+                    android:padding="@dimen/spacing_2_16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_offline_song" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_2_16dp"
+                    android:text="@string/act_offline_item_song"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:id="@+id/act_offline_txt_number_songs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_6_default_48dp"
+                    android:text="30"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+            </LinearLayout>
+
+            <include layout="@layout/view_sepator_line" />
+
+            <LinearLayout
+                android:id="@+id/act_offline_item_albums"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/act_offline_image_header"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_7_56dp"
+                    android:layout_height="@dimen/spacing_7_56dp"
+                    android:layout_margin="@dimen/spacing_0_4dp"
+                    android:background="@drawable/background_offline_icon_round"
+                    android:padding="@dimen/spacing_2_16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_offline_album" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_2_16dp"
+                    android:text="@string/act_offline_item_albums"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:id="@+id/act_offline_txt_number_albums"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_6_default_48dp"
+                    android:text="30"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+            </LinearLayout>
+
+            <include layout="@layout/view_sepator_line" />
+
+            <LinearLayout
+                android:id="@+id/act_offline_item_artist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/act_offline_image_header"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_7_56dp"
+                    android:layout_height="@dimen/spacing_7_56dp"
+                    android:layout_margin="@dimen/spacing_0_4dp"
+                    android:background="@drawable/background_offline_icon_round"
+                    android:padding="@dimen/spacing_2_16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_offline_artist" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_2_16dp"
+                    android:text="@string/act_offline_item_artists"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:id="@+id/act_offline_txt_number_artists"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_6_default_48dp"
+                    android:text="30"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+            </LinearLayout>
+
+            <include layout="@layout/view_sepator_line" />
+
+            <LinearLayout
+                android:id="@+id/act_offline_item_playlists"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/act_offline_image_header"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="@dimen/spacing_7_56dp"
+                    android:layout_height="@dimen/spacing_7_56dp"
+                    android:layout_margin="@dimen/spacing_0_4dp"
+                    android:background="@drawable/background_offline_icon_round"
+                    android:padding="@dimen/spacing_2_16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_offline_playlist" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_2_16dp"
+                    android:text="@string/act_offline_item_playlists"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:layout_width="match_parent"
+                    android:id="@+id/act_offline_txt_number_playlists"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_6_default_48dp"
+                    android:text="30"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+            </LinearLayout>
+
+            <include layout="@layout/view_sepator_line" />
+
+            <LinearLayout
+                android:id="@+id/act_offline_item_folder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/act_offline_image_header"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_7_56dp"
+                    android:layout_height="@dimen/spacing_7_56dp"
+                    android:layout_margin="@dimen/spacing_0_4dp"
+                    android:background="@drawable/background_offline_icon_round"
+                    android:padding="@dimen/spacing_2_16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_ofline_folder" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:id="@+id/act_offline_txt_number_folder"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_2_16dp"
+                    android:text="@string/act_offline_item_folder"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_6_default_48dp"
+                    android:text="30"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+            </LinearLayout>
+
+            <include layout="@layout/view_sepator_line" />
+
+            <LinearLayout
+                android:id="@+id/act_offline_item_download"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/act_offline_image_header"
+                android:layout_marginBottom="150dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/spacing_7_56dp"
+                    android:layout_height="@dimen/spacing_7_56dp"
+                    android:layout_margin="@dimen/spacing_0_4dp"
+                    android:background="@drawable/background_offline_icon_round"
+                    android:padding="@dimen/spacing_2_16dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_ofline_folder_download" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:id="@+id/act_offline_txt_number_download"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_2_16dp"
+                    android:text="@string/act_offline_item_download"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+                <training.com.tplayer.custom.TextViewRoboto
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:paddingLeft="@dimen/spacing_2_16dp"
+                    android:paddingRight="@dimen/spacing_6_default_48dp"
+                    android:text="30"
+                    android:textSize="@dimen/text_3_14sp"
+                    app:textFonts="RobotoMedium" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/spacing_1_8dp"
-            android:layout_marginLeft="@dimen/spacing_9_72dp"
-            android:layout_marginRight="@dimen/spacing_2_16dp"
-            android:layout_marginTop="@dimen/spacing_1_8dp"
-            android:background="@color/colorPrimaryDark" />
+    </android.support.v4.widget.NestedScrollView>
 
-        <LinearLayout
-            android:id="@+id/act_offline_item_albums"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/act_offline_image_header"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="@dimen/spacing_9_72dp"
-                android:layout_height="@dimen/spacing_9_72dp"
-                android:layout_margin="@dimen/spacing_0_4dp"
-                android:background="@color/colorAccent"
-                android:scaleType="centerCrop" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_1_8dp"
-                android:text="Songs"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_6_default_48dp"
-                android:text="30"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/spacing_1_8dp"
-            android:layout_marginLeft="@dimen/spacing_9_72dp"
-            android:layout_marginRight="@dimen/spacing_2_16dp"
-            android:layout_marginTop="@dimen/spacing_1_8dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <LinearLayout
-            android:id="@+id/act_offline_item_artist"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/act_offline_image_header"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/spacing_9_72dp"
-                android:layout_height="@dimen/spacing_9_72dp"
-                android:layout_margin="@dimen/spacing_0_4dp"
-                android:background="@color/colorAccent"
-                android:scaleType="centerCrop" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_1_8dp"
-                android:text="Songs"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_6_default_48dp"
-                android:text="30"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/spacing_1_8dp"
-            android:layout_marginLeft="@dimen/spacing_9_72dp"
-            android:layout_marginRight="@dimen/spacing_2_16dp"
-            android:layout_marginTop="@dimen/spacing_1_8dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <LinearLayout
-            android:id="@+id/act_offline_item_playlists"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/act_offline_image_header"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/spacing_9_72dp"
-                android:layout_height="@dimen/spacing_9_72dp"
-                android:layout_margin="@dimen/spacing_0_4dp"
-                android:background="@color/colorAccent"
-                android:scaleType="centerCrop" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_1_8dp"
-                android:text="Songs"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_6_default_48dp"
-                android:text="30"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/spacing_1_8dp"
-            android:layout_marginLeft="@dimen/spacing_9_72dp"
-            android:layout_marginRight="@dimen/spacing_2_16dp"
-            android:layout_marginTop="@dimen/spacing_1_8dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <LinearLayout
-            android:id="@+id/act_offline_item_folder"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/act_offline_image_header"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/spacing_9_72dp"
-                android:layout_height="@dimen/spacing_9_72dp"
-                android:layout_margin="@dimen/spacing_0_4dp"
-                android:background="@color/colorAccent"
-                android:scaleType="centerCrop" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_1_8dp"
-                android:text="Songs"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_6_default_48dp"
-                android:text="30"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-        </LinearLayout>
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginBottom="@dimen/spacing_1_8dp"
-            android:layout_marginLeft="@dimen/spacing_9_72dp"
-            android:layout_marginRight="@dimen/spacing_2_16dp"
-            android:layout_marginTop="@dimen/spacing_1_8dp"
-            android:background="@color/colorPrimaryDark" />
-
-        <LinearLayout
-            android:id="@+id/act_offline_item_download"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/act_offline_image_header"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:layout_width="@dimen/spacing_9_72dp"
-                android:layout_height="@dimen/spacing_9_72dp"
-                android:layout_margin="@dimen/spacing_0_4dp"
-                android:background="@color/colorAccent"
-                android:scaleType="centerCrop" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_1_8dp"
-                android:text="Songs"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-            <training.com.tplayer.custom.TextViewRoboto
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="end"
-                android:paddingLeft="@dimen/spacing_1_8dp"
-                android:paddingRight="@dimen/spacing_6_default_48dp"
-                android:text="30"
-                android:textSize="@dimen/text_3_14sp"
-                app:textFonts="RobotoBlack" />
-
-        </LinearLayout>
-
-    </LinearLayout>
-</android.support.v4.widget.NestedScrollView>
+</RelativeLayout>

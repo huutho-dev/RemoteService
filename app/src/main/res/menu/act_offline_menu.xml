@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        app:showAsAction="always"
+        android:id="@+id/app_bar_search"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_menu_search"
+        android:title="@string/act_offline_title_menu_search" />
+
+    <group>
+        <item
+            android:id="@+id/action_rescan"
+            android:icon="@drawable/ic_menu_search"
+            android:title="@string/act_offline_title_menu_rescan" />
+        <item
+            android:id="@+id/action_volume"
+            android:icon="@drawable/ic_menu_volume"
+            android:title="@string/act_offline_title_menu_volume" />
+        <item
+            android:id="@+id/action_timer"
+            android:icon="@drawable/ic_menu_timer"
+            android:title="@string/act_offline_title_menu_timer" />
+        <item
+            android:id="@+id/action_equalizer"
+            android:icon="@drawable/ic_menu_equalizer"
+            android:title="@string/act_offline_title_menu_equalizer" />
+        <item
+            android:id="@+id/action_setting"
+            android:icon="@drawable/ic_menu_settings"
+            android:title="@string/act_offline_title_menu_setting" />
+        <item
+            android:id="@+id/action_about"
+            android:icon="@drawable/ic_menu_search"
+            android:title="@string/act_offline_title_menu_about" />
+
+    </group>
+</menu>

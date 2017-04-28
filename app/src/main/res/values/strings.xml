@@ -44,5 +44,33 @@
     <string name="fragment_title_album_vietnam">Albums Vietnam</string>
     <string name="fragment_title_album_national">Albums National</string>
 
+    <string name="act_offline_item_song">Songs</string>
+    <string name="act_offline_item_albums">Albums</string>
+    <string name="act_offline_item_artists">Artists</string>
+    <string name="act_offline_item_playlists">Playlists</string>
+    <string name="act_offline_item_folder">Folder</string>
+    <string name="act_offline_item_download">Download</string>
+    <string name="act_offline_title_menu_search">Search</string>
+    <string name="act_offline_title_menu_rescan">Re-Scan</string>
+    <string name="act_offline_title_menu_volume">Volume</string>
+    <string name="act_offline_title_menu_timer">Timer</string>
+    <string name="act_offline_title_menu_equalizer">Equalizer</string>
+    <string name="act_offline_title_menu_setting">Setting</string>
+    <string name="act_offline_title_menu_about">About</string>
+
+    <string name="fragment_offline_title_songs">Songs</string>
+    <string name="fragment_offline_title_albums">Albums</string>
+    <string name="fragment_offline_title_artist">Artist</string>
+    <string name="fragment_offline_title_playlists">Playlists</string>
+    <string name="fragment_offline_title_folder">Folder</string>
+    <string name="fragment_offline_title_download">Download</string>
+
+
+    <string name="context_menu_add_first_now_playings">Add First Now Playing</string>
+    <string name="context_menu_add_now_playings">Add now playing</string>
+    <string name="context_menu_add_to_playlist">Add to playlist</string>
+    <string name="context_menu_set_rington">Set as rington</string>
+    <string name="context_menu_delete">Delete</string>
+
 
 </resources>
