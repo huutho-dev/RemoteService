@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="@string/context_menu_playlist_play"
+        android:id="@+id/action_playlist_play"/>
 
+    <item
+        android:title="@string/context_menu_playlist_add_now_playing"
+        android:id="@+id/action_playlist_add_now_playing"/>
+
+    <item
+        android:title="@string/context_menu_playlist_rename"
+        android:id="@+id/action_playlist_rename"/>
+
+    <item
+        android:title="@string/context_menu_playlist_delete"
+        android:id="@+id/action_playlist_delete"/>
 </menu>

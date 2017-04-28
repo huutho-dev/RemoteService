@@ -48,9 +48,9 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(Menu.NONE, R.id.action_add_to_first_now_playing, Menu.NONE, R.string.context_menu_add_first_now_playings);
-            menu.add(Menu.NONE, R.id.action_add_to_now_plays, Menu.NONE, R.string.context_menu_add_now_playings);
-            menu.add(Menu.NONE, R.id.action_add_playlist, Menu.NONE, R.string.context_menu_add_to_playlist);
+            menu.add(Menu.NONE, R.id.action_add_to_first_now_playing, Menu.NONE, R.string.context_menu_song_first_now_playings);
+            menu.add(Menu.NONE, R.id.action_add_to_now_plays, Menu.NONE, R.string.context_menu_song_now_playings);
+            menu.add(Menu.NONE, R.id.action_add_playlist, Menu.NONE, R.string.context_menu_song_to_playlist);
             menu.add(Menu.NONE, R.id.action_set_is_rington, Menu.NONE, R.string.context_menu_set_rington);
             menu.add(Menu.NONE, R.id.action_delete, Menu.NONE, R.string.context_menu_delete);
         }

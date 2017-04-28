@@ -1,4 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
+        <item
+            android:title="@string/context_menu_download_first_now_playings"
+            android:id="@+id/action_add_to_first_now_playing"/>
+
+        <item
+            android:title="@string/context_menu_download_now_playings"
+            android:id="@+id/action_add_to_now_plays"/>
+
+        <item
+            android:title="@string/context_menu_download_to_playlist"
+            android:id="@+id/action_add_playlist"/>
+
+        <item
+            android:title="@string/context_menu_download_set_rington"
+            android:id="@+id/action_set_is_rington"/>
+
+    <item
+        android:title="@string/context_menu_download_delete_in_download"
+        android:id="@+id/action_delete_in_download"/>
+
+        <item
+            android:title="@string/context_menu_song_delete"
+            android:id="@+id/action_delete"/>
+
 </menu>

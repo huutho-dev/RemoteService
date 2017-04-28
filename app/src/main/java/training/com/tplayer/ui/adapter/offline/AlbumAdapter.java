@@ -7,7 +7,7 @@ import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.remote.communication.MediaEntity;
+import com.remote.communication.AlbumEntity;
 
 import training.com.tplayer.R;
 import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
@@ -18,18 +18,18 @@ import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
  * Created by hnc on 28/04/2017.
  */
 
-public class AlbumAdapter extends BaseRecyclerViewAdapter<MediaEntity, AlbumAdapter.ViewHolder> {
+public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdapter.ViewHolder> {
 
-    public interface SongAdapterListener extends IRecyclerViewOnItemClickListener<MediaEntity> {
+    public interface AlbumAdapterListener extends IRecyclerViewOnItemClickListener<AlbumEntity> {
     }
 
-    public AlbumAdapter(Context context, SongAdapterListener listener) {
+    public AlbumAdapter(Context context, AlbumAdapterListener listener) {
         super(context, listener);
     }
 
     @Override
     public ViewHolder onCreateViewHolderAdapter(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_offline_songs, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_offline_album, parent, false));
     }
 
     @Override
@@ -48,11 +48,10 @@ public class AlbumAdapter extends BaseRecyclerViewAdapter<MediaEntity, AlbumAdap
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(Menu.NONE, R.id.action_add_to_first_now_playing, Menu.NONE, R.string.context_menu_add_first_now_playings);
-            menu.add(Menu.NONE, R.id.action_add_to_now_plays, Menu.NONE, R.string.context_menu_add_now_playings);
-            menu.add(Menu.NONE, R.id.action_add_playlist, Menu.NONE, R.string.context_menu_add_to_playlist);
-            menu.add(Menu.NONE, R.id.action_set_is_rington, Menu.NONE, R.string.context_menu_set_rington);
-            menu.add(Menu.NONE, R.id.action_delete, Menu.NONE, R.string.context_menu_delete);
+            menu.add(Menu.NONE, R.id.action_album_play, Menu.NONE, R.string.context_menu_album_add_now_playing);
+            menu.add(Menu.NONE, R.id.action_album_play_shuffle, Menu.NONE, R.string.context_menu_album_shuffle);
+            menu.add(Menu.NONE, R.id.action_album_add_now_playing, Menu.NONE, R.string.context_menu_album_add_now_playing);
+            menu.add(Menu.NONE, R.id.action_album_add_playlist, Menu.NONE, R.string.context_menu_album_add_playlist);
         }
     }
 }

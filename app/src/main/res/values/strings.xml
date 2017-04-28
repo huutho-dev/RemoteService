@@ -66,11 +66,36 @@
     <string name="fragment_offline_title_download">Download</string>
 
 
-    <string name="context_menu_add_first_now_playings">Add First Now Playing</string>
-    <string name="context_menu_add_now_playings">Add now playing</string>
-    <string name="context_menu_add_to_playlist">Add to playlist</string>
-    <string name="context_menu_set_rington">Set as rington</string>
-    <string name="context_menu_delete">Delete</string>
+    <string name="context_menu_song_first_now_playings">Add First Now Playing</string>
+    <string name="context_menu_song_now_playings">Add now playing</string>
+    <string name="context_menu_song_to_playlist">Add to playlist</string>
+    <string name="context_menu_song_set_rington">Set as rington</string>
+    <string name="context_menu_song_delete">Delete</string>
+
+    <string name="context_menu_album_play">Play</string>
+    <string name="context_menu_album_shuffle">Play Shuffle</string>
+    <string name="context_menu_album_add_now_playing">Add now playing</string>
+    <string name="context_menu_album_add_playlist">Add to playlist</string>
+
+    <string name="context_menu_download_first_now_playings">Add First Now Playing</string>
+    <string name="context_menu_download_now_playings">Add now playing</string>
+    <string name="context_menu_download_to_playlist">Add to playlist</string>
+    <string name="context_menu_download_set_rington">Set as rington</string>
+    <string name="context_menu_download_delete_in_download">Delete in download</string>
+    <string name="context_menu_download_delete">Delete</string>
+
+    <string name="context_menu_playlist_play">Play</string>
+    <string name="context_menu_playlist_add_now_playing">Add now playing</string>
+    <string name="context_menu_playlist_rename">Rename</string>
+    <string name="context_menu_playlist_delete">Delete</string>
+
+    <string name="context_menu_folder_play">Play</string>
+    <string name="context_menu_folder_shuffle">Play Shuffle</string>
+    <string name="context_menu_folder_add_now_playing">Add now playing</string>
+    <string name="context_menu_folder_add_playlist">Add to playlist</string>
+    <string name="context_menu_folder_hide">Hide</string>
+
+
 
 
 </resources>
