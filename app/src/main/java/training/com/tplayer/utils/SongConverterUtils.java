@@ -1,30 +1,29 @@
 package training.com.tplayer.utils;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import training.com.tplayer.ui.entity.SongOnlineEntity;
 
 /**
- * Created by hnc on 17/04/2017.
+ * Created by ThoNH on 17/04/2017.
  */
 
 public class SongConverterUtils {
-    public static Song convert(SongOnlineEntity onlineEntity) {
+    public static MediaEntity convert(SongOnlineEntity onlineEntity) {
         SongOnlineEntity.DataBean bean = onlineEntity.getData().get(0);
-        Song song = new Song();
-        song._id = 0;
-        song._data = bean.source_list.get(0);
-        song._display_name = bean.name + "mp3";
-        song._title = bean.name;
-        song._lyric = bean.lyric;
-        song._art = bean.cover;
-        song._genre_name = "";
-        song._is_favorite = false;
-        song.artist_name = bean.artist;
-        song.artist_art = bean.cover;
-        song.album_name = "";
-        song.album_art = "";
+        MediaEntity song = new MediaEntity();
+        song.id = 0;
+        song.data = bean.source_list.get(0);
+        song.displayName = bean.name + "mp3";
+        song.title = bean.name;
+        song.lyric = bean.lyric;
+        song.art = bean.cover;
+        song.isFavorite = false;
+        song.artist = bean.artist;
+        song.art = bean.cover;
+        song.album = "";
         song.isPlaying = false;
+        song.dateAdded = (int) System.currentTimeMillis();
 
         return song;
     }

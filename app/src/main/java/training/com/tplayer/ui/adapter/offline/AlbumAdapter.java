@@ -6,16 +6,21 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.remote.communication.AlbumEntity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
+import training.com.tplayer.custom.TextViewRoboto;
+import training.com.tplayer.utils.ImageUtils;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdapter.ViewHolder> {
@@ -34,14 +39,33 @@ public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdap
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
+        AlbumEntity entity = getDataItem(position);
+        if (entity.albumArt != null && !entity.albumArt.equals(""))
+            ImageUtils.loadRoundImage(mContext, entity.albumArt, holder.mArt);
 
+
+        holder.mTitle.setText(entity.album);
+        holder.mArtist.setText(entity.artist);
+        holder.mNumberOfSong.setText(String.valueOf(entity.numberOfSong));
+        holder.mArt.setOnLongClickListener(null);
     }
 
 
     public class ViewHolder extends BaseViewHolder implements View.OnCreateContextMenuListener {
+        @BindView(R.id.item_fragment_album_art)
+        ImageView mArt;
+        @BindView(R.id.item_fragment_album_title)
+        TextViewRoboto mTitle;
+        @BindView(R.id.item_fragment_album_artist)
+        TextViewRoboto mArtist;
+        @BindView(R.id.item_fragment_album_number_song)
+        TextViewRoboto mNumberOfSong;
+        @BindView(R.id.item_fragment_album_context_menu)
+        ImageView mCtxMenu;
+
         public ViewHolder(View itemView) {
             super(itemView);
-
+            ButterKnife.bind(this, itemView);
             itemView.setOnCreateContextMenuListener(this);
         }
 

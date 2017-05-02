@@ -8,7 +8,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -26,7 +26,7 @@ import training.com.tplayerservice.app.Config;
 public class PlayerManager implements MediaPlayer.OnCompletionListener {
     private Context mContext;
     private TPlayer mTPlayer;
-    private ArrayList<Song> mPlayLists = new ArrayList<>();
+    private ArrayList<MediaEntity> mPlayLists = new ArrayList<>();
 
     private int mCurrentSong;
     private boolean mLoopList;
@@ -38,14 +38,14 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         this.mTPlayer.setOnCompletionListener(this);
     }
 
-    public void setListSong(List<Song> origins) {
+    public void setListSong(List<MediaEntity> origins) {
         mPlayLists.clear();
         mPlayLists.addAll(origins);
     }
 
     public void startSong(int position) {
-        Song song = mPlayLists.get(position);
-        String data = song._data;
+        MediaEntity song = mPlayLists.get(position);
+        String data = song.data;
         startSong(data);
     }
 
@@ -62,9 +62,9 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 @Override
                 public void onPrepared(final MediaPlayer mp) {
                     mp.start();
-                    Song song = mPlayLists.get(mCurrentSong);
+                    MediaEntity song = mPlayLists.get(mCurrentSong);
 
-                   new DownloadLyric().execute(song);
+                    new DownloadLyric().execute(song);
 
                     Intent intent = new Intent();
                     intent.setAction(Config.ACTION_PLAYER_START_PLAY);
@@ -137,13 +137,13 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         startSong(mCurrentSong);
     }
 
-    public void playSong(Song song) {
+    public void playSong(MediaEntity song) {
         boolean isSongInPlayList = mPlayLists.contains(song);
         if (isSongInPlayList) {
             mCurrentSong = mPlayLists.indexOf(song);
             mPlayLists.get(mCurrentSong).isPlaying = true;
         }
-        startSong(song._data);
+        startSong(song.data);
     }
 
     @Override
@@ -153,20 +153,32 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         mContext.getApplicationContext().sendBroadcast(intent);
     }
 
-    private class DownloadLyric extends AsyncTask<Song, Void, Void> {
+    public void addNowPlaying(MediaEntity entity) {
+        mPlayLists.add(entity);
+    }
+
+    public void addNowPlaying(List<MediaEntity> entities) {
+        mPlayLists.addAll(entities);
+    }
+
+    public void addNextNowPlaying(MediaEntity entity) {
+        mPlayLists.add(mCurrentSong,entity);
+    }
+
+    private class DownloadLyric extends AsyncTask<MediaEntity, Void, Void> {
 
         @Override
-        protected Void doInBackground(Song... params) {
+        protected Void doInBackground(MediaEntity... params) {
             try {
-                if (params[0]!= null && !TextUtils.isEmpty(params[0]._lyric)){
-                    URL url = new URL(params[0]._lyric);
+                if (params[0] != null && !TextUtils.isEmpty(params[0].lyric)) {
+                    URL url = new URL(params[0].lyric);
                     String text = new Scanner(url.openStream()).useDelimiter("\\A").next();
 
-                    params[0]._lyric = text;
+                    params[0].lyric = text;
 
                     Intent intent = new Intent();
                     intent.setAction(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);
-                    intent.putExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC,text);
+                    intent.putExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC, text);
                     mContext.getApplicationContext().sendBroadcast(intent);
                 }
             } catch (MalformedURLException e) {

@@ -21,7 +21,7 @@ import training.com.tplayer.ui.player.PlayerPresenterImpl;
 import training.com.tplayer.utils.LogUtils;
 
 /**
- * Created by hnc on 05/04/2017.
+ * Created by ThoNH on 05/04/2017.
  */
 
 public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> extends AppCompatActivity implements BaseView {
@@ -125,14 +125,16 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
             mTPlayerService = IMyAidlInterface.Stub.asInterface(service);
             isBinded = true;
             LogUtils.printLog("onServiceConnected");
-//            serviceConnected();
+
             if (mPresenter instanceof PlayerPresenterImpl){
                 ((PlayerPresenterImpl) mPresenter).setService(mTPlayerService);
+                serviceConnected();
             }
         }
 
+
         @Override
-        public void onServiceDisconnected(ComponentName name) {
+        public  void onServiceDisconnected(ComponentName name) {
             mTPlayerService = null;
             isBinded = false;
             LogUtils.printLog("onServiceDisconnected");
@@ -163,5 +165,8 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
 
     }
 
+    public void serviceConnected(){
+
+    }
 
 }

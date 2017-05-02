@@ -3,7 +3,7 @@ package training.com.tplayer.database;
 import android.provider.MediaStore;
 
 /**
- * Created by hnc on 12/04/2017.
+ * Created by ThoNH on 12/04/2017.
  */
 
 public class DataBaseUtils {
@@ -59,8 +59,6 @@ public class DataBaseUtils {
 
     public abstract class DbStorePlaylistColumn {
         public static final String MID = "mid";
-        public static final String _ID = MediaStore.Audio.Playlists._ID;
-        public static final String _DATA = MediaStore.Audio.Playlists.DATA;
         public static final String _NAME = MediaStore.Audio.Playlists.NAME;
         public static final String DATE_ADDED = MediaStore.Audio.Playlists.DATE_ADDED;
 
@@ -90,7 +88,7 @@ public class DataBaseUtils {
 
     public static final String CREATE_TABLE_MEDIA =
             "CREATE TABLE " + TABLE_MEDIA + "("
-                    + DbStoreMediaColumn.MID + " INTEGER AUTOINCREMENT, "
+                    + DbStoreMediaColumn.MID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + DbStoreMediaColumn._ID + " INTEGER , "
                     + DbStoreMediaColumn._DATA + " TEXT , "
                     + DbStoreMediaColumn._DISPLAY_NAME + " TEXT , "
@@ -105,42 +103,39 @@ public class DataBaseUtils {
                     + DbStoreMediaColumn._ALBUM_ID + " INTEGER , "
                     + DbStoreMediaColumn._IS_FAVORITE + " BOOLEAN , "
                     + DbStoreMediaColumn._DATA_LYRIC + " INTEGER , "
-                    + DbStoreMediaColumn._ART_MEDIA + " INTEGER , "
+                    + DbStoreMediaColumn._ART_MEDIA + " INTEGER "
                     + ")";
-
 
     public static final String CREATE_TABLE_ARTIST =
             "CREATE TABLE " + TABLE_ARTIST + "("
-                    + DbStoreArtistColumn.MID + " INTEGER AUTOINCREMENT,"
+                    + DbStoreArtistColumn.MID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + DbStoreArtistColumn._ID + " INTEGER ,"
                     + DbStoreArtistColumn._ARTIST + " TEXT ,"
                     + DbStoreArtistColumn._NUMBER_OF_ALBUMS + " INTEGER ,"
-                    + DbStoreArtistColumn._NUMBER_OF_TRACK + " INTEGER ,"
+                    + DbStoreArtistColumn._NUMBER_OF_TRACK + " INTEGER "
                     + ")";
 
     public static final String CREATE_TABLE_ALBUM =
             "CREATE TABLE " + TABLE_ALBUM + "("
-                    + DbStoreAlbumColumn.MID + " INTEGER AUTOINCREMENT, "
+                    + DbStoreAlbumColumn.MID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                     + DbStoreAlbumColumn._ID + " INTEGER, "
                     + DbStoreAlbumColumn._ALBUM + " TEXT, "
                     + DbStoreAlbumColumn._ARTIST + " TEXT, "
                     + DbStoreAlbumColumn._ARTIST_ID + " INTEGER, "
                     + DbStoreAlbumColumn._NUMBER_OF_SONG + " INTEGER, "
-                    + DbStoreAlbumColumn._ALBUM_ART + " TEXT, "
+                    + DbStoreAlbumColumn._ALBUM_ART + " TEXT"
                     + ")";
 
     public static final String CREATE_TABLE_PLAYLIST =
             "CREATE TABLE " + TABLE_PLAYLIST + "("
-                    + DbStorePlaylistColumn.MID + " INTEGER AUTOINCREMENT,"
-                    + DbStorePlaylistColumn._ID + " INTEGER,"
-                    + DbStorePlaylistColumn._DATA + " INTEGER,"
+                    + DbStorePlaylistColumn.MID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + DbStorePlaylistColumn._NAME + " INTEGER,"
-                    + DbStorePlaylistColumn.DATE_ADDED + " INTEGER,"
+                    + DbStorePlaylistColumn.DATE_ADDED + " INTEGER"
                     + ")";
 
     public static final String CREATE_TABLE_PLAYLIST_MEMBER =
             "CREATE TABLE " + TABLE_PLAYLIST_MEMBER + "("
-                    + DbStorePlaylistColumn.MemberColum.MID + " INTEGER AUTOINCREMENT,"
+                    + DbStorePlaylistColumn.MemberColum.MID + " INTEGER PRIMARY KEY AUTOINCREMENT,"
                     + DbStorePlaylistColumn.MemberColum._ID + " INTEGER,"
                     + DbStorePlaylistColumn.MemberColum._ALBUM + " TEXT ,"
                     + DbStorePlaylistColumn.MemberColum._ALBUM_ID + " INTEGER ,"
@@ -153,7 +148,7 @@ public class DataBaseUtils {
                     + DbStorePlaylistColumn.MemberColum._PLAYLIST_ID + " INTEGER ,"
                     + DbStorePlaylistColumn.MemberColum._DISPLAY_NAME + " TEXT ,"
                     + DbStorePlaylistColumn.MemberColum._MIME_TYPE + " TEXT ,"
-                    + DbStorePlaylistColumn.MemberColum._DATA_ADDED + " INTEGER ,"
+                    + DbStorePlaylistColumn.MemberColum._DATA_ADDED + " INTEGER "
                     + ")";
 
 }

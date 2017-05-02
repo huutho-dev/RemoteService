@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 
+import com.remote.communication.MediaEntity;
 import com.remote.communication.PlaylistMemberEntity;
 
 import java.util.ArrayList;
@@ -30,8 +31,9 @@ public class SourceTablePlaylistMember extends DatabaseSource<PlaylistMemberEnti
     @Override
     public List<PlaylistMemberEntity> getList() {
         List<PlaylistMemberEntity> entities = new ArrayList<>();
-        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_PLAYLIST_MEMBER, null, null, null, null, null, null);
         openDb();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_PLAYLIST_MEMBER, null, null, null, null, null, null);
+
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ID);
         int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ALBUM);
@@ -123,13 +125,16 @@ public class SourceTablePlaylistMember extends DatabaseSource<PlaylistMemberEnti
 
     @Override
     public long insertRow(PlaylistMemberEntity entity) {
-        return getSqlDb().insert(DataBaseUtils.TABLE_PLAYLIST_MEMBER, null, convertEntity2ContentValue(entity));
+        openDb();
+        long insert = getSqlDb().insert(DataBaseUtils.TABLE_PLAYLIST_MEMBER, null, convertEntity2ContentValue(entity));
+        closeDb();
+        return insert;
     }
 
     @Override
     public int deleteRow(PlaylistMemberEntity entity) {
         return getSqlDb().delete(DataBaseUtils.TABLE_PLAYLIST_MEMBER,
-                DataBaseUtils.DbStoreMediaColumn.MID,
+                DataBaseUtils.DbStoreMediaColumn.MID + "=?",
                 new String[]{String.valueOf(entity.mId)});
     }
 
@@ -137,14 +142,13 @@ public class SourceTablePlaylistMember extends DatabaseSource<PlaylistMemberEnti
     public int updateRow(PlaylistMemberEntity entity) {
         return getSqlDb().update(DataBaseUtils.TABLE_PLAYLIST_MEMBER,
                 convertEntity2ContentValue(entity),
-                DataBaseUtils.DbStoreMediaColumn.MID,
-                new String[]{String.valueOf(entity.mId)});
+                DataBaseUtils.DbStoreMediaColumn._ID + "=?",
+                new String[]{String.valueOf(entity.id)});
     }
 
     @Override
     public ContentValues convertEntity2ContentValue(PlaylistMemberEntity entity) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseUtils.DbStorePlaylistColumn.MemberColum.MID, entity.mId);
         values.put(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ID, entity.id);
         values.put(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ALBUM, entity.album);
         values.put(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ALBUM_ID, entity.albumId);
@@ -160,5 +164,30 @@ public class SourceTablePlaylistMember extends DatabaseSource<PlaylistMemberEnti
         values.put(DataBaseUtils.DbStorePlaylistColumn.MemberColum._DATA_ADDED, entity.dateAdded);
 
         return values;
+    }
+
+    public  List<MediaEntity> convertPlaylistMemberToMedia(List<PlaylistMemberEntity> list) {
+
+        List<MediaEntity> mediaEntities = new ArrayList<>();
+
+        for (int i = 0; i < list.size(); i++) {
+            MediaEntity entity = new MediaEntity();
+
+            entity.album = list.get(i).album;
+            entity.albumId = list.get(i).albumId;
+            entity.artistId = list.get(i).artistId;
+            entity.artist = list.get(i).artist;
+            entity.id = list.get(i).audioId;
+            entity.title = list.get(i).title;
+            entity.data = list.get(i).data;
+            entity.displayName = list.get(i).displayName;
+            entity.mimeType = list.get(i).MIMEType;
+            entity.dateAdded = list.get(i).dateAdded;
+
+            mediaEntities.add(entity);
+        }
+
+        return mediaEntities;
+
     }
 }

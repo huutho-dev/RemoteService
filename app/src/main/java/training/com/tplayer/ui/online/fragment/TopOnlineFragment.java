@@ -104,8 +104,8 @@ public class TopOnlineFragment extends BaseFragment implements View.OnClickListe
     private void addFragment(String url) {
          ChartsItemFragment fragment = ChartsItemFragment.newInstance(url) ;
         String tag = ChartsItemFragment.class.getSimpleName();
-        final FragmentManager fm = getFragmentManager();
-        final FragmentTransaction ft = fm.beginTransaction();
+         FragmentManager fm = getFragmentManager();
+         FragmentTransaction ft = fm.beginTransaction();
         ft.setCustomAnimations(R.anim.enter_from_left,
                 R.anim.exit_to_right,
                 R.anim.enter_from_right,

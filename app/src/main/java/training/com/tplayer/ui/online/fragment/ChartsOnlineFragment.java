@@ -14,7 +14,7 @@ import training.com.tplayer.base.BaseFragment;
 import training.com.tplayer.ui.adapter.online.ChartsPagerAdapter;
 
 /**
- * Created by hnc on 13/04/2017.
+ * Created by ThoNH on 13/04/2017.
  */
 
 public class ChartsOnlineFragment extends BaseFragment {

@@ -1,12 +1,17 @@
 package training.com.tplayer.utils;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.media.MediaScannerConnection;
+import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Environment;
+import android.provider.MediaStore;
 
 import com.google.gson.Gson;
+import com.remote.communication.MediaEntity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -25,13 +30,50 @@ import java.util.List;
 import training.com.tplayer.base.BaseEntity;
 
 /**
- * Created by hnc on 12/04/2017.
+ * Created by ThoNH on 12/04/2017.
  */
 
 public class FileUtils {
+    public static final String PATH_DOWNLOAD = Environment
+            .getExternalStorageDirectory()
+            .getAbsolutePath() + "/" + "TPlayer";
+
+    public static final String PATH_LYRIC = Environment
+            .getExternalStorageDirectory()
+            .getAbsolutePath() + "/" + "Lyric";
+
+    public static final String PATH_IMAGE = Environment
+            .getExternalStorageDirectory()
+            .getAbsolutePath() + "/" + "Image";
 
     public interface IOnScanMediaComplete {
         void scanComplete(String path, Uri uri);
+    }
+
+    public static void setAudioRington(Context context, MediaEntity entity) {
+        File k = new File(entity.data, entity.displayName); // path is a file playing
+
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.MediaColumns.DATA, k.getAbsolutePath());
+        values.put(MediaStore.MediaColumns.TITLE, entity.title); //You will have to populate
+        values.put(MediaStore.MediaColumns.SIZE, 215454);
+        values.put(MediaStore.MediaColumns.MIME_TYPE, "audio/mp3");
+        values.put(MediaStore.Audio.Media.ARTIST, entity.artist); //You will have to populate this
+        values.put(MediaStore.Audio.Media.DURATION, entity.duration);
+        values.put(MediaStore.Audio.Media.IS_RINGTONE, true);
+        values.put(MediaStore.Audio.Media.IS_NOTIFICATION, false);
+        values.put(MediaStore.Audio.Media.IS_ALARM, false);
+        values.put(MediaStore.Audio.Media.IS_MUSIC, false);
+
+        //Insert it into the database
+        Uri uri = MediaStore.Audio.Media.getContentUriForPath(k.getAbsolutePath());
+        Uri newUri = context.getApplicationContext().getContentResolver().insert(uri, values);
+
+        RingtoneManager.setActualDefaultRingtoneUri(
+                context,
+                RingtoneManager.TYPE_RINGTONE,
+                newUri
+        );
     }
 
     public void downloadFile(String link, String dir, String name, String suffix) {
@@ -153,9 +195,6 @@ public class FileUtils {
 
                 E[] arr = new Gson().fromJson(fileContent, clazz);
                 return Arrays.asList(arr);
-
-//                TypeToken<ArrayList<E>> token = new TypeToken<ArrayList<E>>(){};
-//                return new Gson().fromJson(fileContent, token.getType());
 
             } catch (IOException e) {
                 e.printStackTrace();

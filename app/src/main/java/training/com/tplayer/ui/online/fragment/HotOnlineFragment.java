@@ -1,9 +1,13 @@
 package training.com.tplayer.ui.online.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,6 +15,8 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+
+import com.remote.communication.MediaEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +34,7 @@ import training.com.tplayer.network.html.HotAlbumTask;
 import training.com.tplayer.network.html.HotHightLightTask;
 import training.com.tplayer.network.html.HotNewTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
+import training.com.tplayer.network.service.LoadListDataCodeService;
 import training.com.tplayer.ui.adapter.online.HotAlbumAdapter;
 import training.com.tplayer.ui.adapter.online.HotHightLightAdapter;
 import training.com.tplayer.ui.adapter.online.HotNewAdapter;
@@ -39,7 +46,7 @@ import training.com.tplayer.ui.player.PlayerActivity;
 import training.com.tplayer.utils.FileUtils;
 
 /**
- * Created by hnc on 13/04/2017.
+ * Created by ThoNH on 13/04/2017.
  */
 
 public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.HotAlbumAdapterListener,
@@ -91,6 +98,12 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        registerLoadSongComplete();
+    }
+
+    @Override
     public int setLayoutId() {
         return R.layout.fragment_online_hot;
     }
@@ -103,11 +116,8 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
         view.findViewById(R.id.fragment_charts_item_layout_play_all).setOnClickListener(this);
 
         initAlbum();
-
         initNew();
-
         initHightLight();
-
     }
 
     private void initAlbum() {
@@ -192,7 +202,7 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
         GetDataCodeTask getDataCodeTask = new GetDataCodeTask(link, new IOnLoadSuccess() {
             @Override
             public void onResponse(List entity, String TAG) {
-                startActivityHasData(entity);
+                startLoadSongZingMp3(entity);
             }
         }, "getDataCodeTask");
 
@@ -251,7 +261,7 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
                     DataCodeEntity dataCodeEntity = new DataCodeEntity(mHightLightAdapter.getDataItem(i).data_code);
                     entitiesHightLight.add(dataCodeEntity);
                 }
-                startActivityHasData(entitiesHightLight);
+                startLoadSongZingMp3(entitiesHightLight);
 
                 break;
             case R.id.fragment_charts_item_layout_play_all:
@@ -261,16 +271,35 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
                     DataCodeEntity dataCodeEntity = new DataCodeEntity(mNewAdapter.getDataItem(i).data_code);
                     entitiesNew.add(dataCodeEntity);
                 }
-                startActivityHasData(entitiesNew);
+                startLoadSongZingMp3(entitiesNew);
                 break;
         }
     }
 
+    private void startLoadSongZingMp3(List entity){
+        Intent intent = new Intent(mContext, LoadListDataCodeService.class);
+        intent.putParcelableArrayListExtra(LoadListDataCodeService.EXTRA_DATA_CODE,
+                (ArrayList<? extends Parcelable>) entity);
+        mContext.startService(intent);
+    }
+    private void registerLoadSongComplete(){
+        IntentFilter filterZing = new IntentFilter();
+        filterZing.addAction(LoadListDataCodeService.ACTION_CALL_BACK_SONG);
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                ArrayList<MediaEntity> songs =
+                        intent.getParcelableArrayListExtra(LoadListDataCodeService.EXTRA_CALL_BACK);
+                startActivity(songs);
 
-    private void startActivityHasData(List entity) {
+            }
+        }, filterZing);
+    }
+
+    private void startActivity(List<MediaEntity> songs){
         Intent intent = new Intent(mContext, PlayerActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(PlayerActivity.BUNDLE_DATA_ONLINE, (ArrayList<? extends Parcelable>) entity);
+        bundle.putParcelableArrayList(PlayerActivity.BUNDLE_DATA_ONLINE, (ArrayList<? extends Parcelable>) songs);
         intent.putExtra(PlayerActivity.EXTRA_DATA_PLAYER, bundle);
         startActivity(intent);
     }

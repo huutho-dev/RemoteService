@@ -11,7 +11,7 @@ import com.squareup.picasso.Picasso;
 import com.squareup.picasso.Transformation;
 
 /**
- * Created by hnc on 13/04/2017.
+ * Created by ThoNH on 13/04/2017.
  */
 
 public class ImageUtils {

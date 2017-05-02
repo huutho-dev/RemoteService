@@ -21,7 +21,7 @@ import training.com.tplayer.ui.adapter.offline.AlbumAdapter;
 import training.com.tplayer.utils.LogUtils;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAdapterListener {
@@ -50,7 +50,20 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
         mAdapter = new AlbumAdapter(mContext,this);
         mRvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
         mRvAlbum.setAdapter(mAdapter);
-        loadDataTask.execute();
+
+        new AsyncTask<Void, Void, List<AlbumEntity>>() {
+            @Override
+            protected List<AlbumEntity> doInBackground(Void... params) {
+                return SourceTableAlbum.getInstance(mContext).getList();
+            }
+
+            @Override
+            protected void onPostExecute(List<AlbumEntity> albumEntities) {
+                super.onPostExecute(albumEntities);
+                mAdapter.setDatas(albumEntities);
+            }
+        }.execute();
+
     }
 
     @Override
@@ -77,22 +90,5 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
         }
         return super.onContextItemSelected(item);
     }
-
-
-
-    private AsyncTask<Void, Void, List<AlbumEntity>> loadDataTask = new AsyncTask<Void, Void, List<AlbumEntity>>() {
-        @Override
-        protected List<AlbumEntity> doInBackground(Void... params) {
-            return SourceTableAlbum.getInstance(mContext).getList();
-        }
-
-        @Override
-        protected void onPostExecute(List<AlbumEntity> mediaEntities) {
-            super.onPostExecute(mediaEntities);
-            mAdapter.setDatas(mediaEntities);
-        }
-    };
-
-
 
 }

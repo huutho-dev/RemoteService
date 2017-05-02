@@ -11,7 +11,7 @@ import java.util.List;
 import training.com.tplayer.base.BaseEntity;
 
 /**
- * Created by hnc on 05/04/2017.
+ * Created by ThoNH on 05/04/2017.
  */
 
 public abstract class BaseAsyncTask<E extends BaseEntity> extends AsyncTask<Void, Void, List<E>> {

@@ -20,6 +20,7 @@
             android:layout_marginBottom="@dimen/spacing_2_16dp"
             android:layout_marginTop="@dimen/spacing_2_16dp"
             android:padding="@dimen/spacing_1_8dp"
+            android:visibility="invisible"
             android:text="BXH 40 bài hát top đầu"
             android:textColor="@color/colorTextSecondary"
             app:textFonts="RobotoMedium" />

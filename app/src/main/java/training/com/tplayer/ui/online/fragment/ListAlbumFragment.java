@@ -1,13 +1,19 @@
 package training.com.tplayer.ui.online.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+
+import com.remote.communication.MediaEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +26,7 @@ import training.com.tplayer.base.BaseFragment;
 import training.com.tplayer.network.html.GetDataCodeTask;
 import training.com.tplayer.network.html.ListAlbumTask;
 import training.com.tplayer.network.html.base.IOnLoadSuccess;
+import training.com.tplayer.network.service.LoadListDataCodeService;
 import training.com.tplayer.ui.adapter.online.ListAlbumAdapter;
 import training.com.tplayer.ui.entity.AlbumBasicEntity;
 import training.com.tplayer.ui.player.PlayerActivity;
@@ -134,6 +141,35 @@ public class ListAlbumFragment extends BaseFragment
 
             getDataCodeTask.execute();
         }
+    }
+
+
+    private void startActivity(List<MediaEntity> songs){
+        Intent intent = new Intent(mContext, PlayerActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList(PlayerActivity.BUNDLE_DATA_ONLINE, (ArrayList<? extends Parcelable>) songs);
+        intent.putExtra(PlayerActivity.EXTRA_DATA_PLAYER, bundle);
+        startActivity(intent);
+    }
+
+    private void startLoadSongZingMp3(List entity){
+        Intent intent = new Intent(mContext, LoadListDataCodeService.class);
+        intent.putParcelableArrayListExtra(LoadListDataCodeService.EXTRA_DATA_CODE,
+                (ArrayList<? extends Parcelable>) entity);
+        mContext.startService(intent);
+    }
+    private void registerLoadSongComplete(){
+        IntentFilter filterZing = new IntentFilter();
+        filterZing.addAction(LoadListDataCodeService.ACTION_CALL_BACK_SONG);
+        LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                ArrayList<MediaEntity> songs =
+                        intent.getParcelableArrayListExtra(LoadListDataCodeService.EXTRA_CALL_BACK);
+                startActivity(songs);
+
+            }
+        }, filterZing);
     }
 
 }

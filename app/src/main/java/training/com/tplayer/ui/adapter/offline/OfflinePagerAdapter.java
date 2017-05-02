@@ -17,7 +17,7 @@ import training.com.tplayer.ui.offline.fragment.PlaylistsFragment;
 import training.com.tplayer.ui.offline.fragment.SongsFragment;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class OfflinePagerAdapter extends FragmentPagerAdapter {

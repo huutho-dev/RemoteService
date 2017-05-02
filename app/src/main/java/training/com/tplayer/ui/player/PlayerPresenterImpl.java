@@ -3,10 +3,9 @@ package training.com.tplayer.ui.player;
 import android.os.RemoteException;
 
 import com.remote.communication.IMyAidlInterface;
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import training.com.tplayer.base.mvp.BasePresenterImpl;
@@ -33,7 +32,7 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     }
 
     @Override
-    public void setPlayLists(List<Song> playLists) {
+    public void setPlayLists(List<MediaEntity> playLists) {
         try {
             mService.setPlayList(playLists);
         } catch (RemoteException e) {
@@ -126,7 +125,7 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     }
 
     @Override
-    public void onRemotePlayNewSong(Song song) {
+    public void onRemotePlayNewSong(MediaEntity song) {
         mView.onRemotePlayNewSong(song);
     }
 
@@ -141,14 +140,10 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
         mView.onRemotePlayCompleteASong();
     }
 
-    @Override
-    public void onLoadZingComplete(ArrayList<Song> songs) {
-        mView.onLoadDataZingComplete(songs);
-    }
 
     @Override
     public void onDownloadLyricComplete(File lyric) {
-        mView.onDownloadLyricComplete(lyric);
+        mView.onLoadLyricComplete(lyric);
     }
 
 

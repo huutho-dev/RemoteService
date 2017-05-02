@@ -6,22 +6,28 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
-import com.remote.communication.MediaEntity;
 import com.remote.communication.PlaylistEntity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
+import training.com.tplayer.custom.TextViewRoboto;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class PlaylistAdapter  extends BaseRecyclerViewAdapter<PlaylistEntity, PlaylistAdapter.ViewHolder> {
 
-    public interface PlaylistAdapterListener extends IRecyclerViewOnItemClickListener<MediaEntity> {
+    public int positionContext = -1 ;
+
+
+    public interface PlaylistAdapterListener extends IRecyclerViewOnItemClickListener<PlaylistEntity> {
     }
 
     public PlaylistAdapter(Context context, PlaylistAdapterListener listener) {
@@ -35,15 +41,31 @@ public class PlaylistAdapter  extends BaseRecyclerViewAdapter<PlaylistEntity, Pl
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
-
+        PlaylistEntity entity = getDataItem(position);
+        holder.mPlaylistName.setText(entity.name);
+        holder.mDataAdded.setText(String.valueOf(entity.dateAdded));
     }
 
 
     public class ViewHolder extends BaseViewHolder implements View.OnCreateContextMenuListener {
+        @BindView(R.id.item_fragment_playlist_name)
+        TextViewRoboto mPlaylistName ;
+        @BindView(R.id.item_fragment_playlist_date_added)
+        TextViewRoboto mDataAdded ;
+        @BindView(R.id.item_fragment_playlist_context_menu)
+        ImageView mCtxMenu ;
+        
         public ViewHolder(View itemView) {
             super(itemView);
-
-            itemView.setOnCreateContextMenuListener(this);
+            ButterKnife.bind(this,itemView);
+            mCtxMenu.setOnCreateContextMenuListener(this);
+            mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    positionContext = getAdapterPosition();
+                    return false;
+                }
+            });
         }
 
 

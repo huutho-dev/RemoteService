@@ -3,7 +3,7 @@ package training.com.tplayer.utils.preferences;
 import android.os.Build;
 
 /**
- * Created by hnc on 12/04/2017.
+ * Created by ThoNH on 12/04/2017.
  */
 
 public class AndroidApiUtils {

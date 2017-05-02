@@ -15,7 +15,7 @@ import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.utils.LogUtils;
 
 /**
- * Created by hnc on 13/04/2017.
+ * Created by ThoNH on 13/04/2017.
  */
 
 public class AlbumOnlineFragment extends BaseFragment implements View.OnClickListener {

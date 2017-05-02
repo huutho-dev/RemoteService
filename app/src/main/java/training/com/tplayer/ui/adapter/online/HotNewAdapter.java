@@ -17,7 +17,7 @@ import training.com.tplayer.ui.entity.HotNewEntity;
 import training.com.tplayer.utils.ImageUtils;
 
 /**
- * Created by hnc on 13/04/2017.
+ * Created by ThoNH on 13/04/2017.
  */
 
 public class HotNewAdapter extends BaseRecyclerViewAdapter<HotNewEntity, HotNewAdapter.ViewHolder> {

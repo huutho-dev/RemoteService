@@ -15,7 +15,7 @@ import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class DownloadAdapter  extends BaseRecyclerViewAdapter<MediaEntity, DownloadAdapter.ViewHolder> {

@@ -6,7 +6,7 @@
     android:layout_marginLeft="@dimen/spacing_9_72dp"
     android:layout_marginRight="@dimen/spacing_2_16dp"
     android:layout_marginTop="@dimen/spacing_1_8dp"
-    android:background="@color/colorAccent"
+    android:background="#99898989"
     android:orientation="vertical">
 
 </View>

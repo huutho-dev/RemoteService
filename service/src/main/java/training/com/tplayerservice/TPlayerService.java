@@ -6,7 +6,7 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.remote.communication.IMyAidlInterface;
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import java.util.List;
 
@@ -63,7 +63,7 @@ public class TPlayerService extends Service {
     private IMyAidlInterface.Stub iBinder = new IMyAidlInterface.Stub() {
 
         @Override
-        public void setSong(Song song) throws RemoteException {
+        public void setSong(MediaEntity song) throws RemoteException {
             LogUtils.printLog("Service_onDestroy");
             mPlayerManager.playSong(song);
         }
@@ -75,7 +75,7 @@ public class TPlayerService extends Service {
         }
 
         @Override
-        public void setPlayList(List<Song> playLists) throws RemoteException {
+        public void setPlayList(List<MediaEntity> playLists) throws RemoteException {
             LogUtils.printLog("Service_setPlayList : size = " + playLists.size());
             mPlayerManager.setListSong(playLists);
         }
@@ -125,6 +125,21 @@ public class TPlayerService extends Service {
         @Override
         public void repeat() throws RemoteException {
             LogUtils.printLog("Service_repeat");
+        }
+
+        @Override
+        public void addNextNowPlaying(MediaEntity entity) throws RemoteException {
+            mPlayerManager.addNextNowPlaying(entity);
+        }
+
+        @Override
+        public void addNowPlaying(MediaEntity entity) throws RemoteException {
+            mPlayerManager.addNowPlaying(entity);
+        }
+
+        @Override
+        public void addListNowPlaying(List<MediaEntity> entities) throws RemoteException {
+            mPlayerManager.addNowPlaying(entities);
         }
     };
 }

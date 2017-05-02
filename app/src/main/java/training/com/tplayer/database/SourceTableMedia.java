@@ -9,6 +9,9 @@ import com.remote.communication.MediaEntity;
 import java.util.ArrayList;
 import java.util.List;
 
+import training.com.tplayer.ui.entity.offline.FolderEntity;
+import training.com.tplayer.utils.LogUtils;
+
 
 /**
  * Created by ThoNH on 4/27/2017.
@@ -33,8 +36,8 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
     @Override
     public List<MediaEntity> getList() {
         List<MediaEntity> entities = new ArrayList<>();
-        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, null, null, null, null, null);
         openDb();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, null, null, null, null, null);
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ID);
         int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA);
@@ -139,23 +142,65 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
 
     @Override
     public int deleteRow(MediaEntity entity) {
-        return getSqlDb().delete(DataBaseUtils.TABLE_MEDIA,
-                DataBaseUtils.DbStoreMediaColumn.MID,
+        openDb();
+        int del = getSqlDb().delete(DataBaseUtils.TABLE_MEDIA,
+                DataBaseUtils.DbStoreMediaColumn.MID + "=?",
                 new String[]{String.valueOf(entity.mId)});
+        return del;
     }
 
     @Override
     public int updateRow(MediaEntity entity) {
         return getSqlDb().update(DataBaseUtils.TABLE_MEDIA,
                 convertEntity2ContentValue(entity),
-                DataBaseUtils.DbStoreMediaColumn.MID,
-                new String[]{String.valueOf(entity.mId)});
+                DataBaseUtils.DbStoreMediaColumn._ID + "=?",
+                new String[]{String.valueOf(entity.id)});
+    }
+
+    public boolean isHasData() {
+        openDb();
+        Cursor cursor = getSqlDb().rawQuery("SELECT count(*) FROM " + DataBaseUtils.TABLE_MEDIA, null);
+        cursor.moveToFirst();
+        int numberRow = cursor.getInt(0);
+        cursor.close();
+        return (numberRow > 0);
+    }
+
+    public List<FolderEntity> getListFolder() {
+
+        String folderName = "";
+        String newFolderName = "";
+        int countNumberSong = 0;
+
+        List<FolderEntity> entities = new ArrayList<>();
+        openDb();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA,
+                new String[]{DataBaseUtils.DbStoreMediaColumn._DATA,
+                        DataBaseUtils.DbStoreMediaColumn._DISPLAY_NAME}
+                , null, null, null, null, null);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String data = cursor.getString(cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA));
+            String displayName = cursor.getString(cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DISPLAY_NAME));
+            newFolderName = data.replace(displayName, "");
+            countNumberSong++;
+            if (!newFolderName.equals(folderName)) {
+                folderName = newFolderName;
+                entities.add(new FolderEntity(folderName,folderName,countNumberSong));
+                countNumberSong = 0;
+                LogUtils.printLog(folderName);
+            }
+            cursor.moveToNext();
+        }
+        closeDb();
+        cursor.close();
+        return entities;
     }
 
     @Override
     public ContentValues convertEntity2ContentValue(MediaEntity entity) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseUtils.DbStoreMediaColumn.MID, entity.mId);
         values.put(DataBaseUtils.DbStoreMediaColumn._ID, entity.id);
         values.put(DataBaseUtils.DbStoreMediaColumn._DATA, entity.data);
         values.put(DataBaseUtils.DbStoreMediaColumn._DISPLAY_NAME, entity.displayName);

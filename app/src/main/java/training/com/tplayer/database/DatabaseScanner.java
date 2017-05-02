@@ -3,6 +3,7 @@ package training.com.tplayer.database;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
 
@@ -30,7 +31,7 @@ public class DatabaseScanner {
         this.mContext = context;
     }
 
-    public List<MediaEntity> scanMedia(Context context) {
+    public List<MediaEntity> scanMedia() {
         List<MediaEntity> entities = new ArrayList<>();
 
         String[] projection = new String[]{
@@ -47,7 +48,7 @@ public class DatabaseScanner {
                 MediaStore.Audio.AudioColumns.ALBUM,
                 MediaStore.Audio.AudioColumns.ALBUM_ID};
 
-        ContentResolver resolver = context.getContentResolver();
+        ContentResolver resolver = mContext.getContentResolver();
         Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
         if (cursor != null) {
 
@@ -92,7 +93,7 @@ public class DatabaseScanner {
         return entities;
     }
 
-    public List<AlbumEntity> scanAlbum(Context context) {
+    public List<AlbumEntity> scanAlbum() {
         List<AlbumEntity> entities = new ArrayList<>();
         String[] projection = new String[]{
                 DataBaseUtils.DbStoreAlbumColumn._ID,
@@ -103,11 +104,11 @@ public class DatabaseScanner {
                 DataBaseUtils.DbStoreAlbumColumn._ALBUM_ART
         };
 
-        ContentResolver resolver = context.getContentResolver();
+        ContentResolver resolver = mContext.getContentResolver();
         Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, projection, null, null, null);
         if (cursor != null) {
 
-            int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn.MID);
+//            int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn.MID);
             int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ID);
             int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM);
             int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ARTIST);
@@ -118,13 +119,13 @@ public class DatabaseScanner {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
                 AlbumEntity entity = new AlbumEntity();
-                entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+                entity.mId = 0;
                 entity.id = Integer.parseInt(cursor.getString(idIndex));
                 entity.album = cursor.getString(albumIndex);
                 entity.artist = cursor.getString(artistIndex);
                 entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
                 entity.numberOfSong = Integer.parseInt(cursor.getString(numberOfSongIndex));
-                entity.albumArt = String.valueOf(Integer.parseInt(cursor.getString(albumArtIndex)));
+                entity.albumArt =cursor.getString(albumArtIndex);
 
                 entities.add(entity);
                 cursor.moveToNext();
@@ -138,7 +139,7 @@ public class DatabaseScanner {
         return entities;
     }
 
-    public List<ArtistEntity> scanArtist(Context context) {
+    public List<ArtistEntity> scanArtist() {
         List<ArtistEntity> entities = new ArrayList<>();
         String[] projection = new String[]{
                 MediaStore.Audio.Artists._ID,
@@ -147,8 +148,8 @@ public class DatabaseScanner {
                 MediaStore.Audio.Artists.NUMBER_OF_TRACKS
         };
 
-        ContentResolver resolver = context.getContentResolver();
-        Cursor cursor = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        ContentResolver resolver = mContext.getContentResolver();
+        Cursor cursor = resolver.query(MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI, null, null, null, null);
         if (cursor != null) {
 
             int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._ID);
@@ -158,6 +159,7 @@ public class DatabaseScanner {
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
+                DatabaseUtils.dumpCurrentRow(cursor);
                 ArtistEntity entity = new ArtistEntity();
                 entity.id = Integer.parseInt(cursor.getString(idIndex));
                 entity.author = cursor.getString(artistIndex);

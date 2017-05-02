@@ -1,8 +1,10 @@
 package com.remote.communication;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
-import training.com.tplayer.base.BaseEntity;
+import training.com.BaseEntity;
+
 
 /**
  * Created by ThoNH on 4/27/2017.
@@ -42,6 +44,7 @@ public class MediaEntity extends BaseEntity {
     public String art;
 
     public boolean isPlaying ;
+
 
     public MediaEntity(){
 
@@ -232,7 +235,7 @@ public class MediaEntity extends BaseEntity {
         this.art = in.readString();
     }
 
-    public static final Creator<MediaEntity> CREATOR = new Creator<MediaEntity>() {
+    public static final Parcelable.Creator<MediaEntity> CREATOR = new Parcelable.Creator<MediaEntity>() {
         @Override
         public MediaEntity createFromParcel(Parcel source) {
             return new MediaEntity(source);

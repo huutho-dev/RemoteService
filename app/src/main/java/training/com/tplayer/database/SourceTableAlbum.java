@@ -3,6 +3,7 @@ package training.com.tplayer.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 
 import com.remote.communication.AlbumEntity;
 
@@ -31,8 +32,9 @@ public class SourceTableAlbum extends DatabaseSource<AlbumEntity> {
     @Override
     public List<AlbumEntity> getList() {
         List<AlbumEntity> entities = new ArrayList<>();
-        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, null, null, null, null, null);
         openDb();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ALBUM, null, null, null, null, null, null);
+
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ID);
         int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM);
@@ -43,6 +45,7 @@ public class SourceTableAlbum extends DatabaseSource<AlbumEntity> {
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
+            DatabaseUtils.dumpCurrentRow(cursor);
             AlbumEntity entity = new AlbumEntity();
             entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
             entity.id = Integer.parseInt(cursor.getString(idIndex));
@@ -50,8 +53,9 @@ public class SourceTableAlbum extends DatabaseSource<AlbumEntity> {
             entity.artist = cursor.getString(artistIndex);
             entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
             entity.numberOfSong = Integer.parseInt(cursor.getString(numberOfSongIndex));
-            entity.albumArt = String.valueOf(Integer.parseInt(cursor.getString(albumArtIndex)));
+            entity.albumArt = cursor.getString(albumArtIndex);
 
+            entities.add(entity);
             cursor.moveToNext();
         }
         closeDb();
@@ -64,7 +68,7 @@ public class SourceTableAlbum extends DatabaseSource<AlbumEntity> {
     public AlbumEntity getRow(String selection, String[] selectionArgs) {
         AlbumEntity entity = new AlbumEntity();
         openDb();
-        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ALBUM,null,selection,selectionArgs,null,null, null);
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ALBUM, null, selection, selectionArgs, null, null, null);
         cursor.moveToFirst();
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ID);
@@ -85,35 +89,43 @@ public class SourceTableAlbum extends DatabaseSource<AlbumEntity> {
         entity.albumArt = String.valueOf(Integer.parseInt(cursor.getString(albumArtIndex)));
 
         if (!cursor.isClosed())
-        cursor.close();
+            cursor.close();
         closeDb();
         return entity;
     }
 
     @Override
     public long insertRow(AlbumEntity entity) {
-        return getSqlDb().insert(DataBaseUtils.TABLE_ALBUM, null, convertEntity2ContentValue(entity));
+        openDb();
+        long insert = getSqlDb().insert(DataBaseUtils.TABLE_ALBUM, null, convertEntity2ContentValue(entity));
+        closeDb();
+        return insert;
     }
 
     @Override
     public int deleteRow(AlbumEntity entity) {
-        return getSqlDb().delete(DataBaseUtils.TABLE_ALBUM,
-                DataBaseUtils.DbStoreMediaColumn.MID,
+        openDb();
+        int delete = getSqlDb().delete(DataBaseUtils.TABLE_ALBUM,
+                DataBaseUtils.DbStoreMediaColumn.MID + "=?",
                 new String[]{String.valueOf(entity.mId)});
+        closeDb();
+        return delete;
     }
 
     @Override
     public int updateRow(AlbumEntity entity) {
-        return getSqlDb().update(DataBaseUtils.TABLE_ALBUM,
+        openDb();
+        int update = getSqlDb().update(DataBaseUtils.TABLE_ALBUM,
                 convertEntity2ContentValue(entity),
-                DataBaseUtils.DbStoreMediaColumn.MID,
-                new String[]{String.valueOf(entity.mId)});
+                DataBaseUtils.DbStoreMediaColumn._ID + "=?",
+                new String[]{String.valueOf(entity.id)});
+        closeDb();
+        return update;
     }
 
     @Override
     public ContentValues convertEntity2ContentValue(AlbumEntity entity) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseUtils.DbStoreAlbumColumn.MID, entity.mId);
         values.put(DataBaseUtils.DbStoreAlbumColumn._ID, entity.id);
         values.put(DataBaseUtils.DbStoreAlbumColumn._ALBUM, entity.album);
         values.put(DataBaseUtils.DbStoreAlbumColumn._ARTIST, entity.artist);

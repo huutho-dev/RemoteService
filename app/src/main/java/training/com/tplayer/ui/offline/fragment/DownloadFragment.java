@@ -19,7 +19,7 @@ import training.com.tplayer.base.BaseFragment;
 import training.com.tplayer.ui.adapter.offline.DownloadAdapter;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class DownloadFragment extends BaseFragment implements DownloadAdapter.DownloadAdapterListener {
@@ -32,7 +32,6 @@ public class DownloadFragment extends BaseFragment implements DownloadAdapter.Do
     public static DownloadFragment newInstance() {
 
         Bundle args = new Bundle();
-
         DownloadFragment fragment = new DownloadFragment();
         fragment.setArguments(args);
         return fragment;
@@ -50,7 +49,20 @@ public class DownloadFragment extends BaseFragment implements DownloadAdapter.Do
         mAdapter = new DownloadAdapter(mContext, this);
         mRvDownload.setLayoutManager(new LinearLayoutManager(mContext));
         mRvDownload.setAdapter(mAdapter);
-        loadDataTask.execute();
+
+
+        new AsyncTask<Void, Void, List<MediaEntity>>() {
+            @Override
+            protected List<MediaEntity> doInBackground(Void... params) {
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(List<MediaEntity> mediaEntities) {
+                super.onPostExecute(mediaEntities);
+//                mAdapter.setDatas(mediaEntities);
+            }
+        }.execute();
     }
 
 
@@ -77,19 +89,4 @@ public class DownloadFragment extends BaseFragment implements DownloadAdapter.Do
         }
         return super.onContextItemSelected(item);
     }
-
-
-    private AsyncTask<Void, Void, List<MediaEntity>> loadDataTask = new AsyncTask<Void, Void, List<MediaEntity>>() {
-        @Override
-        protected List<MediaEntity> doInBackground(Void... params) {
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(List<MediaEntity> mediaEntities) {
-            super.onPostExecute(mediaEntities);
-            mAdapter.setDatas(mediaEntities);
-        }
-    };
-
 }

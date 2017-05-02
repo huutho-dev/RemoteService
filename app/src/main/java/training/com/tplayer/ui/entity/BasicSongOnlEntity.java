@@ -5,7 +5,7 @@ import android.os.Parcel;
 import training.com.tplayer.base.BaseEntity;
 
 /**
- * Created by hnc on 14/04/2017.
+ * Created by ThoNH on 14/04/2017.
  */
 
 public class BasicSongOnlEntity extends BaseEntity {

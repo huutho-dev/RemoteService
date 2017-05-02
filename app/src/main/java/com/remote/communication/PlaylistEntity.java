@@ -12,22 +12,22 @@ import training.com.tplayer.base.BaseEntity;
 public class PlaylistEntity extends BaseEntity {
     public int mId;
 
-    public int id ;
+    public String name;
 
-    public String data;
+    public int dateAdded;
 
-    public String name ;
+    public PlaylistEntity() {
 
-    public int dateAdded ;
+    }
 
-    public PlaylistEntity(){
-
+    public PlaylistEntity(int mId, String name, int dateAdded) {
+        this.mId = mId;
+        this.name = name;
+        this.dateAdded = dateAdded;
     }
 
     public PlaylistEntity(Builder builder) {
         this.mId = builder.mId;
-        this.id = builder.id;
-        this.data = builder.data;
         this.name = builder.name;
         this.dateAdded = builder.dateAdded;
     }
@@ -36,8 +36,6 @@ public class PlaylistEntity extends BaseEntity {
     public String toString() {
         return "PlaylistEntity{" +
                 "mId=" + mId +
-                ", id=" + id +
-                ", data='" + data + '\'' +
                 ", name='" + name + '\'' +
                 ", dateAdded=" + dateAdded +
                 '}';
@@ -46,39 +44,26 @@ public class PlaylistEntity extends BaseEntity {
     public static class Builder {
         private int mId;
 
-        private int id ;
+        private String name;
 
-        private String data;
+        private int dateAdded;
 
-        private String name ;
-
-        private int dateAdded ;
-
-        public Builder setMId(int id){
+        public Builder setMId(int id) {
             this.mId = id;
             return this;
         }
 
-        public Builder setId(int id){
-            this.id = id;
-            return this;
-        }
-
-        public Builder setData(String data){
-            this.data = data;
-            return this ;
-        }
-
-        public Builder setName(String name){
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        public Builder setDateAdded(int date){
+        public Builder setDateAdded(int date) {
             this.dateAdded = date;
             return this;
         }
-        public PlaylistEntity build(){
+
+        public PlaylistEntity build() {
             return new PlaylistEntity(this);
         }
     }
@@ -91,16 +76,12 @@ public class PlaylistEntity extends BaseEntity {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeInt(this.mId);
-        dest.writeInt(this.id);
-        dest.writeString(this.data);
         dest.writeString(this.name);
         dest.writeInt(this.dateAdded);
     }
 
     protected PlaylistEntity(Parcel in) {
         this.mId = in.readInt();
-        this.id = in.readInt();
-        this.data = in.readString();
         this.name = in.readString();
         this.dateAdded = in.readInt();
     }

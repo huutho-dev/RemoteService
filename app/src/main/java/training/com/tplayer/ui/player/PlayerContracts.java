@@ -1,9 +1,8 @@
 package training.com.tplayer.ui.player;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 
 import training.com.tplayer.base.mvp.BaseInteractor;
@@ -17,20 +16,18 @@ import training.com.tplayer.base.mvp.BaseView;
 public class PlayerContracts {
     public interface View extends BaseView {
 
-        void onRemotePlayNewSong(Song song);
+        void onRemotePlayNewSong(MediaEntity song);
 
         void onBufferPlaySong(int percent);
 
         void onRemotePlayCompleteASong();
 
-        void onLoadDataZingComplete(ArrayList<Song> songs);
-
-        void onDownloadLyricComplete(File lyric);
+        void onLoadLyricComplete(File lyric);
     }
 
     public interface Presenter extends BasePresenter {
 
-        void setPlayLists(List<Song> playLists);
+        void setPlayLists(List<MediaEntity> playLists);
 
         boolean playPause();
 
@@ -60,13 +57,11 @@ public class PlayerContracts {
 
     public interface IOnPlayerListener {
 
-        void onRemotePlayNewSong(Song song);
+        void onRemotePlayNewSong(MediaEntity song);
 
         void onBufferPlayNewSong(int percent);
 
         void onRemoteCompleteASong();
-
-        void onLoadZingComplete(ArrayList<Song> songs);
 
         void onDownloadLyricComplete(File lyric);
     }

@@ -10,9 +10,11 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         android:elevation="@dimen/spacing_2_16dp"
-        app:theme="@style/Base.Theme.AppCompat.Light.DarkActionBar" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <android.support.v4.widget.NestedScrollView
+        android:id="@+id/act_offline_main_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@+id/act_offline_toolbar">
@@ -181,8 +183,8 @@
                     app:textFonts="RobotoMedium" />
 
                 <training.com.tplayer.custom.TextViewRoboto
-                    android:layout_width="match_parent"
                     android:id="@+id/act_offline_txt_number_playlists"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="end"
                     android:paddingLeft="@dimen/spacing_2_16dp"
@@ -279,6 +281,29 @@
         </LinearLayout>
 
     </android.support.v4.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/act_offline_scan_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/act_offline_music_not_ready"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/act_offline_rescan" />
+
+        <ImageView
+            android:id="@+id/act_offline_button_scan"
+            android:layout_marginTop="@dimen/spacing_2_16dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/act_offline_music_not_ready"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_re_scan_loading" />
+
+    </RelativeLayout>
 
 
 </RelativeLayout>

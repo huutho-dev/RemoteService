@@ -1,10 +1,8 @@
 package training.com.tplayer.ui.player;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.os.Parcelable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +11,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
@@ -22,7 +20,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,9 +28,7 @@ import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.custom.TextViewRoboto;
-import training.com.tplayer.network.service.LoadListDataCodeService;
 import training.com.tplayer.ui.adapter.PlayListInPlayerAdapter;
-import training.com.tplayer.ui.entity.DataCodeEntity;
 import training.com.tplayer.utils.DateTimeUtils;
 import training.com.tplayer.utils.ImageUtils;
 import training.com.tplayer.utils.LogUtils;
@@ -94,10 +89,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
     private PlayListInPlayerAdapter mAdapter;
 
-    private List<DataCodeEntity> mListDataCode = new ArrayList<>();
-
-    private ArrayList<Song> songs = new ArrayList<>();
-
+    private ArrayList<MediaEntity> songs = new ArrayList<>();
 
     private final long TIME_TO_UPDATE_SEEKBAR = 1000;
     private int mCurrentValueSeekbar;
@@ -119,15 +111,14 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public void getDataBundle(Bundle savedInstanceState) {
         super.getDataBundle(savedInstanceState);
         bindTPlayerService();
+        startTPlayerService();
 
-        Intent in = getIntent();
-        Bundle bundle = in.getBundleExtra(EXTRA_DATA_PLAYER);
-        if (bundle != null) {
-            mListDataCode = bundle.getParcelableArrayList(BUNDLE_DATA_ONLINE);
-            Intent intent = new Intent(this, LoadListDataCodeService.class);
-            intent.putParcelableArrayListExtra(LoadListDataCodeService.EXTRA_DATA_CODE,
-                    (ArrayList<? extends Parcelable>) mListDataCode);
-            startService(intent);
+        if (getIntent() != null) {
+            Bundle bundle = getIntent().getBundleExtra(EXTRA_DATA_PLAYER);
+            if (bundle != null) {
+                songs = bundle.getParcelableArrayList(BUNDLE_DATA_ONLINE);
+                LogUtils.printLog("Client_onLoadDataZingComplete : size = " + songs.size());
+            }
         }
     }
 
@@ -160,6 +151,23 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         mPresenter = new PlayerPresenterImpl();
         mPresenter.onSubcireInteractor(new PlayerInteractorImpl(this));
         mPresenter.onSubcireView(this);
+        LogUtils.printLog("createPresenterImpl");
+
+    }
+
+    @Override
+    public void serviceConnected() {
+        super.serviceConnected();
+        if (getPlayerService() != null) {
+            mPresenter.setService(getPlayerService());
+            LogUtils.printLog("getPlayerService != nu");
+            if (songs != null && mAdapter != null) {
+                mAdapter.setDatas(songs);
+                mPresenter.setPlayLists(songs);
+                mPresenter.startSongPosition(0);
+                LogUtils.printLog("start");
+            }
+        }
     }
 
     @Override
@@ -171,7 +179,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
     @Override
     public void onRecyclerViewItemClick(View view, BaseEntity baseEntity, int position) {
-        LogUtils.printLog("Client_onRecyclerViewItemClick : " + baseEntity.toString());
+
     }
 
 
@@ -208,10 +216,12 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public void onProgressChanged(DiscreteSeekBar seekBar, int value, boolean fromUser) {
         if (fromUser) {
             LogUtils.printLog("Client_seekbar_onProgressChanged = " + value);
+            resetSeekbar();
             mCurrentValueSeekbar = value;
             mPresenter.seekToPosition(value);
             seekBar.setProgress(value);
             seekBar.setIndicatorFormatter(DateTimeUtils.formatMinuteSecond(value));
+            mHandler.post(runUpdateSeekbar);
         }
     }
 
@@ -227,16 +237,19 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
 
     @Override
-    public void onRemotePlayNewSong(Song song) {
+    public void onRemotePlayNewSong(MediaEntity song) {
         LogUtils.printLog("Client_onRemotePlayNewSong :" + song.toString());
-        mTxtSongName.setText(song._title);
-        mTxtSongArtist.setText(song.artist_name);
+        mTxtSongName.setText(song.title);
+        mTxtSongArtist.setText(song.artist);
+        mImvPlayPause.setSelected(true);
+        ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
+        ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
 
-        ImageUtils.loadRoundImage(this, song.artist_art, mImvArtistCover);
-        ImageUtils.loadImageBasic(this, song._art, mImvSongCover);
+        song.isPlaying= true;
+        mAdapter.notifyItem(song);
+
         resetSeekbar();
         mHandler.postDelayed(runUpdateSeekbar, 100);
-
     }
 
     int duration = 0;
@@ -256,35 +269,31 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     }
 
     @Override
-    public void onLoadDataZingComplete(ArrayList<Song> songs) {
-        LogUtils.printLog("Client_onLoadDataZingComplete : size = " + songs.size());
-        mAdapter.setDatas(songs);
-        mPresenter.setPlayLists(songs);
-        mPresenter.startSongPosition(0);
-    }
-
-    @Override
-    public void onDownloadLyricComplete(File lyric) {
+    public void onLoadLyricComplete(File lyric) {
         LogUtils.printLog("Client_onDownloadLyricComplete : file = " + lyric.toString());
+
         File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
+        LogUtils.printLog(file.getAbsolutePath());
         FileOutputStream fos;
-        byte[] data = new String("data to write to file").getBytes();
+        byte[] data = new String(lyric.toString()).getBytes();
         try {
             fos = new FileOutputStream(file);
             fos.write(data);
             fos.flush();
             fos.close();
 
-            File getFile = new File(Environment.getExternalStorageDirectory()+ "/temp.lrc");
+            File getFile = new File(Environment.getExternalStorageDirectory() + "/temp.lrc");
             mLyricView.setLyricFile(getFile);
+
             mLyricView.setCurrentTimeMillis(mCurrentValueSeekbar);
-            
+
             mLyricView.setOnPlayerClickListener(new LyricView.OnPlayerClickListener() {
                 @Override
                 public void onPlayerClicked(long progress, String content) {
-                    LogUtils.printLog("ihihi" +  progress + " " + content);
+                    LogUtils.printLog("ihihi" + progress + " " + content);
                 }
             });
+
 
         } catch (FileNotFoundException e) {
             // handle exception
@@ -300,6 +309,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
             mCurrentValueSeekbar += TIME_TO_UPDATE_SEEKBAR;
             mSeekbar.setProgress(mCurrentValueSeekbar);
             mHandler.postDelayed(runUpdateSeekbar, TIME_TO_UPDATE_SEEKBAR);
+            mLyricView.setCurrentTimeMillis(mCurrentValueSeekbar);
         }
     };
 

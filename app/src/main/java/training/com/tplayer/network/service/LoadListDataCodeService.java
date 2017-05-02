@@ -6,7 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ import training.com.tplayer.utils.LogUtils;
 import training.com.tplayer.utils.SongConverterUtils;
 
 /**
- * Created by hnc on 18/04/2017.
+ * Created by ThoNH on 18/04/2017.
  */
 
 public class LoadListDataCodeService extends IntentService {
@@ -30,7 +30,7 @@ public class LoadListDataCodeService extends IntentService {
     public static final String EXTRA_CALL_BACK = "extra.call.back";
     public static final String ACTION_CALL_BACK_SONG = "training.com.tplayer.action.call.back.song";
 
-    private ArrayList<Song> songs = new ArrayList<>();
+    private ArrayList<MediaEntity> songs = new ArrayList<>();
 
     private RetrofitApiRequest retrofitApiRequest;
 
@@ -42,6 +42,7 @@ public class LoadListDataCodeService extends IntentService {
 
     @Override
     public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
+        LogUtils.printLog("onStartCommand");
         return super.onStartCommand(intent, flags, startId);
     }
 
@@ -57,7 +58,7 @@ public class LoadListDataCodeService extends IntentService {
                     Call<SongOnlineEntity> call = retrofitApiRequest.getDataSource(dataCodeEntity.dataCode);
                     try {
                         Response<SongOnlineEntity> execute = call.execute();
-                        Song song = SongConverterUtils.convert(execute.body());
+                        MediaEntity song = SongConverterUtils.convert(execute.body());
                         songs.add(song);
                     } catch (IOException e) {
                         e.printStackTrace();
@@ -75,6 +76,7 @@ public class LoadListDataCodeService extends IntentService {
         callBackIntent.putExtra(EXTRA_CALL_BACK, songs);
         callBackIntent.setAction(ACTION_CALL_BACK_SONG);
         LocalBroadcastManager.getInstance(LoadListDataCodeService.this).sendBroadcast(callBackIntent);
+        LogUtils.printLog("onDestroy");
         super.onDestroy();
     }
 }

@@ -1,14 +1,14 @@
 package com.remote.communication;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 interface IMyAidlInterface {
 
-   void setSong(in Song song);
+   void setSong(in MediaEntity song);
 
    void startSongPosition(int position);
 
-   void setPlayList(in List<Song> playLists);
+   void setPlayList(in List<MediaEntity> playLists);
 
    int getDuration();
 
@@ -25,4 +25,10 @@ interface IMyAidlInterface {
    boolean playPause();
 
    void repeat();
+
+   void addNextNowPlaying(in MediaEntity entity);
+
+   void addNowPlaying(in MediaEntity entity) ;
+
+   void addListNowPlaying(in List<MediaEntity> entity) ;
 }

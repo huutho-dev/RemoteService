@@ -9,7 +9,7 @@ import java.util.List;
 import training.com.tplayer.base.BaseEntity;
 
 /**
- * Created by hnc on 12/04/2017.
+ * Created by ThoNH on 12/04/2017.
  */
 
 public abstract class DatabaseSource<E extends BaseEntity> {

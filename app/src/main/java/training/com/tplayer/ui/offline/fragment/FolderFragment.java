@@ -8,19 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
-import com.remote.communication.MediaEntity;
-
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseFragment;
+import training.com.tplayer.database.SourceTableMedia;
 import training.com.tplayer.ui.adapter.offline.FolderAdapter;
 import training.com.tplayer.ui.entity.offline.FolderEntity;
+import training.com.tplayer.utils.LogUtils;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class FolderFragment extends BaseFragment implements FolderAdapter.FolderAdapterListener {
@@ -48,13 +48,24 @@ public class FolderFragment extends BaseFragment implements FolderAdapter.Folder
         mAdapter = new FolderAdapter(mContext, this);
         mRvFolder.setLayoutManager(new LinearLayoutManager(mContext));
         mRvFolder.setAdapter(mAdapter);
-        loadDataTask.execute();
+
+
+        new AsyncTask<Void, Void, List<FolderEntity>>() {
+            @Override
+            protected List<FolderEntity> doInBackground(Void... params) {
+                return SourceTableMedia.getInstance(mContext).getListFolder();
+            }
+
+            @Override
+            protected void onPostExecute(List<FolderEntity> folderEntities) {
+                super.onPostExecute(folderEntities);
+                LogUtils.printLog(folderEntities.toString());
+                mAdapter.setDatas(folderEntities);
+            }
+        }.execute();
     }
 
-    @Override
-    public void onRecyclerViewItemClick(View view, MediaEntity mediaEntity, int position) {
 
-    }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
@@ -73,16 +84,9 @@ public class FolderFragment extends BaseFragment implements FolderAdapter.Folder
         return super.onContextItemSelected(item);
     }
 
-    private AsyncTask<Void, Void, List<FolderEntity>> loadDataTask = new AsyncTask<Void, Void, List<FolderEntity>>() {
-        @Override
-        protected List<FolderEntity> doInBackground(Void... params) {
-            return null;
-        }
 
-        @Override
-        protected void onPostExecute(List<FolderEntity> mediaEntities) {
-            super.onPostExecute(mediaEntities);
-            mAdapter.setDatas(mediaEntities);
-        }
-    };
+    @Override
+    public void onRecyclerViewItemClick(View view, FolderEntity folderEntity, int position) {
+
+    }
 }

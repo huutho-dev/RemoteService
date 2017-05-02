@@ -6,14 +6,12 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.support.v4.content.LocalBroadcastManager;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import java.io.File;
-import java.util.ArrayList;
 
 import training.com.tplayer.app.Config;
 import training.com.tplayer.base.mvp.BaseInteractorImpl;
-import training.com.tplayer.network.service.LoadListDataCodeService;
 
 /**
  * Created by ThoNH on 4/16/2017.
@@ -28,7 +26,7 @@ public class PlayerInteractorImpl extends BaseInteractorImpl implements PlayerCo
             switch (intent.getAction()) {
 
                 case Config.ACTION_PLAYER_START_PLAY:
-                    Song song = intent.getParcelableExtra(Config.ACTION_PLAYER_START_PLAY);
+                    MediaEntity song = intent.getParcelableExtra(Config.ACTION_PLAYER_START_PLAY);
                     int i = intent.getIntExtra(Config.ACTION_PLAYER_BUFFER,-1);
                     mOnPlayerListener.onBufferPlayNewSong( i);
                     mOnPlayerListener.onRemotePlayNewSong(song);
@@ -46,14 +44,6 @@ public class PlayerInteractorImpl extends BaseInteractorImpl implements PlayerCo
         }
     };
 
-    private BroadcastReceiver mLoadDataFromZing = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            ArrayList<Song> songs =
-                    intent.getParcelableArrayListExtra(LoadListDataCodeService.EXTRA_CALL_BACK);
-            mOnPlayerListener.onLoadZingComplete(songs);
-        }
-    };
 
     private PlayerContracts.IOnPlayerListener mOnPlayerListener;
 
@@ -66,11 +56,6 @@ public class PlayerInteractorImpl extends BaseInteractorImpl implements PlayerCo
         filterRemote.addAction(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);
         LocalBroadcastManager.getInstance(mContext).registerReceiver(mRemoteServiceReceiver, filterRemote);
 
-        IntentFilter filterZing = new IntentFilter();
-        filterZing.addAction(LoadListDataCodeService.ACTION_CALL_BACK_SONG);
-        LocalBroadcastManager.getInstance(mContext).registerReceiver(mLoadDataFromZing, filterZing);
-
-        mContext.registerReceiver(mLoadDataFromZing, filterZing);
         mContext.registerReceiver(mRemoteServiceReceiver, filterRemote);
     }
 
@@ -80,7 +65,6 @@ public class PlayerInteractorImpl extends BaseInteractorImpl implements PlayerCo
 
     @Override
     public void onUnregisterBroadcast() {
-        mContext.unregisterReceiver(mLoadDataFromZing);
         mContext.unregisterReceiver(mRemoteServiceReceiver);
     }
 }

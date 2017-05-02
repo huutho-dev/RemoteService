@@ -62,81 +62,81 @@ public class PlaylistMemberEntity extends BaseEntity {
 
     public static class Builder {
 
-        private int mId;
+        public int mId;
 
-        private int id ;
+        public int id ;
 
-        private String album;
+        public String album;
 
-        private int albumId;
+        public int albumId;
 
-        private int artistId;
+        public int artistId;
 
-        private String artist;
+        public String artist;
 
-        private int audioId;
+        public int audioId;
 
-        private int size;
+        public int size;
 
-        private String title;
+        public String title;
 
-        private String data;
+        public String data;
 
-        private int playListId;
+        public int playListId;
 
-        private String displayName ;
+        public String displayName ;
 
-        private String MIMEType ;
+        public String MIMEType ;
 
-        private int dateAdded ;
+        public int dateAdded ;
 
-        private Builder setMId(int mId) {
+        public Builder setMId(int mId) {
             this.mId = mId;
             return this;
         }
-        private Builder setId (int id){
+        public Builder setId (int id){
             this.id = id;
             return this;
         }
-        private Builder setTitle(String title){
+        public Builder setTitle(String title){
             this.title = title;
             return this;
         }
-        private Builder setSize(int size){
+        public Builder setSize(int size){
             this.size = size;
             return this;
         }
-        private Builder setPlaylistId(int id){
+        public Builder setPlaylistId(int id){
             this.playListId = id;
             return this;
         }
-        private Builder setDisplayName(String displayName){
+        public Builder setDisplayName(String displayName){
             this.displayName = displayName;
             return this;
         }
-        private Builder setMIMEType(String mimeType){
+        public Builder setMIMEType(String mimeType){
             this.MIMEType = mimeType;
             return this;
         }
-        private Builder setDateAdded(int dateAdded){
+        public Builder setDateAdded(int dateAdded){
             this.dateAdded = dateAdded ;
             return this;
         }
-        private Builder setAlbum(String album) {
+        public Builder setAlbum(String album) {
             this.album = album;
             return this;
-        }private Builder setAlbumId(int id) {
+        }public Builder setAlbumId(int id) {
             this.albumId = id;
             return this;
-        }private Builder setArtistId(int id) {
+        }public Builder setArtistId(int id) {
             this.artistId = id;
             return this;
         }
-        private Builder setAudioId(int id){
+        public Builder setAudioId(int id){
             this.audioId = id ;
             return this;
         }
-        private Builder setArtist(String artist) {
+        public Builder setArtist(String artist) {
             this.artist = artist;
             return this;
         }

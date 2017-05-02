@@ -5,7 +5,7 @@ import android.os.Parcel;
 import training.com.tplayer.base.BaseEntity;
 
 /**
- * Created by hnc on 17/04/2017.
+ * Created by ThoNH on 17/04/2017.
  */
 
 public class DataCodeEntity extends BaseEntity {

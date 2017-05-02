@@ -17,7 +17,7 @@ import training.com.tplayer.ui.entity.HotSongOnlEntity;
 import training.com.tplayer.utils.ImageUtils;
 
 /**
- * Created by hnc on 13/04/2017.
+ * Created by ThoNH on 13/04/2017.
  */
 
 public class HotHightLightAdapter extends BaseRecyclerViewAdapter<HotSongOnlEntity, HotHightLightAdapter.ViewHolder> {

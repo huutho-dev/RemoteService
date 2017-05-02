@@ -12,7 +12,7 @@ import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.utils.LogUtils;
 
 /**
- * Created by hnc on 05/04/2017.
+ * Created by ThoNH on 05/04/2017.
  */
 
 public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends BaseViewHolder> extends RecyclerView.Adapter<VH> {

@@ -6,19 +6,27 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.remote.communication.MediaEntity;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
+import training.com.tplayer.custom.TextViewRoboto;
+import training.com.tplayer.utils.ImageUtils;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapter.ViewHolder> {
+
+    public int positionContext = -1 ;
+
 
     public interface SongAdapterListener extends IRecyclerViewOnItemClickListener<MediaEntity> {
     }
@@ -34,15 +42,44 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
+        MediaEntity entity = getDataItem(position);
+        if (entity.art !=null && !entity.art.equals(""))
+            ImageUtils.loadRoundImage(mContext, entity.art, holder.mArt);
+        else
+            ImageUtils.loadRoundImage(mContext, R.drawable.dummy_image, holder.mArt);
 
+        holder.mTitle.setText(entity.title);
+        holder.mArtist.setText(entity.artist);
+        holder.mArt.setOnLongClickListener(null);
     }
 
 
     public class ViewHolder extends BaseViewHolder implements View.OnCreateContextMenuListener {
+        @BindView(R.id.item_fragment_song_art)
+        ImageView mArt;
+        @BindView(R.id.item_fragment_song_title)
+        TextViewRoboto mTitle;
+        @BindView(R.id.item_fragment_Song_artist)
+        TextViewRoboto mArtist;
+        @BindView(R.id.item_fragment_song_context_menu)
+        ImageView mCtxMenu;
+
         public ViewHolder(View itemView) {
             super(itemView);
+            ButterKnife.bind(this, itemView);
+            mCtxMenu.setOnCreateContextMenuListener(this);
+            mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    positionContext = getAdapterPosition();
+                    return false;
+                }
+            });
+        }
 
-            itemView.setOnCreateContextMenuListener(this);
+
+        public int getCtxPosition(){
+            return positionContext;
         }
 
 
@@ -51,8 +88,8 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
             menu.add(Menu.NONE, R.id.action_add_to_first_now_playing, Menu.NONE, R.string.context_menu_song_first_now_playings);
             menu.add(Menu.NONE, R.id.action_add_to_now_plays, Menu.NONE, R.string.context_menu_song_now_playings);
             menu.add(Menu.NONE, R.id.action_add_playlist, Menu.NONE, R.string.context_menu_song_to_playlist);
-            menu.add(Menu.NONE, R.id.action_set_is_rington, Menu.NONE, R.string.context_menu_set_rington);
-            menu.add(Menu.NONE, R.id.action_delete, Menu.NONE, R.string.context_menu_delete);
+            menu.add(Menu.NONE, R.id.action_set_is_rington, Menu.NONE, R.string.context_menu_song_set_rington);
+            menu.add(Menu.NONE, R.id.action_delete, Menu.NONE, R.string.context_menu_song_delete);
         }
     }
 }

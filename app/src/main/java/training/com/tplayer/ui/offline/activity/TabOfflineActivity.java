@@ -2,6 +2,8 @@ package training.com.tplayer.ui.offline.activity;
 
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
 
@@ -12,10 +14,10 @@ import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.ui.adapter.offline.OfflinePagerAdapter;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
-public class TabOfflineActivity extends BaseActivity {
+public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     public static final String KEY_TAB = "key.tab";
     public static final int TAB_SONG = 0;
@@ -31,6 +33,9 @@ public class TabOfflineActivity extends BaseActivity {
     @BindView(R.id.act_offline_viewpager)
     ViewPager mViewPager;
 
+    @BindView(R.id.act_offline_toolbar)
+    Toolbar mToolbar ;
+
     private OfflinePagerAdapter mAdapter;
 
     private int mCurrentTab = TAB_SONG;
@@ -43,8 +48,12 @@ public class TabOfflineActivity extends BaseActivity {
     @Override
     public void onBindView() {
         ButterKnife.bind(this);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mAdapter = new OfflinePagerAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
+        mViewPager.addOnPageChangeListener(this);
         mTabLayout.setViewPager(mViewPager);
     }
 
@@ -54,6 +63,7 @@ public class TabOfflineActivity extends BaseActivity {
         if (getIntent() != null) {
             mCurrentTab = getIntent().getIntExtra(KEY_TAB,TAB_SONG);
             mViewPager.setCurrentItem(mCurrentTab);
+            mToolbar.setTitle(mAdapter.getPageTitle(mCurrentTab));
         }
 
     }
@@ -61,11 +71,40 @@ public class TabOfflineActivity extends BaseActivity {
 
     @Override
     public void onActivityCreated() {
-
+        bindTPlayerService();
     }
 
     @Override
     protected void createPresenterImpl() {
 
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+    }
+
+    @Override
+    public void onPageSelected(int position) {
+        mToolbar.setTitle(mAdapter.getPageTitle(position));
+    }
+
+    @Override
+    public void onPageScrollStateChanged(int state) {
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }

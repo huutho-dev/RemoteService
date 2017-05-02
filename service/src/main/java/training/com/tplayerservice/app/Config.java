@@ -1,7 +1,7 @@
 package training.com.tplayerservice.app;
 
 /**
- * Created by hnc on 18/04/2017.
+ * Created by ThoNH on 18/04/2017.
  */
 
 public class Config {

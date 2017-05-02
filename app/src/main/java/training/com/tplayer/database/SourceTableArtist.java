@@ -30,6 +30,7 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
     @Override
     public List<ArtistEntity> getList() {
         List<ArtistEntity> entities = new ArrayList<>();
+        openDb();
         Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ARTIST, null, null, null, null, null, null);
 
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn.MID);
@@ -48,9 +49,10 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
             entity.numberOfAlbum = Integer.parseInt(cursor.getString(numberOfAlbumIndex));
             entity.numberOfTrack = Integer.parseInt(cursor.getString(numberOfTrackIndex));
 
+            entities.add(entity);
             cursor.moveToNext();
         }
-
+        closeDb();
         if (!cursor.isClosed())
             cursor.close();
         return entities;
@@ -60,7 +62,7 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
     public ArtistEntity getRow(String selection, String[] selectionArgs) {
         ArtistEntity entity = new ArtistEntity();
         openDb();
-        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ARTIST,null,selection,selectionArgs,null,null, null);
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ARTIST, null, selection, selectionArgs, null, null, null);
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._ID);
         int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._ARTIST);
@@ -83,28 +85,36 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
 
     @Override
     public long insertRow(ArtistEntity entity) {
-        return getSqlDb().insert(DataBaseUtils.TABLE_ARTIST, null, convertEntity2ContentValue(entity));
+        openDb();
+        long insert = getSqlDb().insert(DataBaseUtils.TABLE_ARTIST, null, convertEntity2ContentValue(entity));
+        closeDb();
+        return insert;
     }
 
     @Override
     public int deleteRow(ArtistEntity entity) {
-        return getSqlDb().delete(DataBaseUtils.TABLE_ARTIST,
-                DataBaseUtils.DbStoreMediaColumn.MID,
+        openDb();
+        int delete = getSqlDb().delete(DataBaseUtils.TABLE_ARTIST,
+                DataBaseUtils.DbStoreMediaColumn.MID + "=?",
                 new String[]{String.valueOf(entity.mId)});
+        closeDb();
+        return delete;
     }
 
     @Override
     public int updateRow(ArtistEntity entity) {
-        return getSqlDb().update(DataBaseUtils.TABLE_ARTIST,
+        openDb();
+        int update = getSqlDb().update(DataBaseUtils.TABLE_ARTIST,
                 convertEntity2ContentValue(entity),
-                DataBaseUtils.DbStoreMediaColumn.MID,
-                new String[]{String.valueOf(entity.mId)});
+                DataBaseUtils.DbStoreMediaColumn._ID + "=?",
+                new String[]{String.valueOf(entity.id)});
+        closeDb();
+        return update;
     }
 
     @Override
     public ContentValues convertEntity2ContentValue(ArtistEntity entity) {
         ContentValues values = new ContentValues();
-        values.put(DataBaseUtils.DbStoreArtistColumn.MID, entity.mId);
         values.put(DataBaseUtils.DbStoreArtistColumn._ID, entity.id);
         values.put(DataBaseUtils.DbStoreArtistColumn._ARTIST, entity.author);
         values.put(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_ALBUMS, entity.numberOfAlbum);

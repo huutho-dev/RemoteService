@@ -13,7 +13,7 @@ import training.com.tplayer.base.mvp.BasePresenterImpl;
 import training.com.tplayer.base.mvp.BaseView;
 
 /**
- * Created by hnc on 05/04/2017.
+ * Created by ThoNH on 05/04/2017.
  */
 
 public abstract class BaseFragment<PresenterImpl extends BasePresenterImpl> extends Fragment implements BaseView {

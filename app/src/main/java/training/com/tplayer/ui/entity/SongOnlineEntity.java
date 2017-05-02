@@ -3,7 +3,7 @@ package training.com.tplayer.ui.entity;
 import java.util.List;
 
 /**
- * Created by hnc on 17/04/2017.
+ * Created by ThoNH on 17/04/2017.
  */
 
 public class SongOnlineEntity {

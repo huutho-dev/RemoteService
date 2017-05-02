@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.remote.communication.Song;
+import com.remote.communication.MediaEntity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,10 +18,10 @@ import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.utils.ImageUtils;
 
 /**
- * Created by hnc on 17/04/2017.
+ * Created by ThoNH on 17/04/2017.
  */
 
-public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<Song, PlayListInPlayerAdapter.ViewHolder> {
+public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<MediaEntity, PlayListInPlayerAdapter.ViewHolder> {
 
     public interface PlayListInPlayerAdapterListener extends IRecyclerViewOnItemClickListener {
 
@@ -38,12 +38,12 @@ public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<Song, PlayL
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, int position) {
-        Song song = getDataItem(position);
-        holder.mTxtSongName.setText(song._title);
-        holder.mTxtSongArtist.setText(song.artist_name);
+        MediaEntity song = getDataItem(position);
+        holder.mTxtSongName.setText(song.title);
+        holder.mTxtSongArtist.setText(song.artist);
         holder.mImvStatePlay.setActivated(song.isPlaying);
         holder.mImvStatePlay.setBackground(mContext.getResources().getDrawable(R.drawable.background_play_state));
-        ImageUtils.loadImagePlayList(mContext, song._art, holder.mImvArtist);
+        ImageUtils.loadImagePlayList(mContext, song.art, holder.mImvArtist);
     }
 
     public class ViewHolder extends BaseViewHolder {

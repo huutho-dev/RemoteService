@@ -13,7 +13,7 @@ import training.com.tplayer.network.html.base.IOnLoadSuccess;
 import training.com.tplayer.ui.entity.DataCodeEntity;
 
 /**
- * Created by hnc on 17/04/2017.
+ * Created by ThoNH on 17/04/2017.
  */
 
 public class GetDataCodeTask extends BaseAsyncTask<DataCodeEntity> {

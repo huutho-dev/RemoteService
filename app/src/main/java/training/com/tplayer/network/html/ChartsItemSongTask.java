@@ -12,7 +12,7 @@ import training.com.tplayer.ui.entity.HotSongOnlEntity;
 import training.com.tplayer.utils.ZingHtmlUtils;
 
 /**
- * Created by hnc on 14/04/2017.
+ * Created by ThoNH on 14/04/2017.
  */
 
 public class ChartsItemSongTask extends BaseAsyncTask<HotSongOnlEntity> {

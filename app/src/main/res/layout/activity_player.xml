@@ -8,8 +8,9 @@
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -33,10 +34,10 @@
 
                     <ImageView
                         android:id="@+id/act_player_cover_image"
-                        android:src="@drawable/dummy_image"
-                        android:scaleType="centerCrop"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent" />
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/dummy_image" />
 
                     <RelativeLayout
                         android:id="@+id/layout_all_control"
@@ -52,7 +53,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/spacing_7_56dp"
                             android:gravity="center"
-                            android:text="Lạc Trôi"
+                            android:text="Loading...."
                             android:textColor="#fff"
                             android:textSize="@dimen/text_4_medium_16sp"
                             app:textFonts="RobotoBold" />
@@ -63,7 +64,7 @@
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/act_player_song_name"
                             android:gravity="center"
-                            android:text="Sơn Tùng - MTP"
+                            android:text="Loading..."
                             android:textColor="#fff"
                             android:textSize="@dimen/text_3_14sp"
                             app:textFonts="RobotoRegular" />
@@ -98,7 +99,11 @@
                             android:layout_marginBottom="@dimen/spacing_1_8dp"
                             android:background="@color/colorTransParent"
                             app:fadeInFadeOut="true"
+                            app:highlightColor="@color/colorAccent"
                             app:hint="No Lyrics"
+                            app:lineSpace="@dimen/text_4_medium_16sp"
+                            app:textAlign="center"
+                            app:textColor="@color/colorWhite"
                             app:textSize="@dimen/text_3_14sp" />
 
 
@@ -110,9 +115,9 @@
                             android:layout_marginLeft="@dimen/spacing_4_32dp"
                             android:layout_marginRight="@dimen/spacing_4_32dp"
                             android:scrollbarStyle="insideInset"
+                            android:soundEffectsEnabled="true"
                             app:dsb_indicatorPopupEnabled="true"
                             app:dsb_progressColor="@color/colorAccent"
-                            android:soundEffectsEnabled="true"
                             app:dsb_rippleColor="@color/colorPrimaryDark" />
 
                         <RelativeLayout
@@ -176,16 +181,15 @@
                 </FrameLayout>
 
 
-
             </android.support.design.widget.CollapsingToolbarLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/act_player_play_list"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_scrollFlags="exitUntilCollapsed"
                 android:paddingBottom="100dp"
-                android:paddingTop="@dimen/spacing_1_8dp" />
+                android:paddingTop="@dimen/spacing_1_8dp"
+                app:layout_scrollFlags="exitUntilCollapsed" />
 
         </android.support.design.widget.AppBarLayout>
 

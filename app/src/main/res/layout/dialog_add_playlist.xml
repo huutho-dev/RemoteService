@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginLeft="@dimen/spacing_1_6dp"
+    android:layout_marginRight="@dimen/spacing_1_6dp"
+    android:layout_marginTop="@dimen/spacing_1_6dp"
+    android:minHeight="300dp"
+    android:minWidth="360dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_marginTop="@dimen/spacing_4_32dp"
+        android:layout_marginLeft="@dimen/spacing_1_8dp"
+        android:layout_marginRight="@dimen/spacing_1_8dp"
+        android:id="@+id/layout_add_new"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/dialog_btn_add_new_playlist"
+            android:layout_width="@dimen/spacing_6_default_48dp"
+            android:layout_height="@dimen/spacing_6_default_48dp"
+            android:background="@color/colorPrimary"
+            android:padding="@dimen/spacing_1_8dp"
+            android:src="@drawable/ic_add_playlists" />
+
+        <EditText
+            android:id="@+id/dialog_edt_add_new_playlist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/spacing_9_72dp"
+            android:hint="@string/dialog_create_new_playlist" />
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/dialog_rv_add_playlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/layout_add_new"
+        android:layout_marginTop="@dimen/spacing_1_8dp" />
+
+</RelativeLayout>

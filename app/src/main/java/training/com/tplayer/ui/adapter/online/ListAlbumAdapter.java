@@ -20,7 +20,7 @@ import training.com.tplayer.ui.entity.AlbumBasicEntity;
 import training.com.tplayer.utils.ImageUtils;
 
 /**
- * Created by hnc on 18/04/2017.
+ * Created by ThoNH on 18/04/2017.
  */
 
 public class ListAlbumAdapter  extends BaseRecyclerViewAdapter<AlbumBasicEntity, ListAlbumAdapter.ViewHolder> {

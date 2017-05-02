@@ -6,7 +6,7 @@ import android.util.AttributeSet;
 import com.imangazaliev.circlemenu.CircleMenu;
 
 /**
- * Created by hnc on 14/04/2017.
+ * Created by ThoNH on 14/04/2017.
  */
 
 public class MyCM extends CircleMenu {

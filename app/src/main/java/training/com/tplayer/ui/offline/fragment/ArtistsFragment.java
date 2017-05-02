@@ -21,7 +21,7 @@ import training.com.tplayer.ui.adapter.offline.ArtistAdapter;
 import training.com.tplayer.utils.LogUtils;
 
 /**
- * Created by hnc on 28/04/2017.
+ * Created by ThoNH on 28/04/2017.
  */
 
 public class ArtistsFragment extends BaseFragment implements ArtistAdapter.ArtistAdapterListener {
@@ -50,7 +50,20 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
         mAdapter = new ArtistAdapter(mContext, this);
         mRvArtist.setLayoutManager(new LinearLayoutManager(mContext));
         mRvArtist.setAdapter(mAdapter);
-        loadDataTask.execute();
+
+
+        new AsyncTask<Void, Void, List<ArtistEntity>>() {
+            @Override
+            protected List<ArtistEntity> doInBackground(Void... params) {
+                return SourceTableArtist.getInstance(mContext).getList();
+            }
+
+            @Override
+            protected void onPostExecute(List<ArtistEntity> artistEntities) {
+                super.onPostExecute(artistEntities);
+                mAdapter.setDatas(artistEntities);
+            }
+        }.execute();
     }
 
 
@@ -78,17 +91,4 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
         }
         return super.onContextItemSelected(item);
     }
-
-    private AsyncTask<Void, Void, List<ArtistEntity>> loadDataTask = new AsyncTask<Void, Void, List<ArtistEntity>>() {
-        @Override
-        protected List<ArtistEntity> doInBackground(Void... params) {
-            return SourceTableArtist.getInstance(mContext).getList();
-        }
-
-        @Override
-        protected void onPostExecute(List<ArtistEntity> mediaEntities) {
-            super.onPostExecute(mediaEntities);
-            mAdapter.setDatas(mediaEntities);
-        }
-    };
 }

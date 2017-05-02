@@ -5,7 +5,7 @@ import android.os.Parcel;
 import training.com.tplayer.base.BaseEntity;
 
 /**
- * Created by hnc on 13/04/2017.
+ * Created by ThoNH on 13/04/2017.
  */
 
 public class DummyEntity extends BaseEntity {

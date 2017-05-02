@@ -1,11 +1,6 @@
 package training.com.tplayer.ui.main;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
-import android.provider.MediaStore;
 
 import com.imangazaliev.circlemenu.CircleMenu;
 import com.imangazaliev.circlemenu.CircleMenuButton;
@@ -67,15 +62,15 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
     public void onActivityCreated() {
 
 
-        ContentResolver contentResolver = getContentResolver();
-        Uri uriPlaylistTracks = MediaStore.Audio.Playlists.Members.getContentUri("external", 1757);
-        Cursor cursor = contentResolver.query(uriPlaylistTracks,null,null,null,null);
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()){
-            DatabaseUtils.dumpCurrentRow(cursor);
-            cursor.moveToNext();
-
-        }
+//        ContentResolver contentResolver = getContentResolver();
+//        Uri uriPlaylistTracks = MediaStore.Audio.Playlists.Members.getContentUri("external", 1757);
+//        Cursor cursor = contentResolver.query(uriPlaylistTracks,null,null,null,null);
+//        cursor.moveToFirst();
+//        while (!cursor.isAfterLast()){
+//            DatabaseUtils.dumpCurrentRow(cursor);
+//            cursor.moveToNext();
+//
+//        }
 
 
     }
