@@ -18,7 +18,7 @@
         android:layout_marginTop="16dp"
         android:background="@color/colorPrimary"
         android:scaleType="centerCrop"
-        android:padding="@dimen/spacing_1_8dp"
+        android:padding="@dimen/spacing_0_4dp"
         android:src="@drawable/ic_offline_album"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

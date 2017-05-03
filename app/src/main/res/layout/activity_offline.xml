@@ -58,17 +58,6 @@
                     android:textSize="@dimen/text_3_14sp"
                     app:textFonts="RobotoMedium" />
 
-                <training.com.tplayer.custom.TextViewRoboto
-                    android:id="@+id/act_offline_txt_number_songs"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingLeft="@dimen/spacing_2_16dp"
-                    android:paddingRight="@dimen/spacing_6_default_48dp"
-                    android:text="30"
-                    android:textSize="@dimen/text_3_14sp"
-                    app:textFonts="RobotoMedium" />
-
             </LinearLayout>
 
             <include layout="@layout/view_sepator_line" />
@@ -99,16 +88,6 @@
                     android:textSize="@dimen/text_3_14sp"
                     app:textFonts="RobotoMedium" />
 
-                <training.com.tplayer.custom.TextViewRoboto
-                    android:id="@+id/act_offline_txt_number_albums"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingLeft="@dimen/spacing_2_16dp"
-                    android:paddingRight="@dimen/spacing_6_default_48dp"
-                    android:text="30"
-                    android:textSize="@dimen/text_3_14sp"
-                    app:textFonts="RobotoMedium" />
 
             </LinearLayout>
 
@@ -137,17 +116,6 @@
                     android:paddingLeft="@dimen/spacing_2_16dp"
                     android:paddingRight="@dimen/spacing_2_16dp"
                     android:text="@string/act_offline_item_artists"
-                    android:textSize="@dimen/text_3_14sp"
-                    app:textFonts="RobotoMedium" />
-
-                <training.com.tplayer.custom.TextViewRoboto
-                    android:id="@+id/act_offline_txt_number_artists"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingLeft="@dimen/spacing_2_16dp"
-                    android:paddingRight="@dimen/spacing_6_default_48dp"
-                    android:text="30"
                     android:textSize="@dimen/text_3_14sp"
                     app:textFonts="RobotoMedium" />
 
@@ -182,17 +150,6 @@
                     android:textSize="@dimen/text_3_14sp"
                     app:textFonts="RobotoMedium" />
 
-                <training.com.tplayer.custom.TextViewRoboto
-                    android:id="@+id/act_offline_txt_number_playlists"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingLeft="@dimen/spacing_2_16dp"
-                    android:paddingRight="@dimen/spacing_6_default_48dp"
-                    android:text="30"
-                    android:textSize="@dimen/text_3_14sp"
-                    app:textFonts="RobotoMedium" />
-
             </LinearLayout>
 
             <include layout="@layout/view_sepator_line" />
@@ -221,16 +178,6 @@
                     android:paddingLeft="@dimen/spacing_2_16dp"
                     android:paddingRight="@dimen/spacing_2_16dp"
                     android:text="@string/act_offline_item_folder"
-                    android:textSize="@dimen/text_3_14sp"
-                    app:textFonts="RobotoMedium" />
-
-                <training.com.tplayer.custom.TextViewRoboto
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingLeft="@dimen/spacing_2_16dp"
-                    android:paddingRight="@dimen/spacing_6_default_48dp"
-                    android:text="30"
                     android:textSize="@dimen/text_3_14sp"
                     app:textFonts="RobotoMedium" />
 
@@ -266,15 +213,6 @@
                     android:textSize="@dimen/text_3_14sp"
                     app:textFonts="RobotoMedium" />
 
-                <training.com.tplayer.custom.TextViewRoboto
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:paddingLeft="@dimen/spacing_2_16dp"
-                    android:paddingRight="@dimen/spacing_6_default_48dp"
-                    android:text="30"
-                    android:textSize="@dimen/text_3_14sp"
-                    app:textFonts="RobotoMedium" />
 
             </LinearLayout>
 

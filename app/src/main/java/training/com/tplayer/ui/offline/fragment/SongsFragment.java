@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -22,6 +23,7 @@ import com.remote.communication.MediaEntity;
 import com.remote.communication.PlaylistEntity;
 import com.remote.communication.PlaylistMemberEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -43,6 +45,13 @@ import training.com.tplayer.utils.LogUtils;
  */
 
 public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapterListener {
+
+    public static final String BUNDLE_FROM_WHERE = "bundle.from.where";
+    public static final String BUNDLE_FROM_ALBUM = "bundle.from.album";
+    public static final String BUNDLE_FROM_ARTIST = "bundle.from.artist";
+    public static final String BUNDLE_FROM_PLAYLIST = "bundle.from.playlist";
+    public static final String BUNDLE_FROM_FOLDER = "bundle.from.folder";
+
     @BindView(R.id.fragment_offline_rv_songs)
     RecyclerView mRvSong;
 
@@ -56,6 +65,28 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         fragment.setArguments(args);
         return fragment;
     }
+
+    public static SongsFragment newInstance(String fromWhere, List<MediaEntity> entityList) {
+        Bundle args = new Bundle();
+
+        args.putString(BUNDLE_FROM_WHERE, fromWhere);
+
+        if (fromWhere.equals(BUNDLE_FROM_ALBUM)) {
+            args.putParcelableArrayList(BUNDLE_FROM_ALBUM, (ArrayList<? extends Parcelable>) entityList);
+
+        } else if (fromWhere.equals(BUNDLE_FROM_ARTIST)) {
+            args.putParcelableArrayList(BUNDLE_FROM_ARTIST, (ArrayList<? extends Parcelable>) entityList);
+
+        } else if (fromWhere.equals(BUNDLE_FROM_PLAYLIST)) {
+            args.putParcelableArrayList(BUNDLE_FROM_PLAYLIST, (ArrayList<? extends Parcelable>) entityList);
+        }
+
+        SongsFragment fragment = new SongsFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+    private String fromWhere;
 
     @Override
     public int setLayoutId() {
@@ -73,19 +104,30 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         mRvSong.setLayoutManager(new LinearLayoutManager(mContext));
         mRvSong.setAdapter(mAdapter);
 
-        new AsyncTask<Void, Void, List<MediaEntity>>() {
-            @Override
-            protected List<MediaEntity> doInBackground(Void... params) {
-                return SourceTableMedia.getInstance(mContext).getList();
-            }
+        Bundle bundle = getArguments();
+        if (bundle != null) {
+            fromWhere = bundle.getString(BUNDLE_FROM_WHERE);
+            List<MediaEntity> entityList;
+            if (fromWhere != null)
 
-            @Override
-            protected void onPostExecute(List<MediaEntity> mediaEntities) {
-                super.onPostExecute(mediaEntities);
-                LogUtils.printLog(mediaEntities.toString());
-                mAdapter.setDatas(mediaEntities);
-            }
-        }.execute();
+                switch (fromWhere) {
+                    case BUNDLE_FROM_ALBUM:
+                        entityList = bundle.getParcelableArrayList(BUNDLE_FROM_ALBUM);
+                        mAdapter.setDatas(entityList);
+                        break;
+                    case BUNDLE_FROM_ARTIST:
+                        entityList = bundle.getParcelableArrayList(BUNDLE_FROM_ARTIST);
+                        mAdapter.setDatas(entityList);
+                        break;
+                    case BUNDLE_FROM_PLAYLIST:
+                        entityList = bundle.getParcelableArrayList(BUNDLE_FROM_PLAYLIST);
+                        mAdapter.setDatas(entityList);
+                        break;
+                    default:
+                        loadDataFromdDatabase();
+                }
+            else loadDataFromdDatabase();
+        }
     }
 
 
@@ -133,6 +175,22 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         return super.onContextItemSelected(item);
     }
 
+    private void loadDataFromdDatabase() {
+        new AsyncTask<Void, Void, List<MediaEntity>>() {
+            @Override
+            protected List<MediaEntity> doInBackground(Void... params) {
+                return SourceTableMedia.getInstance(mContext).getList();
+            }
+
+            @Override
+            protected void onPostExecute(List<MediaEntity> mediaEntities) {
+                super.onPostExecute(mediaEntities);
+                LogUtils.printLog(mediaEntities.toString());
+                mAdapter.setDatas(mediaEntities);
+            }
+        }.execute();
+    }
+
     private void addPlaylistDialog(final MediaEntity entity) {
         final AlertDialog alertDialog = new AlertDialog.Builder(mContext).create();
         alertDialog.setTitle(R.string.dialog_add_playlist);
@@ -165,13 +223,14 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
                     long success = SourceTablePlaylist
                             .getInstance(mContext)
                             .insertRow(new PlaylistEntity(0, playlistName, (int) System.currentTimeMillis()));
+
                     if (success > 0) {
                         PlaylistEntity rowToInsertSong =
                                 SourceTablePlaylist
                                         .getInstance(mContext)
                                         .getRow(DataBaseUtils.DbStorePlaylistColumn._NAME, new String[]{playlistName});
                         long insertToPlaylist = insertToPlaylist(rowToInsertSong, entity);
-                        if (insertToPlaylist > 0) {
+                        if (insertToPlaylist != -1) {
                             Toast.makeText(mContext, R.string.dialog_add_playlist_add_success, Toast.LENGTH_SHORT).show();
                             alertDialog.dismiss();
                         } else {
@@ -210,7 +269,25 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         alertDialog.setButton(DialogInterface.BUTTON_NEGATIVE, "OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                int del = SourceTableMedia.getInstance(context).deleteRow(entity);
+
+                int del = 0;
+
+                if (fromWhere != null) {
+                    switch (fromWhere) {
+                        case BUNDLE_FROM_ALBUM:
+
+                            break;
+                        case BUNDLE_FROM_ARTIST:
+
+                            break;
+                        case BUNDLE_FROM_PLAYLIST:
+                            del = SourceTablePlaylistMember.getInstance(context).deleteRow(entity);
+                            break;
+                    }
+                } else {
+                    del = SourceTableMedia.getInstance(context).deleteRow(entity);
+                }
+
                 if (del > 0) {
                     if (adapter != null) {
                         adapter.removeData(entity);
@@ -220,6 +297,8 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
                 } else {
                     Toast.makeText(context, R.string.dialog_confirm_delete_fail, Toast.LENGTH_SHORT).show();
                 }
+
+
             }
         });
 

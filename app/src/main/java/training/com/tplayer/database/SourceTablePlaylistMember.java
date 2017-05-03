@@ -133,9 +133,12 @@ public class SourceTablePlaylistMember extends DatabaseSource<PlaylistMemberEnti
 
     @Override
     public int deleteRow(PlaylistMemberEntity entity) {
-        return getSqlDb().delete(DataBaseUtils.TABLE_PLAYLIST_MEMBER,
+        openDb();
+        int del =  getSqlDb().delete(DataBaseUtils.TABLE_PLAYLIST_MEMBER,
                 DataBaseUtils.DbStoreMediaColumn.MID + "=?",
                 new String[]{String.valueOf(entity.mId)});
+        closeDb();
+        return del;
     }
 
     @Override
@@ -166,13 +169,73 @@ public class SourceTablePlaylistMember extends DatabaseSource<PlaylistMemberEnti
         return values;
     }
 
-    public  List<MediaEntity> convertPlaylistMemberToMedia(List<PlaylistMemberEntity> list) {
+    public int deleteRow(MediaEntity entity) {
+        openDb();
+        int del =  getSqlDb().delete(DataBaseUtils.TABLE_PLAYLIST_MEMBER,
+                DataBaseUtils.DbStorePlaylistColumn.MemberColum._PLAYLIST_ID + "=?",
+                new String[]{String.valueOf(entity.mId)});
+        closeDb();
+        return del;
+    }
+
+
+    public List<PlaylistMemberEntity> getList(String selection, String[] selectionArgs) {
+        List<PlaylistMemberEntity> entities = new ArrayList<>();
+        openDb();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_PLAYLIST_MEMBER, null, selection + "=?", selectionArgs, null, null, null);
+
+        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum.MID);
+        int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ID);
+        int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ALBUM);
+        int albumIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ALBUM_ID);
+        int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ARTIST);
+        int artistIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ARTIST_ID);
+        int audioIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._AUDIO_ID);
+        int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._DATA);
+        int titleIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._TITLE);
+        int sizeIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._SIZE);
+        int playListIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._PLAYLIST_ID);
+        int displayNameIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._DISPLAY_NAME);
+        int MIMETypeIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._MIME_TYPE);
+        int dateAddedIndex = cursor.getColumnIndex(DataBaseUtils.DbStorePlaylistColumn.MemberColum._DATA_ADDED);
+
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+
+            PlaylistMemberEntity entity = new PlaylistMemberEntity();
+            entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+            entity.id = Integer.parseInt(cursor.getString(idIndex));
+            entity.album = cursor.getString(albumIndex);
+            entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
+            entity.artist = cursor.getString(artistIndex);
+            entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
+            entity.audioId = Integer.parseInt(cursor.getString(audioIdIndex));
+            entity.data = cursor.getString(dataIndex);
+            entity.title = cursor.getString(titleIndex);
+            entity.size = Integer.parseInt(cursor.getString(sizeIndex));
+            entity.playListId = Integer.parseInt(cursor.getString(playListIdIndex));
+            entity.displayName = cursor.getString(displayNameIndex);
+            entity.MIMEType = cursor.getString(MIMETypeIndex);
+            entity.dateAdded = Integer.parseInt(cursor.getString(dateAddedIndex));
+
+            entities.add(entity);
+            cursor.moveToNext();
+        }
+        closeDb();
+        if (!cursor.isClosed())
+            cursor.close();
+        return entities;
+    }
+
+
+    public List<MediaEntity> convertPlaylistMemberToMedia(List<PlaylistMemberEntity> list) {
 
         List<MediaEntity> mediaEntities = new ArrayList<>();
 
         for (int i = 0; i < list.size(); i++) {
             MediaEntity entity = new MediaEntity();
-
+            entity.mId = list.get(i).playListId;
             entity.album = list.get(i).album;
             entity.albumId = list.get(i).albumId;
             entity.artistId = list.get(i).artistId;

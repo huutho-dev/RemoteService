@@ -1,6 +1,7 @@
 package training.com.tplayer.ui.adapter.offline;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -44,13 +45,19 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
         MediaEntity entity = getDataItem(position);
         if (entity.art !=null && !entity.art.equals(""))
-            ImageUtils.loadRoundImage(mContext, entity.art, holder.mArt);
+            holder.mArt.setImageURI(Uri.parse(entity.art));
         else
             ImageUtils.loadRoundImage(mContext, R.drawable.dummy_image, holder.mArt);
 
         holder.mTitle.setText(entity.title);
         holder.mArtist.setText(entity.artist);
-        holder.mArt.setOnLongClickListener(null);
+        holder.mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                positionContext = position;
+                return false;
+            }
+        });
     }
 
 
@@ -68,13 +75,6 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
             super(itemView);
             ButterKnife.bind(this, itemView);
             mCtxMenu.setOnCreateContextMenuListener(this);
-            mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
-                @Override
-                public boolean onLongClick(View v) {
-                    positionContext = getAdapterPosition();
-                    return false;
-                }
-            });
         }
 
 

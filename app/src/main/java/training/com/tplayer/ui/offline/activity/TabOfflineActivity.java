@@ -1,6 +1,7 @@
 package training.com.tplayer.ui.offline.activity;
 
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -12,6 +13,7 @@ import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.ui.adapter.offline.OfflinePagerAdapter;
+import training.com.tplayer.utils.LogUtils;
 
 /**
  * Created by ThoNH on 28/04/2017.
@@ -107,4 +109,12 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
         return super.onOptionsItemSelected(item);
     }
 
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        FragmentManager fm = getSupportFragmentManager();
+        LogUtils.printLog("Count : "+fm.getBackStackEntryCount());
+    }
 }

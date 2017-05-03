@@ -5,6 +5,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -25,6 +27,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseFragment;
+import training.com.tplayer.database.DataBaseUtils;
 import training.com.tplayer.database.SourceTablePlaylist;
 import training.com.tplayer.database.SourceTablePlaylistMember;
 import training.com.tplayer.ui.adapter.offline.PlaylistAdapter;
@@ -84,7 +87,15 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistAdapter.P
 
     @Override
     public void onRecyclerViewItemClick(View view, PlaylistEntity entity, int position) {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        List<PlaylistMemberEntity> playlistMemberEntities = SourceTablePlaylistMember.getInstance(mContext)
+                .getList(DataBaseUtils.DbStorePlaylistColumn.MemberColum._ID, new String[]{String.valueOf(entity.mId)});
 
+        List<MediaEntity> entities = SourceTablePlaylistMember.getInstance(mContext).convertPlaylistMemberToMedia(playlistMemberEntities);
+        ft.replace(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_PLAYLIST, entities));
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     @Override
@@ -199,5 +210,6 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistAdapter.P
 
         alertDialog.show();
     }
+
 
 }

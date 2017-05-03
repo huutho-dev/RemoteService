@@ -1,6 +1,7 @@
 package training.com.tplayer.ui.adapter.offline;
 
 import android.content.Context;
+import android.net.Uri;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -17,13 +18,14 @@ import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
 import training.com.tplayer.custom.TextViewRoboto;
-import training.com.tplayer.utils.ImageUtils;
 
 /**
  * Created by ThoNH on 28/04/2017.
  */
 
 public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdapter.ViewHolder> {
+
+    public int positionMenuContext = -1 ;
 
     public interface AlbumAdapterListener extends IRecyclerViewOnItemClickListener<AlbumEntity> {
     }
@@ -41,13 +43,19 @@ public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdap
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
         AlbumEntity entity = getDataItem(position);
         if (entity.albumArt != null && !entity.albumArt.equals(""))
-            ImageUtils.loadRoundImage(mContext, entity.albumArt, holder.mArt);
-
+           holder.mArt.setImageURI(Uri.parse(entity.albumArt));
 
         holder.mTitle.setText(entity.album);
         holder.mArtist.setText(entity.artist);
         holder.mNumberOfSong.setText(String.valueOf(entity.numberOfSong));
         holder.mArt.setOnLongClickListener(null);
+        holder.mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                positionMenuContext = position;
+                return false;
+            }
+        });
     }
 
 
@@ -77,5 +85,9 @@ public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdap
             menu.add(Menu.NONE, R.id.action_album_add_now_playing, Menu.NONE, R.string.context_menu_album_add_now_playing);
             menu.add(Menu.NONE, R.id.action_album_add_playlist, Menu.NONE, R.string.context_menu_album_add_playlist);
         }
+    }
+
+    public int getPosMenuContext(){
+        return positionMenuContext;
     }
 }

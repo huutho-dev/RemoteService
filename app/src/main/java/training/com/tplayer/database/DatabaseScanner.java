@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import training.com.tplayer.utils.FileUtils;
+import training.com.tplayer.utils.LogUtils;
 
 /**
  * Created by ThoNH on 4/27/2017.
@@ -81,6 +82,14 @@ public class DatabaseScanner {
                 entity.album = cursor.getString(albumIndex);
                 entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
 
+                Cursor cursorArt = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,null,
+                        MediaStore.Audio.Albums._ID + "=?", new String[]{String.valueOf(entity.albumId)}, null);
+                if (cursorArt!=null &&  cursorArt.moveToFirst()){
+                    entity.art = cursorArt.getString(cursorArt.getColumnIndex(MediaStore.Audio.AlbumColumns.ALBUM_ART));
+                    LogUtils.printLog("Art : " + entity.art);
+                    cursorArt.close();
+                }
+
                 entities.add(entity);
                 cursor.moveToNext();
             }
@@ -118,6 +127,7 @@ public class DatabaseScanner {
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
+                DatabaseUtils.dumpCurrentRow(cursor);
                 AlbumEntity entity = new AlbumEntity();
                 entity.mId = 0;
                 entity.id = Integer.parseInt(cursor.getString(idIndex));
@@ -125,7 +135,7 @@ public class DatabaseScanner {
                 entity.artist = cursor.getString(artistIndex);
                 entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
                 entity.numberOfSong = Integer.parseInt(cursor.getString(numberOfSongIndex));
-                entity.albumArt =cursor.getString(albumArtIndex);
+                entity.albumArt = cursor.getString(albumArtIndex);
 
                 entities.add(entity);
                 cursor.moveToNext();

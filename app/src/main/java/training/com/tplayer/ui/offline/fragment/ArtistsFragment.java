@@ -3,12 +3,15 @@ package training.com.tplayer.ui.offline.fragment;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MenuItem;
 import android.view.View;
 
 import com.remote.communication.ArtistEntity;
+import com.remote.communication.MediaEntity;
 
 import java.util.List;
 
@@ -16,7 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseFragment;
+import training.com.tplayer.database.DataBaseUtils;
 import training.com.tplayer.database.SourceTableArtist;
+import training.com.tplayer.database.SourceTableMedia;
 import training.com.tplayer.ui.adapter.offline.ArtistAdapter;
 import training.com.tplayer.utils.LogUtils;
 
@@ -29,7 +34,7 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
     @BindView(R.id.fragment_offline_rv_artist)
     RecyclerView mRvArtist;
 
-    private ArtistAdapter mAdapter ;
+    private ArtistAdapter mAdapter;
 
     public static ArtistsFragment newInstance() {
         Bundle args = new Bundle();
@@ -69,7 +74,13 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
 
     @Override
     public void onRecyclerViewItemClick(View view, ArtistEntity artistEntity, int position) {
-
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext)
+                .getList(DataBaseUtils.DbStoreArtistColumn._ARTIST, new String[]{artistEntity.author});
+        ft.add(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_ARTIST, entityList));
+        ft.addToBackStack(null);
+        ft.commit();
     }
 
     @Override

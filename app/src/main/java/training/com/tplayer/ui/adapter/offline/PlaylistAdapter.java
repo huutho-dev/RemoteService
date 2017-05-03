@@ -10,6 +10,11 @@ import android.widget.ImageView;
 
 import com.remote.communication.PlaylistEntity;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
@@ -43,7 +48,7 @@ public class PlaylistAdapter  extends BaseRecyclerViewAdapter<PlaylistEntity, Pl
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
         PlaylistEntity entity = getDataItem(position);
         holder.mPlaylistName.setText(entity.name);
-        holder.mDataAdded.setText(String.valueOf(entity.dateAdded));
+        holder.mDataAdded.setText(convertTime(entity.dateAdded));
     }
 
 
@@ -76,5 +81,11 @@ public class PlaylistAdapter  extends BaseRecyclerViewAdapter<PlaylistEntity, Pl
             menu.add(Menu.NONE, R.id.action_playlist_rename, Menu.NONE, R.string.context_menu_playlist_rename);
             menu.add(Menu.NONE, R.id.action_playlist_delete, Menu.NONE, R.string.context_menu_playlist_delete);
         }
+    }
+
+    public String convertTime(long time){
+        Date date = new Date(time);
+        Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss", Locale.getDefault());
+        return format.format(date);
     }
 }

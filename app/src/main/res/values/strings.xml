@@ -113,6 +113,8 @@
     <string name="dialog_playlist_delete_msg">Do you sure delete this playlist</string>
     <string name="dialog_playlist_delete_fail">Delete fail</string>
     <string name="dialog_playlist_delete_success">Delete success</string>
+    <string name="dialog_confirm_go_to_setting">Request permission</string>
+    <string name="dialog_confirm_go_to_setting_request">Please go to setting and grant permission for this application</string>
 
 
 </resources>

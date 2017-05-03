@@ -110,7 +110,7 @@ public class TopOnlineFragment extends BaseFragment implements View.OnClickListe
                 R.anim.exit_to_right,
                 R.anim.enter_from_right,
                 R.anim.exit_to_left);
-        ft.add(R.id.layout_main,fragment, tag);
+        ft.add(R.id.layout_main_album,fragment, tag);
         ft.addToBackStack(tag);
         ft.commit();
     }
