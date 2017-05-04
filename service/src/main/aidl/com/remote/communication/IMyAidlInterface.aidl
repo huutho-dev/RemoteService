@@ -25,9 +25,11 @@ interface IMyAidlInterface {
 
    void repeat();
 
-   void addNextNowPlaying(in MediaEntity entity);
+   void addNextPlaying(in MediaEntity entity) ;
 
-   void addNowPlaying(in MediaEntity entity) ;
+   void addEndPlaying(in MediaEntity entity);
 
-    void addListNowPlaying(in List<MediaEntity> entity) ;
+   void addListNextPlaying(in List<MediaEntity> entity) ;
+
+   void addToEndListNowPlaying(in List<MediaEntity> entity) ;
 }

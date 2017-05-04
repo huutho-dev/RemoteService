@@ -116,21 +116,7 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistAdapter.P
                     e.printStackTrace();
                 }
                 break;
-            case R.id.action_playlist_add_now_playing:
-                try {
-                    List<PlaylistMemberEntity> songsOfPlaylist =
-                            SourceTablePlaylistMember.getInstance(mContext).getList();
 
-                    List<MediaEntity> songsToPlay =
-                            SourceTablePlaylistMember
-                                    .getInstance(mContext)
-                                    .convertPlaylistMemberToMedia(songsOfPlaylist);
-
-                    mPlayerService.addListNowPlaying(songsToPlay);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                break;
             case R.id.action_playlist_rename:
                 renamePlaylistDialog(mAdapter.getDataItem(mAdapter.positionContext));
                 break;

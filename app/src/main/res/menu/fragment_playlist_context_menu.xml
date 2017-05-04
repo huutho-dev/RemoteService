@@ -4,9 +4,6 @@
         android:title="@string/context_menu_playlist_play"
         android:id="@+id/action_playlist_play"/>
 
-    <item
-        android:title="@string/context_menu_playlist_add_now_playing"
-        android:id="@+id/action_playlist_add_now_playing"/>
 
     <item
         android:title="@string/context_menu_playlist_rename"

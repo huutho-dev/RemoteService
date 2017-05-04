@@ -77,7 +77,6 @@ public class PlaylistAdapter  extends BaseRecyclerViewAdapter<PlaylistEntity, Pl
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(Menu.NONE, R.id.action_playlist_play, Menu.NONE, R.string.context_menu_playlist_play);
-            menu.add(Menu.NONE, R.id.action_playlist_add_now_playing, Menu.NONE, R.string.context_menu_playlist_add_now_playing);
             menu.add(Menu.NONE, R.id.action_playlist_rename, Menu.NONE, R.string.context_menu_playlist_rename);
             menu.add(Menu.NONE, R.id.action_playlist_delete, Menu.NONE, R.string.context_menu_playlist_delete);
         }

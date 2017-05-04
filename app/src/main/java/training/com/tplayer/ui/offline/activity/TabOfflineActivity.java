@@ -1,9 +1,11 @@
 package training.com.tplayer.ui.offline.activity;
 
 import android.os.Bundle;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 
 import com.ogaclejapan.smarttablayout.SmartTabLayout;
@@ -29,6 +31,9 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
     public static final int TAB_FOLDER = 4;
     public static final int TAB_DOWNLOAD = 5;
 
+    @BindView(R.id.collapsing_toolbar)
+    CollapsingToolbarLayout collapsingToolbarLayout;
+
     @BindView(R.id.act_offline_tablayout)
     SmartTabLayout mTabLayout;
 
@@ -36,7 +41,7 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
     ViewPager mViewPager;
 
     @BindView(R.id.act_offline_toolbar)
-    Toolbar mToolbar ;
+    Toolbar mToolbar;
 
     private OfflinePagerAdapter mAdapter;
 
@@ -50,6 +55,9 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
     @Override
     public void onBindView() {
         ButterKnife.bind(this);
+
+        collapsingToolbarLayout.setTitleEnabled(false);
+
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -63,7 +71,7 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
     public void getDataBundle(Bundle savedInstanceState) {
         super.getDataBundle(savedInstanceState);
         if (getIntent() != null) {
-            mCurrentTab = getIntent().getIntExtra(KEY_TAB,TAB_SONG);
+            mCurrentTab = getIntent().getIntExtra(KEY_TAB, TAB_SONG);
             mViewPager.setCurrentItem(mCurrentTab);
             mToolbar.setTitle(mAdapter.getPageTitle(mCurrentTab));
         }
@@ -102,9 +110,17 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.act_offline_tab_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == android.R.id.home){
-            finish();
+
+        switch (item.getItemId()) {
+            case R.id.app_bar_search:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -115,6 +131,6 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
         super.onBackPressed();
 
         FragmentManager fm = getSupportFragmentManager();
-        LogUtils.printLog("Count : "+fm.getBackStackEntryCount());
+        LogUtils.printLog("Count : " + fm.getBackStackEntryCount());
     }
 }

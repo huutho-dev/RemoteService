@@ -5,12 +5,12 @@
         android:id="@+id/action_album_play"/>
 
     <item
-        android:title="@string/context_menu_album_shuffle"
-        android:id="@+id/action_album_play_shuffle"/>
-
-    <item
         android:title="@string/context_menu_album_add_now_playing"
         android:id="@+id/action_album_add_now_playing"/>
+
+    <item
+        android:title="@string/context_menu_album_add_end_playing"
+        android:id="@+id/action_album_add_end_playing"/>
 
     <item
         android:title="@string/context_menu_album_add_playlist"

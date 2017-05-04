@@ -2,6 +2,7 @@ package training.com.tplayer.ui.offline.fragment;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -17,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.remote.communication.AlbumEntity;
+import com.remote.communication.IMyAidlInterface;
 import com.remote.communication.MediaEntity;
 import com.remote.communication.PlaylistEntity;
 import com.remote.communication.PlaylistMemberEntity;
@@ -34,6 +36,7 @@ import training.com.tplayer.database.SourceTablePlaylist;
 import training.com.tplayer.database.SourceTablePlaylistMember;
 import training.com.tplayer.ui.adapter.offline.AlbumAdapter;
 import training.com.tplayer.ui.adapter.offline.PlaylistAdapter;
+import training.com.tplayer.ui.offline.activity.TabOfflineActivity;
 import training.com.tplayer.utils.LogUtils;
 
 /**
@@ -46,6 +49,8 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
     RecyclerView mRvAlbum;
 
     private AlbumAdapter mAdapter;
+
+    private IMyAidlInterface mPlayerService;
 
     public static AlbumsFragment newInstance() {
         Bundle args = new Bundle();
@@ -62,6 +67,8 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
     @Override
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
+
+        mPlayerService = ((TabOfflineActivity) mActivity).getPlayerService();
 
         mAdapter = new AlbumAdapter(mContext, this);
         mRvAlbum.setLayoutManager(new LinearLayoutManager(mContext));
@@ -96,25 +103,43 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
     }
 
     @Override
-    public boolean onContextItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_album_play:
-                LogUtils.printLog("action_add_to_first_now_playing");
+            case android.R.id.home:
+                LogUtils.printLog("AlbumFragment");
                 break;
-            case R.id.action_album_play_shuffle:
-                LogUtils.printLog("action_add_to_now_plays");
-                break;
-            case R.id.action_album_add_now_playing:
-                LogUtils.printLog("action_add_playlist");
-                break;
-            case R.id.action_album_add_playlist:
-                LogUtils.printLog("action_set_is_rington");
-                String albumName = mAdapter.getDataItem(mAdapter.positionMenuContext).album;
-                List<MediaEntity> songsInAlbum =  SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM,new String[]{albumName});
-                addPlaylistDialog(songsInAlbum);
-                break;
-
         }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+
+        String albumName = mAdapter.getDataItem(mAdapter.positionMenuContext).album;
+        List<MediaEntity> songsInAlbum = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM, new String[]{albumName});
+        try {
+            switch (item.getItemId()) {
+                case R.id.action_album_play:
+                    mPlayerService.setPlayList(songsInAlbum);
+                    break;
+
+                case R.id.action_album_add_now_playing:
+                    mPlayerService.addListNextPlaying(songsInAlbum);
+                    break;
+
+                case R.id.action_album_add_end_playing:
+                    mPlayerService.addToEndListNowPlaying(songsInAlbum);
+                    break;
+
+                case R.id.action_album_add_playlist:
+                    addPlaylistDialog(songsInAlbum);
+                    break;
+
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+
         return super.onContextItemSelected(item);
     }
 

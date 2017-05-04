@@ -16,7 +16,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseFragment;
+import training.com.tplayer.database.SourceTableMedia;
 import training.com.tplayer.ui.adapter.offline.DownloadAdapter;
+import training.com.tplayer.utils.FileUtils;
 
 /**
  * Created by ThoNH on 28/04/2017.
@@ -54,13 +56,14 @@ public class DownloadFragment extends BaseFragment implements DownloadAdapter.Do
         new AsyncTask<Void, Void, List<MediaEntity>>() {
             @Override
             protected List<MediaEntity> doInBackground(Void... params) {
-                return null;
+                List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext).getFileInFolder(FileUtils.PATH_DOWNLOAD);
+                return entityList;
             }
 
             @Override
             protected void onPostExecute(List<MediaEntity> mediaEntities) {
                 super.onPostExecute(mediaEntities);
-//                mAdapter.setDatas(mediaEntities);
+                mAdapter.setDatas(mediaEntities);
             }
         }.execute();
     }

@@ -22,7 +22,9 @@ import training.com.tplayer.utils.LogUtils;
  * Created by ThoNH on 28/04/2017.
  */
 
-public class FolderAdapter  extends BaseRecyclerViewAdapter<FolderEntity, FolderAdapter.ViewHolder> {
+public class FolderAdapter extends BaseRecyclerViewAdapter<FolderEntity, FolderAdapter.ViewHolder> {
+
+    public int mContextMenuPosition = -1;
 
     public interface FolderAdapterListener extends IRecyclerViewOnItemClickListener<FolderEntity> {
     }
@@ -42,21 +44,28 @@ public class FolderAdapter  extends BaseRecyclerViewAdapter<FolderEntity, Folder
         LogUtils.printLog(entity.toString());
         holder.mNumberOfSong.setText(String.valueOf(entity.mNumberSong) + " songs");
         holder.mFolder.setText(entity.mFolderName);
-        holder.mCtxMenu.setOnLongClickListener(null);
+        holder.mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mContextMenuPosition = position;
+                return false;
+            }
+        });
     }
 
 
     public class ViewHolder extends BaseViewHolder implements View.OnCreateContextMenuListener {
 
         @BindView(R.id.item_fragment_folder_name)
-        TextViewRoboto mFolder ;
+        TextViewRoboto mFolder;
         @BindView(R.id.item_fragment_folder_number_song)
-        TextViewRoboto mNumberOfSong ;
+        TextViewRoboto mNumberOfSong;
         @BindView(R.id.item_fragment_folder_context_menu)
-        ImageView mCtxMenu ;
+        ImageView mCtxMenu;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.bind(this,itemView);
+            ButterKnife.bind(this, itemView);
             mCtxMenu.setOnCreateContextMenuListener(this);
         }
 
@@ -64,10 +73,8 @@ public class FolderAdapter  extends BaseRecyclerViewAdapter<FolderEntity, Folder
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
             menu.add(Menu.NONE, R.id.action_folder_play, Menu.NONE, R.string.context_menu_folder_play);
-            menu.add(Menu.NONE, R.id.action_folder_play_shuffle, Menu.NONE, R.string.context_menu_folder_shuffle);
             menu.add(Menu.NONE, R.id.action_folder_add_now_playing, Menu.NONE, R.string.context_menu_folder_add_now_playing);
             menu.add(Menu.NONE, R.id.action_folder_add_playlist, Menu.NONE, R.string.context_menu_folder_add_playlist);
-            menu.add(Menu.NONE, R.id.action_folder_hide, Menu.NONE, R.string.context_menu_folder_hide);
 
         }
     }

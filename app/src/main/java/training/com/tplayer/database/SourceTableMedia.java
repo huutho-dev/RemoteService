@@ -3,6 +3,7 @@ package training.com.tplayer.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.provider.MediaStore;
 
 import com.remote.communication.MediaEntity;
 
@@ -11,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import training.com.tplayer.ui.entity.offline.FolderEntity;
+import training.com.tplayer.utils.LogUtils;
 
 
 /**
@@ -278,10 +280,12 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
     }
 
 
-    public List<MediaEntity> getList(String[] selectionArgs, String selection) {
+    public List<MediaEntity> getFileInFolder(String path) {
         List<MediaEntity> entities = new ArrayList<>();
+        LogUtils.printLog("1223123123 + " + path);
         openDb();
-        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, selection, selectionArgs, null, null, null);
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, MediaStore.Audio.Media.DATA + " LIKE '" + path + "/%'", null, null, null, null);
+
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ID);
         int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA);

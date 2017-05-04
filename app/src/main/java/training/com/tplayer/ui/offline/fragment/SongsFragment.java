@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.os.RemoteException;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,7 +45,7 @@ import training.com.tplayer.utils.LogUtils;
  * Created by ThoNH on 28/04/2017.
  */
 
-public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapterListener {
+public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapterListener, View.OnClickListener {
 
     public static final String BUNDLE_FROM_WHERE = "bundle.from.where";
     public static final String BUNDLE_FROM_ALBUM = "bundle.from.album";
@@ -54,6 +55,9 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
 
     @BindView(R.id.fragment_offline_rv_songs)
     RecyclerView mRvSong;
+
+    @BindView(R.id.fragment_songs_play_all)
+    FloatingActionButton mPlayAll;
 
     private SongAdapter mAdapter;
 
@@ -79,6 +83,9 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
 
         } else if (fromWhere.equals(BUNDLE_FROM_PLAYLIST)) {
             args.putParcelableArrayList(BUNDLE_FROM_PLAYLIST, (ArrayList<? extends Parcelable>) entityList);
+
+        } else if (fromWhere.equals(BUNDLE_FROM_FOLDER)) {
+            args.putParcelableArrayList(BUNDLE_FROM_FOLDER, (ArrayList<? extends Parcelable>) entityList);
         }
 
         SongsFragment fragment = new SongsFragment();
@@ -102,7 +109,10 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         registerForContextMenu(mRvSong);
         mAdapter = new SongAdapter(mContext, this);
         mRvSong.setLayoutManager(new LinearLayoutManager(mContext));
+        mRvSong.setNestedScrollingEnabled(false);
         mRvSong.setAdapter(mAdapter);
+
+        mPlayAll.setOnClickListener(this);
 
         Bundle bundle = getArguments();
         if (bundle != null) {
@@ -136,14 +146,13 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
 
     }
 
-
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_to_first_now_playing:
                 LogUtils.printLog("action_add_to_first_now_playing");
                 try {
-                    mPlayerService.addNextNowPlaying(mAdapter.getDataItem(mAdapter.positionContext));
+                    mPlayerService.addNextPlaying(mAdapter.getDataItem(mAdapter.positionContext));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -153,7 +162,7 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
             case R.id.action_add_to_now_plays:
                 LogUtils.printLog("action_add_to_now_plays");
                 try {
-                    mPlayerService.addNowPlaying(mAdapter.getDataItem(mAdapter.positionContext));
+                    mPlayerService.addNextPlaying(mAdapter.getDataItem(mAdapter.positionContext));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -334,4 +343,17 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
                 .insertRow(memberEntity);
     }
 
+    @Override
+    public void onClick(View v) {
+        try {
+            switch (v.getId()) {
+                case R.id.fragment_songs_play_all:
+                    mPlayerService.setPlayList(mAdapter.getDatas());
+                    break;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
 }

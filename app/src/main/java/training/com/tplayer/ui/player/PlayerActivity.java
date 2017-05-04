@@ -111,7 +111,6 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public void getDataBundle(Bundle savedInstanceState) {
         super.getDataBundle(savedInstanceState);
         bindTPlayerService();
-        startTPlayerService();
 
         if (getIntent() != null) {
             Bundle bundle = getIntent().getBundleExtra(EXTRA_DATA_PLAYER);

@@ -24,6 +24,8 @@ import training.com.tplayer.custom.TextViewRoboto;
 
 public class ArtistAdapter extends BaseRecyclerViewAdapter<ArtistEntity, ArtistAdapter.ViewHolder> {
 
+    public int mContextMenuPosition = - 1;
+
     public interface ArtistAdapterListener extends IRecyclerViewOnItemClickListener<ArtistEntity> {
     }
 
@@ -37,11 +39,17 @@ public class ArtistAdapter extends BaseRecyclerViewAdapter<ArtistEntity, ArtistA
     }
 
     @Override
-    public void onBindViewHolderAdapter(ArtistAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolderAdapter(ArtistAdapter.ViewHolder holder, final int position) {
         ArtistEntity entity = getDataItem(position);
         holder.mArtist.setText(entity.author);
         holder.mNumberOfSong.setText(String.valueOf(entity.numberOfTrack).trim() + " songs");
-        holder.mCtxMenu.setOnLongClickListener(null);
+        holder.mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mContextMenuPosition = position;
+                return false;
+            }
+        });
     }
 
     public class ViewHolder extends BaseViewHolder implements View.OnCreateContextMenuListener {
@@ -62,9 +70,9 @@ public class ArtistAdapter extends BaseRecyclerViewAdapter<ArtistEntity, ArtistA
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(Menu.NONE, R.id.action_album_play, Menu.NONE, R.string.context_menu_album_add_now_playing);
-            menu.add(Menu.NONE, R.id.action_album_play_shuffle, Menu.NONE, R.string.context_menu_album_shuffle);
+            menu.add(Menu.NONE, R.id.action_album_play, Menu.NONE, R.string.context_menu_album_play);
             menu.add(Menu.NONE, R.id.action_album_add_now_playing, Menu.NONE, R.string.context_menu_album_add_now_playing);
+            menu.add(Menu.NONE, R.id.action_album_add_end_playing, Menu.NONE, R.string.context_menu_album_add_end_playing);
             menu.add(Menu.NONE, R.id.action_album_add_playlist, Menu.NONE, R.string.context_menu_album_add_playlist);
         }
     }

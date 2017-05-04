@@ -48,7 +48,6 @@ public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdap
         holder.mTitle.setText(entity.album);
         holder.mArtist.setText(entity.artist);
         holder.mNumberOfSong.setText(String.valueOf(entity.numberOfSong));
-        holder.mArt.setOnLongClickListener(null);
         holder.mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -80,9 +79,9 @@ public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdap
 
         @Override
         public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
-            menu.add(Menu.NONE, R.id.action_album_play, Menu.NONE, R.string.context_menu_album_add_now_playing);
-            menu.add(Menu.NONE, R.id.action_album_play_shuffle, Menu.NONE, R.string.context_menu_album_shuffle);
+            menu.add(Menu.NONE, R.id.action_album_play, Menu.NONE, R.string.context_menu_album_play);
             menu.add(Menu.NONE, R.id.action_album_add_now_playing, Menu.NONE, R.string.context_menu_album_add_now_playing);
+            menu.add(Menu.NONE, R.id.action_album_add_end_playing, Menu.NONE, R.string.context_menu_album_add_end_playing);
             menu.add(Menu.NONE, R.id.action_album_add_playlist, Menu.NONE, R.string.context_menu_album_add_playlist);
         }
     }

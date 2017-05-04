@@ -1,22 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="@string/context_menu_folder_play"
-        android:id="@+id/action_folder_play"/>
+        android:id="@+id/action_folder_play"
+        android:title="@string/context_menu_folder_play" />
 
     <item
-        android:title="@string/context_menu_folder_shuffle"
-        android:id="@+id/action_folder_play_shuffle"/>
+        android:id="@+id/action_folder_add_now_playing"
+        android:title="@string/context_menu_folder_add_now_playing" />
 
     <item
-        android:title="@string/context_menu_folder_add_now_playing"
-        android:id="@+id/action_folder_add_now_playing"/>
-
-    <item
-        android:title="@string/context_menu_folder_add_playlist"
-        android:id="@+id/action_folder_add_playlist"/>
-
-    <item
-        android:title="@string/context_menu_folder_hide"
-        android:id="@+id/action_folder_hide"/>
+        android:id="@+id/action_folder_add_playlist"
+        android:title="@string/context_menu_folder_add_playlist" />
 </menu>
