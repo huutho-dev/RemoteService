@@ -2,7 +2,6 @@ package training.com.tplayerservice;
 
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -10,6 +9,7 @@ import android.text.TextUtils;
 
 import com.remote.communication.MediaEntity;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import training.com.tplayerservice.app.Config;
+import training.com.utils.LogUtils;
 
 /**
  * Created by HuuTho on 4/9/2017.
@@ -36,6 +37,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         this.mTPlayer = new TPlayer(context);
         this.mTPlayer.setOnCompletionListenerPlayer(this);
         this.mTPlayer.setOnCompletionListener(this);
+
     }
 
     public void setListSong(List<MediaEntity> origins) {
@@ -52,7 +54,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
     private void startSong(String data) {
         mTPlayer.resetPlayer();
-        mTPlayer.setAudioStreamTypePlayer(AudioManager.STREAM_MUSIC);
         if (data.startsWith("http://")) {
             mTPlayer.setDataSourcePlayer(data);
             mTPlayer.setPlayerStreamOverNetwork(mContext);
@@ -63,7 +64,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 public void onPrepared(final MediaPlayer mp) {
                     mp.start();
                     MediaEntity song = mPlayLists.get(mCurrentSong);
-
                     new DownloadLyric().execute(song);
 
                     Intent intent = new Intent();
@@ -71,12 +71,21 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                     intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
                     intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
                     mContext.getApplicationContext().sendBroadcast(intent);
+
+                    LogUtils.printLog("startSong http");
+
                 }
             });
         } else {
-            mTPlayer.setDataSourcePlayer(mContext, Uri.parse(data));
+//            mTPlayer.setDataSourcePlayer(mContext, Uri.parse(data));
+//            mTPlayer.preparePlayer();
+//            mTPlayer.startPlayer();
+            File file = new File(data);
+            Uri uri = Uri.parse(String.valueOf(file));
+            mTPlayer.setDataSourcePlayer(mContext,uri);
             mTPlayer.preparePlayer();
             mTPlayer.startPlayer();
+            LogUtils.printLog("startSong elsse" + data);
         }
     }
 

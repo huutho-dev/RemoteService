@@ -2,6 +2,7 @@ package training.com.tplayer.ui.offline.fragment;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -38,6 +39,7 @@ import training.com.tplayer.database.SourceTablePlaylistMember;
 import training.com.tplayer.ui.adapter.offline.PlaylistAdapter;
 import training.com.tplayer.ui.adapter.offline.SongAdapter;
 import training.com.tplayer.ui.offline.activity.TabOfflineActivity;
+import training.com.tplayer.ui.player.PlayerActivity;
 import training.com.tplayer.utils.FileUtils;
 import training.com.tplayer.utils.LogUtils;
 
@@ -143,7 +145,9 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
 
     @Override
     public void onRecyclerViewItemClick(View view, MediaEntity mediaEntity, int position) {
-
+        List<MediaEntity> song = new ArrayList<>();
+        song.add(mediaEntity);
+        startActivity(song);
     }
 
     @Override
@@ -348,12 +352,18 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         try {
             switch (v.getId()) {
                 case R.id.fragment_songs_play_all:
-                    mPlayerService.setPlayList(mAdapter.getDatas());
+                    startActivity(mAdapter.getDatas());
                     break;
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
+
+    private void startActivity(List<MediaEntity> playlist) {
+        Intent intent = new Intent(mContext, PlayerActivity.class);
+        intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_DATA_PLAYER, (ArrayList<? extends Parcelable>) playlist);
+        startActivity(intent);
+    }
+
 }

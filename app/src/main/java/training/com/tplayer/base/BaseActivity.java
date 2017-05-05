@@ -59,10 +59,12 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mViewRoot = LayoutInflater.from(this).inflate(setLayoutId(), null);
         setContentView(mViewRoot);
         onBindView();
         getDataBundle(savedInstanceState);
+        bindTPlayerService();
         onActivityCreated();
 
         mThread = new Thread();
@@ -91,7 +93,10 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
         super.onResume();
         // create presenterImpl here
         createPresenterImpl();
-
+        if (!this.isBinded) {
+            bindTPlayerService();
+            LogUtils.printLogDetail("bindTPlayerService onResume");
+        }
         LogUtils.printLogDetail("onResume");
     }
 
@@ -106,6 +111,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     @Override
     protected void onStop() {
         super.onStop();
+        unbindTplayerService();
         LogUtils.printLogDetail("onStop");
     }
 
@@ -113,9 +119,6 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     protected void onDestroy() {
         super.onDestroy();
         LogUtils.printLogDetail("onDestroy");
-        if (isBinded && mTPlayerService != null) {
-            unbindTplayerService();
-        }
     }
 
 
@@ -126,7 +129,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
             isBinded = true;
             LogUtils.printLog("onServiceConnected");
 
-            if (mPresenter instanceof PlayerPresenterImpl){
+            if (mPresenter instanceof PlayerPresenterImpl) {
                 ((PlayerPresenterImpl) mPresenter).setService(mTPlayerService);
                 serviceConnected();
             }
@@ -134,7 +137,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
 
 
         @Override
-        public  void onServiceDisconnected(ComponentName name) {
+        public void onServiceDisconnected(ComponentName name) {
             mTPlayerService = null;
             isBinded = false;
             LogUtils.printLog("onServiceDisconnected");
@@ -158,14 +161,18 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     }
 
     public void unbindTplayerService() {
-        unbindService(mServiceConn);
+        if (isBinded) {
+            isBinded = false;
+            unbindService(mServiceConn);
+            LogUtils.printLog("unbindTplayerService");
+        }
     }
 
     public void getDataBundle(Bundle savedInstanceState) {
 
     }
 
-    public void serviceConnected(){
+    public void serviceConnected() {
 
     }
 

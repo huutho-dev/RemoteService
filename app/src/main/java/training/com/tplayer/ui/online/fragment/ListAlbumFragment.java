@@ -130,11 +130,9 @@ public class ListAlbumFragment extends BaseFragment
             AlbumBasicEntity albumBasicEntity = (AlbumBasicEntity) baseEntity;
             GetDataCodeTask getDataCodeTask = new GetDataCodeTask(albumBasicEntity.link, new IOnLoadSuccess() {
                 @Override
-                public void onResponse(List entity, String TAG) {
+                public void onResponse(List entities, String TAG) {
                     Intent intent = new Intent(mContext, PlayerActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putParcelableArrayList(PlayerActivity.BUNDLE_DATA_ONLINE, (ArrayList<? extends Parcelable>) entity);
-                    intent.putExtra(PlayerActivity.EXTRA_DATA_PLAYER, bundle);
+                    intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_DATA_PLAYER, (ArrayList<? extends Parcelable>) entities);
                     startActivity(intent);
                 }
             }, "getDataCodeTask");
@@ -146,9 +144,7 @@ public class ListAlbumFragment extends BaseFragment
 
     private void startActivity(List<MediaEntity> songs){
         Intent intent = new Intent(mContext, PlayerActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(PlayerActivity.BUNDLE_DATA_ONLINE, (ArrayList<? extends Parcelable>) songs);
-        intent.putExtra(PlayerActivity.EXTRA_DATA_PLAYER, bundle);
+        intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_DATA_PLAYER, (ArrayList<? extends Parcelable>) songs);
         startActivity(intent);
     }
 

@@ -42,8 +42,6 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         View.OnClickListener, DiscreteSeekBar.OnProgressChangeListener {
 
     public static final String EXTRA_DATA_PLAYER = "extra.data.player";
-    public static final String BUNDLE_DATA_ONLINE = "extra.data.online";
-    public static final String BUNDLE_DATA_OFFLINE = "extra.data.offline";
 
 
     @BindView(R.id.act_player_total_song)
@@ -110,15 +108,9 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     @Override
     public void getDataBundle(Bundle savedInstanceState) {
         super.getDataBundle(savedInstanceState);
-        bindTPlayerService();
 
-        if (getIntent() != null) {
-            Bundle bundle = getIntent().getBundleExtra(EXTRA_DATA_PLAYER);
-            if (bundle != null) {
-                songs = bundle.getParcelableArrayList(BUNDLE_DATA_ONLINE);
-                LogUtils.printLog("Client_onLoadDataZingComplete : size = " + songs.size());
-            }
-        }
+        if (getIntent() != null)
+            songs = getIntent().getParcelableArrayListExtra(EXTRA_DATA_PLAYER);
     }
 
 
@@ -159,12 +151,13 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         super.serviceConnected();
         if (getPlayerService() != null) {
             mPresenter.setService(getPlayerService());
-            LogUtils.printLog("getPlayerService != nu");
+            LogUtils.printLog("getPlayerService != null");
             if (songs != null && mAdapter != null) {
                 mAdapter.setDatas(songs);
                 mPresenter.setPlayLists(songs);
-                mPresenter.startSongPosition(0);
+                mPresenter.startSongPosition(9);
                 LogUtils.printLog("start");
+
             }
         }
     }
@@ -244,7 +237,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
         ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
 
-        song.isPlaying= true;
+        song.isPlaying = true;
         mAdapter.notifyItem(song);
 
         resetSeekbar();

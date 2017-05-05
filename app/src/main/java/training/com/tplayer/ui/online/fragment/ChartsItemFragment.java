@@ -165,9 +165,7 @@ public class ChartsItemFragment extends BaseFragment
 
     private void startActivity(List<MediaEntity> songs){
         Intent intent = new Intent(mActivity    , PlayerActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList(PlayerActivity.BUNDLE_DATA_ONLINE, (ArrayList<? extends Parcelable>) songs);
-        intent.putExtra(PlayerActivity.EXTRA_DATA_PLAYER, bundle);
+        intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_DATA_PLAYER, (ArrayList<? extends Parcelable>) songs);
         startActivity(intent);
     }
 

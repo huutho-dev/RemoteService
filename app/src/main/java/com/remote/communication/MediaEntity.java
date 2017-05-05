@@ -186,6 +186,29 @@ public class MediaEntity extends BaseEntity {
 
     }
 
+
+    @Override
+    public String toString() {
+        return "MediaEntity{" +
+                "mId=" + mId +
+                ", id=" + id +
+                ", data='" + data + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", size=" + size +
+                ", mimeType='" + mimeType + '\'' +
+                ", dateAdded=" + dateAdded +
+                ", title='" + title + '\'' +
+                ", duration=" + duration +
+                ", artistId=" + artistId +
+                ", artist='" + artist + '\'' +
+                ", album='" + album + '\'' +
+                ", albumId=" + albumId +
+                ", isFavorite=" + isFavorite +
+                ", lyric='" + lyric + '\'' +
+                ", art='" + art + '\'' +
+                '}';
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -210,6 +233,7 @@ public class MediaEntity extends BaseEntity {
         dest.writeByte(this.isFavorite ? (byte) 1 : (byte) 0);
         dest.writeString(this.lyric);
         dest.writeString(this.art);
+        dest.writeByte(this.isPlaying ? (byte) 1 : (byte) 0);
     }
 
     protected MediaEntity(Parcel in) {
@@ -230,6 +254,7 @@ public class MediaEntity extends BaseEntity {
         this.isFavorite = in.readByte() != 0;
         this.lyric = in.readString();
         this.art = in.readString();
+        this.isPlaying = in.readByte() != 0;
     }
 
     public static final Creator<MediaEntity> CREATOR = new Creator<MediaEntity>() {
@@ -243,26 +268,4 @@ public class MediaEntity extends BaseEntity {
             return new MediaEntity[size];
         }
     };
-
-    @Override
-    public String toString() {
-        return "MediaEntity{" +
-                "mId=" + mId +
-                ", id=" + id +
-                ", data='" + data + '\'' +
-                ", displayName='" + displayName + '\'' +
-                ", size=" + size +
-                ", mimeType='" + mimeType + '\'' +
-                ", dateAdded=" + dateAdded +
-                ", title='" + title + '\'' +
-                ", duration=" + duration +
-                ", artistId=" + artistId +
-                ", artist='" + artist + '\'' +
-                ", album='" + album + '\'' +
-                ", albumId=" + albumId +
-                ", isFavorite=" + isFavorite +
-                ", lyric='" + lyric + '\'' +
-                ", art='" + art + '\'' +
-                '}';
-    }
 }

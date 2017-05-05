@@ -3,6 +3,9 @@ package training.com.tplayer.app;
 import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
+import android.util.Log;
+
+import training.com.tplayer.utils.LogUtils;
 
 public class AppController extends Application {
 
@@ -28,7 +31,12 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
-
     }
 
+    @Override
+    public void onTerminate() {
+        Log.d("onTerminate","onTerminate");
+        super.onTerminate();
+        LogUtils.printLog("Application has been destroy");
+    }
 }
