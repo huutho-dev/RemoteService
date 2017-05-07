@@ -1,6 +1,7 @@
 package training.com.tplayer.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +24,25 @@ import training.com.tplayer.utils.ImageUtils;
 
 public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<MediaEntity, PlayListInPlayerAdapter.ViewHolder> {
 
-    public interface PlayListInPlayerAdapterListener extends IRecyclerViewOnItemClickListener {
+    public void setActivePlaying(MediaEntity song) {
+        for (MediaEntity temp : mDatas) {
+            temp.isPlaying = false;
+            if (temp.mId == song.mId) {
+                temp.isPlaying = true;
+            }
+        }
+        notifyDataSetChanged();
+    }
 
+    private PlayListInPlayerAdapterListener mListener;
+
+    public interface PlayListInPlayerAdapterListener extends IRecyclerViewOnItemClickListener<MediaEntity> {
+        void onRecyclerViewImagePlayItemClick(View view, MediaEntity entity, int position);
     }
 
     public PlayListInPlayerAdapter(Context context, PlayListInPlayerAdapterListener listener) {
         super(context, listener);
+        this.mListener = listener;
     }
 
     @Override
@@ -37,13 +51,33 @@ public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<MediaEntity
     }
 
     @Override
-    public void onBindViewHolderAdapter(ViewHolder holder, int position) {
-        MediaEntity song = getDataItem(position);
+    public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
+        final MediaEntity song = getDataItem(position);
         holder.mTxtSongName.setText(song.title);
         holder.mTxtSongArtist.setText(song.artist);
-        holder.mImvStatePlay.setActivated(song.isPlaying);
-        holder.mImvStatePlay.setBackground(mContext.getResources().getDrawable(R.drawable.background_play_state));
-        ImageUtils.loadImagePlayList(mContext, song.art, holder.mImvArtist);
+
+        holder.mImvStatePlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.onRecyclerViewImagePlayItemClick(v, song, position);
+            }
+        });
+
+
+        if (song.isPlaying) {
+            holder.mImvStatePlay.setVisibility(View.VISIBLE);
+            holder.mImvStatePlay.setImageResource(R.drawable.ic_player_pause);
+        } else {
+            holder.mImvStatePlay.setVisibility(View.GONE);
+        }
+
+        if (song.art != null && TextUtils.isEmpty(song.art)) {
+            ImageUtils.loadImagePlayList(mContext, song.art, holder.mImvArtist);
+        } else {
+            holder.mImvArtist.setImageResource(R.drawable.ic_offline_song);
+        }
+
+
     }
 
     public class ViewHolder extends BaseViewHolder {

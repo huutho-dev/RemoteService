@@ -21,7 +21,7 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
 
     public Context mContext;
 
-    private ArrayList<E> mDatas = new ArrayList<>();
+    public ArrayList<E> mDatas = new ArrayList<>();
 
     public BaseRecyclerViewAdapter(Context context, IRecyclerViewOnItemClickListener listener) {
         this.listener = listener;

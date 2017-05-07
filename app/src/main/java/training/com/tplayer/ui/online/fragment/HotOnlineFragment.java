@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,6 +45,9 @@ import training.com.tplayer.ui.entity.HotNewEntity;
 import training.com.tplayer.ui.entity.HotSongOnlEntity;
 import training.com.tplayer.ui.player.PlayerActivity;
 import training.com.tplayer.utils.FileUtils;
+import training.com.tplayer.utils.LogUtils;
+import training.com.tplayer.utils.NetworkUtils;
+import training.com.tplayer.utils.ViewUtils;
 
 /**
  * Created by ThoNH on 13/04/2017.
@@ -84,6 +88,9 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
     @BindView(R.id.loading)
     ProgressBar mLoading;
 
+    @BindView(R.id.fragment_onl_hot_reload)
+    SwipeRefreshLayout mReloadLayout;
+
 
     private HotAlbumAdapter mAlbumAdapter;
     private HotNewAdapter mNewAdapter;
@@ -118,6 +125,21 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
         initAlbum();
         initNew();
         initHightLight();
+
+        mReloadLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                mReloadLayout.setRefreshing(true);
+                if (NetworkUtils.isDeviceOnline(mContext)) {
+                    new HotAlbumTask(HotOnlineFragment.this).execute();
+                    new HotNewTask(HotOnlineFragment.this).execute();
+                    new HotHightLightTask(HotOnlineFragment.this).execute();
+                } else {
+                    mReloadLayout.setRefreshing(false);
+                    ViewUtils.toastShowLong(mContext,getResources().getString(R.string.network_not_available));
+                }
+            }
+        });
     }
 
     private void initAlbum() {
@@ -148,7 +170,7 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
 
         if (FileUtils.CacheFile.isFileExist(mContext, FILE_NAME_CACHE_NEW_SONG)) {
             List<HotNewEntity> listNew = new FileUtils.CacheFile<HotNewEntity>()
-                    .readCacheFile(mContext, FILE_NAME_CACHE_NEW_SONG,HotNewEntity[].class);
+                    .readCacheFile(mContext, FILE_NAME_CACHE_NEW_SONG, HotNewEntity[].class);
             if (listNew != null && listNew.size() != 0) {
                 mNewAdapter.setDatas(listNew);
                 mLayoutNew.setVisibility(View.VISIBLE);
@@ -170,7 +192,7 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
 
         if (FileUtils.CacheFile.isFileExist(mContext, FILE_NAME_CACHE_HIGHT_LIGHT)) {
             List<HotSongOnlEntity> listHightLight = new FileUtils.CacheFile<HotSongOnlEntity>()
-                    .readCacheFile(mContext, FILE_NAME_CACHE_HIGHT_LIGHT,HotSongOnlEntity[].class);
+                    .readCacheFile(mContext, FILE_NAME_CACHE_HIGHT_LIGHT, HotSongOnlEntity[].class);
             if (listHightLight != null && listHightLight.size() != 0) {
                 mHightLightAdapter.setDatas(listHightLight);
                 mLayoutHightLight.setVisibility(View.VISIBLE);
@@ -214,39 +236,48 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
     @Override
     public void onResponse(List entity, String TAG) {
 
-        mLoading.setVisibility(View.GONE);
 
-        if (HotNewTask.TAG.equals(TAG)) {
-            mNewAdapter.setDatas((ArrayList<HotNewEntity>) entity);
-            mTitleNew.setVisibility(View.VISIBLE);
-            mLayoutNew.setVisibility(View.VISIBLE);
+        if (entity.size() != 0) {
+            LogUtils.printLog("onResponse true");
+            mLoading.setVisibility(View.GONE);
+            mReloadLayout.setEnabled(false);
 
-            // save cache new song online
-            new FileUtils.CacheFile<HotNewEntity>()
-                    .writeCacheFile(mContext, FILE_NAME_CACHE_NEW_SONG, (ArrayList<HotNewEntity>) entity);
+            if (HotNewTask.TAG.equals(TAG)) {
+                mNewAdapter.setDatas((ArrayList<HotNewEntity>) entity);
 
-            return;
-        }
+                mTitleNew.setVisibility(View.VISIBLE);
+                mLayoutNew.setVisibility(View.VISIBLE);
 
-        if (HotHightLightTask.TAG.equals(TAG)) {
-            mHightLightAdapter.setDatas((ArrayList<HotSongOnlEntity>) entity);
-            mTitleHightlight.setVisibility(View.VISIBLE);
+                // save cache new song online
+                new FileUtils.CacheFile<HotNewEntity>()
+                        .writeCacheFile(mContext, FILE_NAME_CACHE_NEW_SONG, (ArrayList<HotNewEntity>) entity);
 
-            // save cache hight light song online
-            new FileUtils.CacheFile<HotSongOnlEntity>()
-                    .writeCacheFile(mContext, FILE_NAME_CACHE_HIGHT_LIGHT, (ArrayList<HotSongOnlEntity>) entity);
+                return;
+            }
 
-            return;
-        }
+            if (HotHightLightTask.TAG.equals(TAG)) {
+                mHightLightAdapter.setDatas((ArrayList<HotSongOnlEntity>) entity);
+                mTitleHightlight.setVisibility(View.VISIBLE);
 
-        if (HotAlbumTask.TAG.equals(TAG)) {
-            mAlbumAdapter.setDatas((ArrayList<AlbumBasicEntity>) entity);
-            mTitleAlbum.setVisibility(View.VISIBLE);
+                // save cache hight light song online
+                new FileUtils.CacheFile<HotSongOnlEntity>()
+                        .writeCacheFile(mContext, FILE_NAME_CACHE_HIGHT_LIGHT, (ArrayList<HotSongOnlEntity>) entity);
 
-            // save cache albums hot online
-            new FileUtils.CacheFile<AlbumBasicEntity>()
-                    .writeCacheFile(mContext, FILE_NAME_CACHE_HOT_ALBUM,(ArrayList<AlbumBasicEntity>) entity);
+                return;
+            }
 
+            if (HotAlbumTask.TAG.equals(TAG)) {
+                mAlbumAdapter.setDatas((ArrayList<AlbumBasicEntity>) entity);
+                mTitleAlbum.setVisibility(View.VISIBLE);
+
+                // save cache albums hot online
+                new FileUtils.CacheFile<AlbumBasicEntity>()
+                        .writeCacheFile(mContext, FILE_NAME_CACHE_HOT_ALBUM, (ArrayList<AlbumBasicEntity>) entity);
+
+            }
+        } else {
+            LogUtils.printLog("onResponse false");
+            mLoading.setVisibility(View.GONE);
         }
     }
 
@@ -276,13 +307,14 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
         }
     }
 
-    private void startLoadSongZingMp3(List entity){
+    private void startLoadSongZingMp3(List entity) {
         Intent intent = new Intent(mContext, LoadListDataCodeService.class);
         intent.putParcelableArrayListExtra(LoadListDataCodeService.EXTRA_DATA_CODE,
                 (ArrayList<? extends Parcelable>) entity);
         mContext.startService(intent);
     }
-    private void registerLoadSongComplete(){
+
+    private void registerLoadSongComplete() {
         IntentFilter filterZing = new IntentFilter();
         filterZing.addAction(LoadListDataCodeService.ACTION_CALL_BACK_SONG);
         LocalBroadcastManager.getInstance(mContext).registerReceiver(new BroadcastReceiver() {
@@ -296,7 +328,7 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
         }, filterZing);
     }
 
-    private void startActivity(List<MediaEntity> songs){
+    private void startActivity(List<MediaEntity> songs) {
         Intent intent = new Intent(mContext, PlayerActivity.class);
         intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_DATA_PLAYER, (ArrayList<? extends Parcelable>) songs);
         startActivity(intent);

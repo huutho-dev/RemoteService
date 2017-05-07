@@ -77,34 +77,19 @@
                             android:layout_below="@+id/act_player_txt_songs_artist"
                             android:layout_centerVertical="true"
                             android:layout_marginLeft="@dimen/spacing_3_24dp"
-                            android:src="@drawable/ic_player_repeat" />
+                            android:src="@drawable/ic_player_repeat_active" />
 
 
                         <ImageView
-                            android:id="@+id/act_player_control_imv_volume"
+                            android:scaleType="centerCrop"
+                            android:id="@+id/act_player_control_imv_shuffle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
                             android:layout_below="@+id/act_player_txt_songs_artist"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/spacing_3_24dp"
-                            android:src="@drawable/ic_player_volume" />
-
-
-                        <me.zhengken.lyricview.LyricView
-                            android:id="@+id/lyricView"
-                            android:layout_width="match_parent"
-                            android:layout_height="130dp"
-                            android:layout_above="@+id/act_player_control_seekbar"
-                            android:layout_marginBottom="@dimen/spacing_1_8dp"
-                            android:background="@color/colorTransParent"
-                            app:fadeInFadeOut="true"
-                            app:highlightColor="@color/colorAccent"
-                            app:hint="No Lyrics"
-                            app:lineSpace="@dimen/text_4_medium_16sp"
-                            app:textAlign="center"
-                            app:textColor="@color/colorWhite"
-                            app:textSize="@dimen/text_3_14sp" />
+                            android:src="@drawable/ic_shuffle_active" />
 
 
                         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar

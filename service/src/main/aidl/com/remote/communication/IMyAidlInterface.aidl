@@ -7,6 +7,8 @@ interface IMyAidlInterface {
 
    void startSongPosition(int position);
 
+   void startSong(in MediaEntity entity);
+
    void setPlayList(in List<MediaEntity> playLists);
 
    int getDuration();

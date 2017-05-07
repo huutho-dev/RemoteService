@@ -9,7 +9,6 @@ import android.text.TextUtils;
 
 import com.remote.communication.MediaEntity;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -18,7 +17,6 @@ import java.util.List;
 import java.util.Scanner;
 
 import training.com.tplayerservice.app.Config;
-import training.com.utils.LogUtils;
 
 /**
  * Created by HuuTho on 4/9/2017.
@@ -46,14 +44,25 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void startSong(int position) {
+        mCurrentSong = position;
         MediaEntity song = mPlayLists.get(position);
         String data = song.data;
         startSong(data);
     }
 
+    public void startSong(MediaEntity entity) {
+        for (MediaEntity song : mPlayLists) {
+            if (entity.mId == song.mId) {
+                startSong(mPlayLists.indexOf(song));
+                return;
+            }
+        }
+    }
+
 
     private void startSong(String data) {
         mTPlayer.resetPlayer();
+        final MediaEntity song = mPlayLists.get(mCurrentSong);
         if (data.startsWith("http://")) {
             mTPlayer.setDataSourcePlayer(data);
             mTPlayer.setPlayerStreamOverNetwork(mContext);
@@ -63,30 +72,20 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 @Override
                 public void onPrepared(final MediaPlayer mp) {
                     mp.start();
-                    MediaEntity song = mPlayLists.get(mCurrentSong);
                     new DownloadLyric().execute(song);
-
-                    Intent intent = new Intent();
-                    intent.setAction(Config.ACTION_PLAYER_START_PLAY);
-                    intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
-                    intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
-                    mContext.getApplicationContext().sendBroadcast(intent);
-
-                    LogUtils.printLog("startSong http");
-
                 }
             });
         } else {
-//            mTPlayer.setDataSourcePlayer(mContext, Uri.parse(data));
-//            mTPlayer.preparePlayer();
-//            mTPlayer.startPlayer();
-            File file = new File(data);
-            Uri uri = Uri.parse(String.valueOf(file));
-            mTPlayer.setDataSourcePlayer(mContext,uri);
+            mTPlayer.setDataSourcePlayer(mContext, Uri.parse(data));
             mTPlayer.preparePlayer();
             mTPlayer.startPlayer();
-            LogUtils.printLog("startSong elsse" + data);
         }
+
+        Intent intent = new Intent();
+        intent.setAction(Config.ACTION_PLAYER_START_PLAY);
+        intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
+        intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
+        mContext.getApplicationContext().sendBroadcast(intent);
     }
 
     public boolean changePlayStatus() {
@@ -171,7 +170,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void addNextNowPlaying(MediaEntity entity) {
-        mPlayLists.add(mCurrentSong,entity);
+        mPlayLists.add(mCurrentSong, entity);
     }
 
     private class DownloadLyric extends AsyncTask<MediaEntity, Void, Void> {

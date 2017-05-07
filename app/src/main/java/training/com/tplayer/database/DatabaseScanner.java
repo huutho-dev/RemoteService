@@ -50,7 +50,8 @@ public class DatabaseScanner {
                 MediaStore.Audio.AudioColumns.ALBUM_ID};
 
         ContentResolver resolver = mContext.getContentResolver();
-        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection, null, null, null);
+        Cursor cursor = resolver.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI, projection,
+                MediaStore.Audio.Media.IS_MUSIC + " = 1", null, null);
         if (cursor != null) {
 
             int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ID);

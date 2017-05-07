@@ -116,6 +116,7 @@
     <string name="dialog_confirm_go_to_setting">Request permission</string>
     <string name="dialog_confirm_go_to_setting_request">Please go to setting and grant permission for this application</string>
     <string name="context_menu_album_add_end_playing">Add to end playlist</string>
+    <string name="network_not_available">Network not available !</string>
 
 
 </resources>

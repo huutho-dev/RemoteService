@@ -75,6 +75,11 @@ public class TPlayerService extends Service {
         }
 
         @Override
+        public void startSong(MediaEntity entity) throws RemoteException {
+            mPlayerManager.startSong(entity);
+        }
+
+        @Override
         public void setPlayList(List<MediaEntity> playLists) throws RemoteException {
             LogUtils.printLog("Service_setPlayList : size = " + playLists.size());
             mPlayerManager.setListSong(playLists);

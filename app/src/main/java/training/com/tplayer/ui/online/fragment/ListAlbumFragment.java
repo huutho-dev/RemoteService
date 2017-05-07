@@ -133,6 +133,7 @@ public class ListAlbumFragment extends BaseFragment
                 public void onResponse(List entities, String TAG) {
                     Intent intent = new Intent(mContext, PlayerActivity.class);
                     intent.putParcelableArrayListExtra(PlayerActivity.EXTRA_DATA_PLAYER, (ArrayList<? extends Parcelable>) entities);
+                    if (isAdded() && getActivity() != null)
                     startActivity(intent);
                 }
             }, "getDataCodeTask");

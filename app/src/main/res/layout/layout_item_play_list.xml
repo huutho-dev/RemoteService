@@ -6,6 +6,8 @@
     android:orientation="vertical">
 
     <ImageView
+        android:background="@color/colorPrimary"
+        android:padding="@dimen/spacing_1_6dp"
         android:id="@+id/imv_artist"
         android:layout_width="60dp"
         android:layout_height="60dp"

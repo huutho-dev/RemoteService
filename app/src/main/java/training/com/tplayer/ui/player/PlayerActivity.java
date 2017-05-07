@@ -3,6 +3,7 @@ package training.com.tplayer.ui.player;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,12 +27,12 @@ import butterknife.ButterKnife;
 import me.zhengken.lyricview.LyricView;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
-import training.com.tplayer.base.BaseEntity;
 import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.ui.adapter.PlayListInPlayerAdapter;
 import training.com.tplayer.utils.DateTimeUtils;
 import training.com.tplayer.utils.ImageUtils;
 import training.com.tplayer.utils.LogUtils;
+import training.com.tplayer.utils.preferences.PlayerPreference;
 
 /**
  * Created by ThoNH on 4/16/2017.
@@ -43,6 +44,9 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
     public static final String EXTRA_DATA_PLAYER = "extra.data.player";
 
+    public static final int REPEAT_NO = 0;
+    public static final int REPEAT_ONE = 1;
+    public static final int REPEAT_ALL = 2;
 
     @BindView(R.id.act_player_total_song)
     TextViewRoboto mTxtTotalSong;
@@ -71,11 +75,11 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     @BindView(R.id.act_player_control_seekbar)
     DiscreteSeekBar mSeekbar;
 
-    @BindView(R.id.act_player_control_imv_volume)
-    ImageView mImvVolume;
+    @BindView(R.id.act_player_control_imv_shuffle)
+    ImageView mImvShuffle;
 
     @BindView(R.id.act_player_control_imv_repeat)
-    ImageView mImvShuffle;
+    ImageView mImvRepeat;
 
     @BindView(R.id.lyricView)
     LyricView mLyricView;
@@ -90,6 +94,11 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     private ArrayList<MediaEntity> songs = new ArrayList<>();
 
     private final long TIME_TO_UPDATE_SEEKBAR = 1000;
+
+    private int mCurrentRepeat;
+
+    private boolean mIsShuffle;
+
     private int mCurrentValueSeekbar;
 
 
@@ -118,8 +127,8 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public void onBindView() {
         ButterKnife.bind(this);
 
+        mImvRepeat.setOnClickListener(this);
         mImvShuffle.setOnClickListener(this);
-        mImvVolume.setOnClickListener(this);
         mImvPlayPause.setOnClickListener(this);
         mImvForward.setOnClickListener(this);
         mImvBackward.setOnClickListener(this);
@@ -127,6 +136,13 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         mAdapter = new PlayListInPlayerAdapter(this, this);
         mAdapter.setDatas(songs);
         ImageUtils.loadRoundImage(this.getApplicationContext(), R.drawable.dummy_image, mImvArtistCover);
+
+        mIsShuffle = PlayerPreference.getInstance().getPlayerShuffle();
+        mCurrentRepeat = PlayerPreference.getInstance().getPlayerRepeat();
+
+        setViewShuffle(mIsShuffle);
+        setViewRepeat(mCurrentRepeat);
+
 
     }
 
@@ -151,13 +167,10 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         super.serviceConnected();
         if (getPlayerService() != null) {
             mPresenter.setService(getPlayerService());
-            LogUtils.printLog("getPlayerService != null");
             if (songs != null && mAdapter != null) {
                 mAdapter.setDatas(songs);
                 mPresenter.setPlayLists(songs);
-                mPresenter.startSongPosition(9);
-                LogUtils.printLog("start");
-
+                mPresenter.startSongPosition(0);
             }
         }
     }
@@ -170,8 +183,18 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
 
     @Override
-    public void onRecyclerViewItemClick(View view, BaseEntity baseEntity, int position) {
+    public void onRecyclerViewItemClick(View view, MediaEntity song, int position) {
+        try {
+            getPlayerService().startSong(song);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @Override
+    public void onRecyclerViewImagePlayItemClick(View view, MediaEntity entity, int position) {
+        mImvPlayPause.performClick();
+        mImvPlayPause.setSelected(entity.isPlaying);
     }
 
 
@@ -183,7 +206,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 LogUtils.printLog("Client_repeat");
                 mPresenter.repeat();
                 break;
-            case R.id.act_player_control_imv_volume:
+            case R.id.act_player_control_imv_shuffle:
                 LogUtils.printLog("Client_volume");
                 break;
             case R.id.act_player_control_imv_play_pause:
@@ -237,8 +260,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
         ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
 
-        song.isPlaying = true;
-        mAdapter.notifyItem(song);
+        mAdapter.setActivePlaying(song);
 
         resetSeekbar();
         mHandler.postDelayed(runUpdateSeekbar, 100);
@@ -316,6 +338,26 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
             mHandler.post(runUpdateSeekbar);
         }
         mHandler.removeCallbacks(runUpdateSeekbar);
+    }
+
+    private void setViewShuffle(boolean isShuffle) {
+        if (isShuffle) {
+            mImvShuffle.setImageResource(R.drawable.ic_shuffle_active);
+        } else {
+            mImvShuffle.setImageResource(R.drawable.ic_shuffle_anactive);
+        }
+    }
+
+    private void setViewRepeat(int repeat) {
+        switch (repeat) {
+            case REPEAT_NO:
+                mImvRepeat.setImageResource(R.drawable.ic_player_repeat_anactive);
+                break;
+            case REPEAT_ONE:
+                break;
+            case REPEAT_ALL:
+                mImvRepeat.setImageResource(R.drawable.ic_player_repeat_active);
+        }
     }
 
 }
