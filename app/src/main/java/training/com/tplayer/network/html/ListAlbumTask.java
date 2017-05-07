@@ -34,23 +34,25 @@ public class ListAlbumTask extends BaseAsyncTask<AlbumBasicEntity> {
         super.doInBackground(params);
         List<AlbumBasicEntity> entities = new ArrayList<>();
 
-        Elements items = document.select(PANEL);
-        for (Element item : items) {
-            String href = item.select("a").attr("href");
-            String title = item.select("a").select("img").attr("alt");
-            String src = item.select("a").select("img").attr("src");
+        if (document != null) {
+            Elements items = document.select(PANEL);
+            for (Element item : items) {
+                String href = item.select("a").attr("href");
+                String title = item.select("a").select("img").attr("alt");
+                String src = item.select("a").select("img").attr("src");
 
-            if (!href.contains(Config.BASE_ZING)){
-                href = Config.BASE_ZING+ href;
+                if (!href.contains(Config.BASE_ZING)) {
+                    href = Config.BASE_ZING + href;
+                }
+
+                AlbumBasicEntity entity = new AlbumBasicEntity();
+                entity.link = href;
+                entity.image = src;
+                entity.artist = ZingHtmlUtils.splitsNameAndArtist(title)[1];
+                entity.name = ZingHtmlUtils.splitsNameAndArtist(title)[0];
+                LogUtils.printLog(entity.toString());
+                entities.add(entity);
             }
-
-            AlbumBasicEntity entity = new AlbumBasicEntity();
-            entity.link = href;
-            entity.image = src;
-            entity.artist = ZingHtmlUtils.splitsNameAndArtist(title)[1];
-            entity.name = ZingHtmlUtils.splitsNameAndArtist(title)[0];
-            LogUtils.printLog(entity.toString());
-            entities.add(entity);
         }
 
         return entities;

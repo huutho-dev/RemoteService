@@ -28,18 +28,21 @@ public class GetDataCodeTask extends BaseAsyncTask<DataCodeEntity> {
 
         List<DataCodeEntity> entities = new ArrayList<>();
 
-        Elements list = document.select("div#playlistItems > ul > li");
-        if (list.hasText())
-        for (Element element : list) {
-            String dataCode = element.attr("data-code");
-            if ( dataCode!=null &&!TextUtils.isEmpty(dataCode))
-            entities.add(new DataCodeEntity(dataCode));
+        if (document != null) {
+            Elements list = document.select("div#playlistItems > ul > li");
+            if (list.hasText())
+                for (Element element : list) {
+                    String dataCode = element.attr("data-code");
+                    if (dataCode != null && !TextUtils.isEmpty(dataCode))
+                        entities.add(new DataCodeEntity(dataCode));
+                }
+
+
+            String dataCode = document.select("a#tabService").attr("data-code");
+            if (dataCode != null && !TextUtils.isEmpty(dataCode))
+                entities.add(new DataCodeEntity(dataCode));
         }
 
-
-        String dataCode = document.select("a#tabService").attr("data-code");
-        if ( dataCode!=null &&!TextUtils.isEmpty(dataCode))
-        entities.add(new DataCodeEntity(dataCode));
         return entities;
     }
 }

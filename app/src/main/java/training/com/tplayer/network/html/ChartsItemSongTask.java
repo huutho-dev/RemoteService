@@ -29,27 +29,29 @@ public class ChartsItemSongTask extends BaseAsyncTask<HotSongOnlEntity> {
         super.doInBackground(params);
         List<HotSongOnlEntity> entities = new ArrayList<>();
 
-        Elements table = document.select(TABLE);
-        for (int i = 0; i < table.size(); i++) {
-            Element element = table.get(i);
-            String data_id = element.attr("data-id");
-            String data_code = element.attr("data-code");
-            String src = element.select("div.e-item").select("img").attr("src");
-            String title = element.select("div.e-item").select("a").attr("title");
-            String link = element.select("div.e-item").select("a").attr("href");
+        if (document != null) {
+            Elements table = document.select(TABLE);
+            for (int i = 0; i < table.size(); i++) {
+                Element element = table.get(i);
+                String data_id = element.attr("data-id");
+                String data_code = element.attr("data-code");
+                String src = element.select("div.e-item").select("img").attr("src");
+                String title = element.select("div.e-item").select("a").attr("title");
+                String link = element.select("div.e-item").select("a").attr("href");
 
-            HotSongOnlEntity entity = new HotSongOnlEntity();
-            entity.order = i + 1;
-            entity.image = src;
-            entity.data_id = data_id;
-            entity.data_code = data_code;
-            entity.link = link;
-            entity.title = ZingHtmlUtils.splitsNameAndArtist(title)[0];
-            entity.artist = ZingHtmlUtils.splitsNameAndArtist(title)[1];
+                HotSongOnlEntity entity = new HotSongOnlEntity();
+                entity.order = i + 1;
+                entity.image = src;
+                entity.data_id = data_id;
+                entity.data_code = data_code;
+                entity.link = link;
+                entity.title = ZingHtmlUtils.splitsNameAndArtist(title)[0];
+                entity.artist = ZingHtmlUtils.splitsNameAndArtist(title)[1];
 
-            entities.add(entity);
+                entities.add(entity);
+            }
+
         }
-
         return entities;
     }
 }
