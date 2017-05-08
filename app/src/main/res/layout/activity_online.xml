@@ -47,5 +47,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
       />
-
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        layout="@layout/layout_bottom_panel_player"/>
 </RelativeLayout>

@@ -87,8 +87,13 @@ public class TPlayerService extends Service {
 
         @Override
         public int getDuration() throws RemoteException {
-            LogUtils.printLog("Service_getDuration = " + getDuration());
-            return mPlayerManager.getDuration();
+            return mPlayerManager.getPlayerDuration();
+        }
+
+        @Override
+        public boolean isPlayerPlaying() throws RemoteException {
+            LogUtils.printLog("isPlayerPlaying ");
+            return mPlayerManager.isPlayerPlaying();
         }
 
         @Override

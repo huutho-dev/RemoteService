@@ -113,7 +113,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         return true;
     }
 
-    public int getDuration() {
+    public int getPlayerDuration() {
         return mTPlayer.getDurationPlayer();
     }
 
@@ -201,6 +201,10 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
     public boolean isStop() {
         return mIsStop;
+    }
+
+    public boolean isPlayerPlaying() {
+        return  mTPlayer.isPlayerPlaying();
     }
 
     private class DownloadLyric extends AsyncTask<MediaEntity, Void, Void> {

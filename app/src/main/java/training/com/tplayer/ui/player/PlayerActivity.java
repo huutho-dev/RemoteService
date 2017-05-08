@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -49,6 +50,10 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public static final int REPEAT_ONE = 1;
     public static final int REPEAT_ALL = 2;
 
+
+    @BindView(R.id.act_player_scroll_view)
+    NestedScrollView mScroll ;
+
     @BindView(R.id.act_player_total_song)
     TextViewRoboto mTxtTotalSong;
 
@@ -84,7 +89,6 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
     @BindView(R.id.lyricView)
     LyricView mLyricView;
-
 
     @BindView(R.id.act_player_play_list)
     RecyclerView mRvPlayList;
@@ -143,7 +147,6 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         setViewShuffle(mIsShuffle);
         setViewRepeat(mCurrentRepeat);
 
-
     }
 
     @Override
@@ -167,13 +170,33 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         super.serviceConnected();
         if (getPlayerService() != null) {
             mPresenter.setService(getPlayerService());
+
+            // setPlaylist from source
             if (songs != null && songs.size() != 0) {
                 mAdapter.setDatas(songs);
                 mPresenter.setPlayLists(songs);
                 mPresenter.startSongPosition(0);
             } else if (songs == null) {
-                songs = mPresenter.getNowPlaylist();
-                mAdapter.setDatas(songs);
+                // has been play before, click bottom panel
+
+                try {
+                    songs = mPresenter.getNowPlaylist();
+                    mAdapter.setDatas(songs);
+
+                    resetSeekbar();
+                    int maxDuration = getPlayerService().getDuration();
+                    mCurrentValueSeekbar = getPlayerService().getCurrentPosition();
+
+                    LogUtils.printLog(maxDuration + " - " + mCurrentValueSeekbar);
+
+                    mSeekbar.setMax(maxDuration);
+                    mSeekbar.setProgress(mCurrentValueSeekbar);
+                    mHandler.postDelayed(runUpdateSeekbar, 100);
+
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
+
 
                 try {
                   MediaEntity song =  getPlayerService().getCurrentSong();
@@ -186,8 +209,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
                     mAdapter.setActivePlaying(song);
 
-                    resetSeekbar();
-                    mHandler.postDelayed(runUpdateSeekbar, 100);
+
 
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -229,16 +251,18 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 if (mCurrentRepeat == REPEAT_NO) {
                     mCurrentRepeat = REPEAT_ONE;
                     mImvRepeat.setImageResource(R.drawable.ic_player_repeat_one);
+
                 } else if (mCurrentRepeat == REPEAT_ONE) {
                     mCurrentRepeat = REPEAT_ALL;
                     mImvRepeat.setImageResource(R.drawable.ic_player_repeat_active);
+
                 } else if (mCurrentRepeat == REPEAT_ALL) {
                     mCurrentRepeat = REPEAT_NO;
                     mImvRepeat.setImageResource(R.drawable.ic_player_repeat_anactive);
                 }
                 PlayerPreference.getInstance().setPlayerRepeat(mCurrentRepeat);
-                LogUtils.printLog("mCurrentRepeat " + mCurrentRepeat);
                 mPresenter.repeat(mCurrentRepeat);
+
                 break;
             case R.id.act_player_control_imv_shuffle:
                 LogUtils.printLog("Client_volume");
@@ -396,6 +420,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 mImvRepeat.setImageResource(R.drawable.ic_player_repeat_anactive);
                 break;
             case REPEAT_ONE:
+                mImvRepeat.setImageResource(R.drawable.ic_player_repeat_one);
                 break;
             case REPEAT_ALL:
                 mImvRepeat.setImageResource(R.drawable.ic_player_repeat_active);

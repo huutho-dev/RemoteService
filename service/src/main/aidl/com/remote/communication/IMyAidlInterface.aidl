@@ -15,6 +15,8 @@ interface IMyAidlInterface {
 
    boolean isPlayerStop();
 
+    boolean isPlayerPlaying ();
+
    int getCurrentPosition();
 
    MediaEntity getCurrentSong();

@@ -165,7 +165,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
                     mTitle.setText(mCurrentSong.title);
                     mArtist.setText(mCurrentSong.artist);
 
-                    boolean isSongPlaying = getPlayerService().playPause();
+                    boolean isSongPlaying = getPlayerService().isPlayerPlaying();
 
                     if (isSongPlaying)
                         mPlayPause.setImageResource(R.drawable.ic_player_pause);
@@ -190,8 +190,8 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
         try {
             switch (v.getId()) {
                 case R.id.panel_bottom_player_play_pause:
-                    if (getPlayerService() != null){
-                     boolean isSongPlaying =   getPlayerService().playPause();
+                    if (getPlayerService() != null) {
+                        boolean isSongPlaying = getPlayerService().playPause();
 
                         if (isSongPlaying)
                             mPlayPause.setImageResource(R.drawable.ic_player_pause);
@@ -207,6 +207,7 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
                     break;
                 case R.id.layout_bottom_panel_player:
                     startActivity(new Intent(MainActivity.this, PlayerActivity.class));
+                    overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
                     break;
             }
         } catch (Exception e) {
