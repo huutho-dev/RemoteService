@@ -17,7 +17,6 @@ import com.remote.communication.IMyAidlInterface;
 import training.com.tplayer.app.Config;
 import training.com.tplayer.base.mvp.BasePresenterImpl;
 import training.com.tplayer.base.mvp.BaseView;
-import training.com.tplayer.ui.player.PlayerPresenterImpl;
 import training.com.tplayer.utils.LogUtils;
 
 /**
@@ -128,11 +127,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
             mTPlayerService = IMyAidlInterface.Stub.asInterface(service);
             isBinded = true;
             LogUtils.printLog("onServiceConnected");
-
-            if (mPresenter instanceof PlayerPresenterImpl) {
-                ((PlayerPresenterImpl) mPresenter).setService(mTPlayerService);
                 serviceConnected();
-            }
         }
 
 

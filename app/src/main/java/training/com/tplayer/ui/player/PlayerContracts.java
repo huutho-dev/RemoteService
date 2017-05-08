@@ -35,9 +35,13 @@ public class PlayerContracts {
 
         void backward();
 
-        void repeat();
+        void repeat(int repeatType);
+
+        void setShuffle(boolean isShuffle);
 
         void setVolume(float volume);
+
+        List<MediaEntity> getNowPlaylist();
 
         void seekToPosition(int value);
 

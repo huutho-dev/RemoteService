@@ -21,6 +21,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -91,7 +92,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
     private PlayListInPlayerAdapter mAdapter;
 
-    private ArrayList<MediaEntity> songs = new ArrayList<>();
+    private List<MediaEntity> songs = new ArrayList<>();
 
     private final long TIME_TO_UPDATE_SEEKBAR = 1000;
 
@@ -117,7 +118,6 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     @Override
     public void getDataBundle(Bundle savedInstanceState) {
         super.getDataBundle(savedInstanceState);
-
         if (getIntent() != null)
             songs = getIntent().getParcelableArrayListExtra(EXTRA_DATA_PLAYER);
     }
@@ -167,10 +167,31 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         super.serviceConnected();
         if (getPlayerService() != null) {
             mPresenter.setService(getPlayerService());
-            if (songs != null && mAdapter != null) {
+            if (songs != null && songs.size() != 0) {
                 mAdapter.setDatas(songs);
                 mPresenter.setPlayLists(songs);
                 mPresenter.startSongPosition(0);
+            } else if (songs == null) {
+                songs = mPresenter.getNowPlaylist();
+                mAdapter.setDatas(songs);
+
+                try {
+                  MediaEntity song =  getPlayerService().getCurrentSong();
+
+                    mTxtSongName.setText(song.title);
+                    mTxtSongArtist.setText(song.artist);
+                    mImvPlayPause.setSelected(true);
+                    ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
+                    ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
+
+                    mAdapter.setActivePlaying(song);
+
+                    resetSeekbar();
+                    mHandler.postDelayed(runUpdateSeekbar, 100);
+
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
@@ -204,10 +225,31 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         switch (v.getId()) {
             case R.id.act_player_control_imv_repeat:
                 LogUtils.printLog("Client_repeat");
-                mPresenter.repeat();
+
+                if (mCurrentRepeat == REPEAT_NO) {
+                    mCurrentRepeat = REPEAT_ONE;
+                    mImvRepeat.setImageResource(R.drawable.ic_player_repeat_one);
+                } else if (mCurrentRepeat == REPEAT_ONE) {
+                    mCurrentRepeat = REPEAT_ALL;
+                    mImvRepeat.setImageResource(R.drawable.ic_player_repeat_active);
+                } else if (mCurrentRepeat == REPEAT_ALL) {
+                    mCurrentRepeat = REPEAT_NO;
+                    mImvRepeat.setImageResource(R.drawable.ic_player_repeat_anactive);
+                }
+                PlayerPreference.getInstance().setPlayerRepeat(mCurrentRepeat);
+                LogUtils.printLog("mCurrentRepeat " + mCurrentRepeat);
+                mPresenter.repeat(mCurrentRepeat);
                 break;
             case R.id.act_player_control_imv_shuffle:
                 LogUtils.printLog("Client_volume");
+                mIsShuffle = !mIsShuffle;
+                if (mIsShuffle) {
+                    mImvShuffle.setImageResource(R.drawable.ic_shuffle_active);
+                } else {
+                    mImvShuffle.setImageResource(R.drawable.ic_shuffle_anactive);
+                }
+                mPresenter.setShuffle(mIsShuffle);
+                PlayerPreference.getInstance().setPlayerShuffle(mIsShuffle);
                 break;
             case R.id.act_player_control_imv_play_pause:
                 LogUtils.printLog("Client_playPause");

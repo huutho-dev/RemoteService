@@ -23,12 +23,24 @@ import training.com.tplayerservice.app.Config;
  */
 
 public class PlayerManager implements MediaPlayer.OnCompletionListener {
+
+    public static final int REPEAT_NO = 0;
+    public static final int REPEAT_ONE = 1;
+    public static final int REPEAT_ALL = 2;
+
     private Context mContext;
     private TPlayer mTPlayer;
     private ArrayList<MediaEntity> mPlayLists = new ArrayList<>();
 
     private int mCurrentSong;
+
     private boolean mLoopList;
+
+    private boolean mIsShuffle;
+
+    private boolean mIsStop = true;
+
+    private int mCurrentRepeat;
 
     public PlayerManager(Context context) {
         this.mContext = context;
@@ -48,6 +60,10 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         MediaEntity song = mPlayLists.get(position);
         String data = song.data;
         startSong(data);
+
+        song.isPlaying = true;
+
+        mIsStop = false;
     }
 
     public void startSong(MediaEntity entity) {
@@ -134,6 +150,10 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         return mTPlayer.getCurrentPosition();
     }
 
+    public List<MediaEntity> getPlaylist() {
+        return mPlayLists;
+    }
+
     /**
      * i = 1 : next
      * i = -1 : previous
@@ -154,12 +174,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         startSong(song.data);
     }
 
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-        Intent intent = new Intent();
-        intent.setAction(Config.ACTION_PLAYER_COMPLETE);
-        mContext.getApplicationContext().sendBroadcast(intent);
-    }
 
     public void addNowPlaying(MediaEntity entity) {
         mPlayLists.add(entity);
@@ -171,6 +185,22 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
     public void addNextNowPlaying(MediaEntity entity) {
         mPlayLists.add(mCurrentSong, entity);
+    }
+
+    public void setShuffle(boolean isShuffle) {
+        this.mIsShuffle = isShuffle;
+    }
+
+    public void setRepeat(int repeatType) {
+        mCurrentRepeat = repeatType;
+    }
+
+    public MediaEntity getCurrentSong() {
+        return mPlayLists.get(mCurrentSong);
+    }
+
+    public boolean isStop() {
+        return mIsStop;
     }
 
     private class DownloadLyric extends AsyncTask<MediaEntity, Void, Void> {
@@ -198,4 +228,13 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         }
     }
 
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        mPlayLists.get(mCurrentSong).isPlaying = false;
+        mIsStop = true;
+        Intent intent = new Intent();
+        intent.setAction(Config.ACTION_PLAYER_COMPLETE);
+        mContext.getApplicationContext().sendBroadcast(intent);
+    }
 }

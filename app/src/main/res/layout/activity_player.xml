@@ -92,6 +92,22 @@
                             android:src="@drawable/ic_shuffle_active" />
 
 
+
+                        <me.zhengken.lyricview.LyricView
+                            android:id="@+id/lyricView"
+                            android:layout_width="match_parent"
+                            android:layout_height="130dp"
+                            android:layout_above="@+id/act_player_control_seekbar"
+                            android:layout_marginBottom="@dimen/spacing_1_8dp"
+                            android:background="@color/colorTransParent"
+                            app:fadeInFadeOut="true"
+                            app:highlightColor="@color/colorAccent"
+                            app:hint="No Lyrics"
+                            app:lineSpace="@dimen/text_4_medium_16sp"
+                            app:textAlign="center"
+                            app:textColor="@color/colorWhite"
+                            app:textSize="@dimen/text_3_14sp" />
+
                         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                             android:id="@+id/act_player_control_seekbar"
                             android:layout_width="match_parent"

@@ -92,9 +92,24 @@ public class TPlayerService extends Service {
         }
 
         @Override
+        public boolean isPlayerStop() throws RemoteException {
+            return mPlayerManager.isStop();
+        }
+
+        @Override
         public int getCurrentPosition() throws RemoteException {
             LogUtils.printLog("Service_getCurrentPosition = " + mPlayerManager.getCurrentPosition());
             return mPlayerManager.getCurrentPosition();
+        }
+
+        @Override
+        public MediaEntity getCurrentSong() throws RemoteException {
+            return mPlayerManager.getCurrentSong();
+        }
+
+        @Override
+        public List<MediaEntity> getPlaylist() throws RemoteException {
+            return mPlayerManager.getPlaylist();
         }
 
         @Override
@@ -122,14 +137,20 @@ public class TPlayerService extends Service {
         }
 
         @Override
+        public void setShuffle(boolean isShuffle) throws RemoteException {
+            LogUtils.printLog("Service_setShuffle " + isShuffle);
+            mPlayerManager.setShuffle(isShuffle);
+        }
+
+        @Override
         public boolean playPause() throws RemoteException {
             LogUtils.printLog("Service_playPause");
            return mPlayerManager.changePlayStatus();
         }
 
         @Override
-        public void repeat() throws RemoteException {
-            LogUtils.printLog("Service_repeat");
+        public void repeat(int repeatType) throws RemoteException {
+            mPlayerManager.setRepeat(repeatType);
         }
 
         @Override

@@ -69,9 +69,18 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     }
 
     @Override
-    public void repeat() {
+    public void repeat(int repeatType) {
         try {
-            mService.repeat();
+            mService.repeat(repeatType);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void setShuffle(boolean isShuffle) {
+        try {
+            mService.setShuffle(isShuffle);
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -84,6 +93,16 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public List<MediaEntity> getNowPlaylist() {
+        try {
+           return mService.getPlaylist();
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Override

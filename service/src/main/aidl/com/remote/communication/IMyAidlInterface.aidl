@@ -13,7 +13,13 @@ interface IMyAidlInterface {
 
    int getDuration();
 
+   boolean isPlayerStop();
+
    int getCurrentPosition();
+
+   MediaEntity getCurrentSong();
+
+   List<MediaEntity> getPlaylist();
 
    void setPosition(int value);
 
@@ -23,9 +29,11 @@ interface IMyAidlInterface {
 
    void setVolume(float value);
 
+   void setShuffle(boolean isShuffle);
+
    boolean playPause();
 
-   void repeat();
+   void repeat(int repeatType);
 
    void addNextPlaying(in MediaEntity entity) ;
 
