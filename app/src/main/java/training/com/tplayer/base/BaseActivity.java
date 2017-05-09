@@ -92,7 +92,7 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
         super.onResume();
         // create presenterImpl here
         createPresenterImpl();
-        if (!this.isBinded) {
+        if (!isBinded) {
             bindTPlayerService();
             LogUtils.printLogDetail("bindTPlayerService onResume");
         }

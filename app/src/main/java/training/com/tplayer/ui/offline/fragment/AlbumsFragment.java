@@ -68,6 +68,7 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
 
+        registerForContextMenu(mRvAlbum);
         mPlayerService = ((TabOfflineActivity) mActivity).getPlayerService();
 
         mAdapter = new AlbumAdapter(mContext, this);
@@ -115,30 +116,35 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        String albumName = mAdapter.getDataItem(mAdapter.positionMenuContext).album;
-        List<MediaEntity> songsInAlbum = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM, new String[]{albumName});
-        try {
-            switch (item.getItemId()) {
-                case R.id.action_album_play:
-                    mPlayerService.setPlayList(songsInAlbum);
-                    break;
 
-                case R.id.action_album_add_now_playing:
-                    mPlayerService.addListNextPlaying(songsInAlbum);
-                    break;
+        if (getUserVisibleHint()){
+            String albumName = mAdapter.getDataItem(mAdapter.getPosMenuContext()).album;
+            List<MediaEntity> songsInAlbum = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM, new String[]{albumName});
+            try {
+                switch (item.getItemId()) {
+                    case R.id.action_album_play:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().setPlayList(songsInAlbum);
+                        break;
 
-                case R.id.action_album_add_end_playing:
-                    mPlayerService.addToEndListNowPlaying(songsInAlbum);
-                    break;
+                    case R.id.action_album_add_now_playing:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().addListNextPlaying(songsInAlbum);
+                        break;
 
-                case R.id.action_album_add_playlist:
-                    addPlaylistDialog(songsInAlbum);
-                    break;
+                    case R.id.action_album_add_end_playing:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().addToEndListNowPlaying(songsInAlbum);
+                        break;
 
+                    case R.id.action_album_add_playlist:
+                        addPlaylistDialog(songsInAlbum);
+                        break;
+
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
+
+
 
         return super.onContextItemSelected(item);
     }

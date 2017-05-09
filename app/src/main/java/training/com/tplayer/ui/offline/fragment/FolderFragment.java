@@ -66,6 +66,7 @@ public class FolderFragment extends BaseFragment implements FolderAdapter.Folder
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
 
+        registerForContextMenu(mRvFolder);
         mPlayerService = ((TabOfflineActivity) mActivity).getPlayerService();
         mAdapter = new FolderAdapter(mContext, this);
         mRvFolder.setLayoutManager(new LinearLayoutManager(mContext));
@@ -90,23 +91,28 @@ public class FolderFragment extends BaseFragment implements FolderAdapter.Folder
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext)
-                .getFileInFolder(mAdapter.getDataItem(mAdapter.mContextMenuPosition).mPath);
-        try {
-            switch (item.getItemId()) {
-                case R.id.action_folder_play:
-                    mPlayerService.setPlayList(entityList);
-                    break;
-                case R.id.action_folder_add_now_playing:
-                    mPlayerService.addToEndListNowPlaying(entityList);
-                    break;
-                case R.id.action_folder_add_playlist:
-                    addPlaylistDialog(entityList);
-                    break;
+
+        if (getUserVisibleHint()){
+            List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext)
+                    .getFileInFolder(mAdapter.getDataItem(mAdapter.mContextMenuPosition).mPath);
+            try {
+                switch (item.getItemId()) {
+                    case R.id.action_folder_play:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().setPlayList(entityList);
+                        break;
+                    case R.id.action_folder_add_now_playing:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().addListNextPlaying(entityList);
+                        break;
+                    case R.id.action_folder_add_playlist:
+                        addPlaylistDialog(entityList);
+                        break;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
+
+
 
         return super.onContextItemSelected(item);
     }

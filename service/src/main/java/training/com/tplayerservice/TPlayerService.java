@@ -165,17 +165,17 @@ public class TPlayerService extends Service {
 
         @Override
         public void addEndPlaying(MediaEntity entity) throws RemoteException {
-
+            mPlayerManager.addToEndPlaying(entity);
         }
 
         @Override
         public void addListNextPlaying(List<MediaEntity> entities) throws RemoteException {
-            mPlayerManager.addNowPlaying(entities);
+            mPlayerManager.addNextNowPlaying(entities);
         }
 
         @Override
-        public void addToEndListNowPlaying(List<MediaEntity> entity) throws RemoteException {
-
+        public void addToEndListNowPlaying(List<MediaEntity> entities) throws RemoteException {
+            mPlayerManager.addToEndPlaying(entities);
         }
 
     };

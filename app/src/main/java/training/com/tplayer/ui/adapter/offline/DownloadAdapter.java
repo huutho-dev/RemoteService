@@ -20,6 +20,9 @@ import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
 
 public class DownloadAdapter  extends BaseRecyclerViewAdapter<MediaEntity, DownloadAdapter.ViewHolder> {
 
+    private int mMenuContextPosition = -1 ;
+
+
     public interface DownloadAdapterListener extends IRecyclerViewOnItemClickListener<MediaEntity> {
     }
 
@@ -43,6 +46,7 @@ public class DownloadAdapter  extends BaseRecyclerViewAdapter<MediaEntity, Downl
             super(itemView);
 
             itemView.setOnCreateContextMenuListener(this);
+
         }
 
 

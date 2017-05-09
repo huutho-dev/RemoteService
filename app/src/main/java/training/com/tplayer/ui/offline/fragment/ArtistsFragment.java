@@ -115,31 +115,37 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        String artistName = mAdapter.getDataItem(mAdapter.mContextMenuPosition).author;
-        List<MediaEntity> songsOfArtist = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreAlbumColumn._ARTIST, new String[]{artistName});
+        LogUtils.printLog(mAdapter.getContextMenuPosition() +"");
 
-        try {
-            switch (item.getItemId()) {
-                case R.id.action_album_play:
-                    mPlayerService.setPlayList(songsOfArtist);
-                    break;
+        if (getUserVisibleHint()){
+            String artistName = mAdapter.getDataItem(mAdapter.getContextMenuPosition()).author;
+            List<MediaEntity> songsOfArtist = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreArtistColumn._ARTIST, new String[]{artistName});
 
-                case R.id.action_album_add_now_playing:
-                    mPlayerService.addListNextPlaying(songsOfArtist);
-                    break;
+            try {
+                switch (item.getItemId()) {
+                    case R.id.action_album_play:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().setPlayList(songsOfArtist);
+                        break;
 
-                case R.id.action_album_add_end_playing:
-                    mPlayerService.addToEndListNowPlaying(songsOfArtist);
-                    break;
+                    case R.id.action_album_add_now_playing:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().addListNextPlaying(songsOfArtist);
+                        break;
 
-                case R.id.action_album_add_playlist:
-                    addPlaylistDialog(songsOfArtist);
-                    break;
+                    case R.id.action_album_add_end_playing:
+                        ((TabOfflineActivity) getActivity()).getPlayerService().addToEndListNowPlaying(songsOfArtist);
+                        break;
 
+                    case R.id.action_album_add_playlist:
+                        addPlaylistDialog(songsOfArtist);
+                        break;
+
+                }
+            } catch (RemoteException e) {
+                e.printStackTrace();
             }
-        } catch (RemoteException e) {
-            e.printStackTrace();
         }
+
+
         return super.onContextItemSelected(item);
     }
 

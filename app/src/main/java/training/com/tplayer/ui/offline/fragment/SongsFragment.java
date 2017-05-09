@@ -31,6 +31,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
+import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.base.BaseFragment;
 import training.com.tplayer.database.DataBaseUtils;
 import training.com.tplayer.database.SourceTableMedia;
@@ -151,12 +152,19 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        ((BaseActivity) getActivity()).bindTPlayerService();
+    }
+
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_to_first_now_playing:
                 LogUtils.printLog("action_add_to_first_now_playing");
                 try {
-                    mPlayerService.addNextPlaying(mAdapter.getDataItem(mAdapter.positionContext));
+                    ((TabOfflineActivity) getActivity()).getPlayerService().addNextPlaying(mAdapter.getDataItem(mAdapter.positionContext));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }
@@ -166,7 +174,7 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
             case R.id.action_add_to_now_plays:
                 LogUtils.printLog("action_add_to_now_plays");
                 try {
-                    mPlayerService.addNextPlaying(mAdapter.getDataItem(mAdapter.positionContext));
+                    ((TabOfflineActivity) getActivity()).getPlayerService().addNextPlaying(mAdapter.getDataItem(mAdapter.positionContext));
                 } catch (RemoteException e) {
                     e.printStackTrace();
                 }

@@ -14,6 +14,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 import training.com.tplayerservice.app.Config;
@@ -41,6 +42,8 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     private boolean mIsStop = true;
 
     private int mCurrentRepeat;
+
+    private Random random = new Random();
 
     public PlayerManager(Context context) {
         this.mContext = context;
@@ -133,10 +136,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         mTPlayer.setLoopingPlayer(isLoop);
     }
 
-    public void setLoopList(boolean isLoop) {
-        mLoopList = isLoop;
-    }
-
 
     public void setVolume(float level) {
         mTPlayer.setVolumePlayer(level, level);
@@ -175,16 +174,20 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
 
-    public void addNowPlaying(MediaEntity entity) {
-        mPlayLists.add(entity);
-    }
-
-    public void addNowPlaying(List<MediaEntity> entities) {
+    public void addToEndPlaying(List<MediaEntity> entities) {
         mPlayLists.addAll(entities);
     }
 
+    public void addNextNowPlaying(List<MediaEntity> entities) {
+        mPlayLists.addAll(mCurrentSong +1, entities);
+    }
+
     public void addNextNowPlaying(MediaEntity entity) {
-        mPlayLists.add(mCurrentSong, entity);
+        mPlayLists.add(mCurrentSong+1, entity);
+    }
+
+    public void addToEndPlaying(MediaEntity entity) {
+        mPlayLists.add(entity);
     }
 
     public void setShuffle(boolean isShuffle) {
@@ -204,8 +207,80 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public boolean isPlayerPlaying() {
-        return  mTPlayer.isPlayerPlaying();
+        return mTPlayer.isPlayerPlaying();
     }
+
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        mPlayLists.get(mCurrentSong).isPlaying = false;
+        mIsStop = true;
+
+        proccessAfterComplete(mIsShuffle, mCurrentRepeat);
+
+        Intent intent = new Intent();
+        intent.setAction(Config.ACTION_PLAYER_COMPLETE);
+        mContext.getApplicationContext().sendBroadcast(intent);
+    }
+
+
+    private void proccessAfterComplete(boolean isShuffle, int currentRepeat) {
+        if (!isShuffle) {
+
+            switch (currentRepeat) {
+                case REPEAT_NO:
+                    setLoop(false);
+                    if (mCurrentSong != mPlayLists.size() - 1) {
+                        mCurrentSong++;
+                        startSong(mCurrentSong);
+                    } else {
+                        mTPlayer.resetPlayer();
+                    }
+                    break;
+
+                case REPEAT_ONE:
+
+                    setLoop(true);
+                    break;
+
+                case REPEAT_ALL:
+                    setLoop(false);
+                    if (mCurrentSong == mPlayLists.size() - 1) {
+                        mCurrentSong = 0;
+                        startSong(mCurrentSong);
+                    } else {
+                        mCurrentSong++;
+                        startSong(mCurrentSong);
+                    }
+
+                    break;
+            }
+
+        } else {
+
+            switch (currentRepeat) {
+                case REPEAT_NO:
+                    setLoop(false);
+                    mCurrentSong = random.nextInt(mPlayLists.size() - 1);
+                    startSong(mCurrentSong);
+                    break;
+
+                case REPEAT_ONE:
+                    setLoop(true);
+                    break;
+
+                case REPEAT_ALL:
+                    setLoop(false);
+                    mCurrentSong = random.nextInt(mPlayLists.size() - 1);
+                    startSong(mCurrentSong);
+                    setLoop(true);
+                    break;
+            }
+
+
+        }
+    }
+
 
     private class DownloadLyric extends AsyncTask<MediaEntity, Void, Void> {
 
@@ -230,15 +305,5 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
             }
             return null;
         }
-    }
-
-
-    @Override
-    public void onCompletion(MediaPlayer mp) {
-        mPlayLists.get(mCurrentSong).isPlaying = false;
-        mIsStop = true;
-        Intent intent = new Intent();
-        intent.setAction(Config.ACTION_PLAYER_COMPLETE);
-        mContext.getApplicationContext().sendBroadcast(intent);
     }
 }

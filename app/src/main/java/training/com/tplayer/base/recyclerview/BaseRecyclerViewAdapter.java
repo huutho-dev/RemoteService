@@ -98,7 +98,7 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
     }
 
     public E getDataItem(int position) {
-        return mDatas.get(position);
+        return (!mDatas.isEmpty() && position < mDatas.size() ? mDatas.get(position) : null);
     }
 
     public int getSize() {

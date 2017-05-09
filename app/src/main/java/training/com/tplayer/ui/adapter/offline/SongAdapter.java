@@ -26,7 +26,7 @@ import training.com.tplayer.utils.ImageUtils;
 
 public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapter.ViewHolder> {
 
-    public int positionContext = -1 ;
+    public int positionContext = -1;
 
 
     public interface SongAdapterListener extends IRecyclerViewOnItemClickListener<MediaEntity> {
@@ -44,13 +44,14 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
         MediaEntity entity = getDataItem(position);
-        if (entity.art !=null && !entity.art.equals(""))
+        if (entity.art != null && !entity.art.equals(""))
             holder.mArt.setImageURI(Uri.parse(entity.art));
         else
             ImageUtils.loadRoundImage(mContext, R.drawable.dummy_image, holder.mArt);
 
         holder.mTitle.setText(entity.title);
         holder.mArtist.setText(entity.artist);
+        holder.itemView.setOnLongClickListener(null);
         holder.mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -78,7 +79,7 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
         }
 
 
-        public int getCtxPosition(){
+        public int getCtxPosition() {
             return positionContext;
         }
 

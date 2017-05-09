@@ -43,13 +43,9 @@ public class ArtistAdapter extends BaseRecyclerViewAdapter<ArtistEntity, ArtistA
         ArtistEntity entity = getDataItem(position);
         holder.mArtist.setText(entity.author);
         holder.mNumberOfSong.setText(String.valueOf(entity.numberOfTrack).trim() + " songs");
-        holder.mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                mContextMenuPosition = position;
-                return false;
-            }
-        });
+
+
+
     }
 
     public class ViewHolder extends BaseViewHolder implements View.OnCreateContextMenuListener {
@@ -65,6 +61,14 @@ public class ArtistAdapter extends BaseRecyclerViewAdapter<ArtistEntity, ArtistA
             super(itemView);
             ButterKnife.bind(this,itemView);
             mCtxMenu.setOnCreateContextMenuListener(this);
+
+            mCtxMenu.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v) {
+                    mContextMenuPosition = getAdapterPosition();
+                    return false;
+                }
+            });
         }
 
 
@@ -75,5 +79,9 @@ public class ArtistAdapter extends BaseRecyclerViewAdapter<ArtistEntity, ArtistA
             menu.add(Menu.NONE, R.id.action_album_add_end_playing, Menu.NONE, R.string.context_menu_album_add_end_playing);
             menu.add(Menu.NONE, R.id.action_album_add_playlist, Menu.NONE, R.string.context_menu_album_add_playlist);
         }
+    }
+
+    public int getContextMenuPosition(){
+        return mContextMenuPosition;
     }
 }

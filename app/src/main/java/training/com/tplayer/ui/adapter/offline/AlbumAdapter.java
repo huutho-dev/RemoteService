@@ -73,7 +73,7 @@ public class AlbumAdapter extends BaseRecyclerViewAdapter<AlbumEntity, AlbumAdap
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
-            itemView.setOnCreateContextMenuListener(this);
+            mCtxMenu.setOnCreateContextMenuListener(this);
         }
 
 

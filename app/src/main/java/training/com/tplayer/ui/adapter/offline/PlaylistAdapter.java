@@ -87,4 +87,8 @@ public class PlaylistAdapter  extends BaseRecyclerViewAdapter<PlaylistEntity, Pl
         Format format = new SimpleDateFormat("yyyy MM dd HH:mm:ss", Locale.getDefault());
         return format.format(date);
     }
+
+    public int getContextMenuPosition(){
+        return positionContext;
+    }
 }

@@ -100,31 +100,36 @@ public class PlaylistsFragment extends BaseFragment implements PlaylistAdapter.P
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_playlist_play:
-                try {
-                    List<PlaylistMemberEntity> songsOfPlaylist =
-                            SourceTablePlaylistMember.getInstance(mContext).getList();
 
-                    List<MediaEntity> songsToPlay =
-                            SourceTablePlaylistMember
-                                    .getInstance(mContext)
-                                    .convertPlaylistMemberToMedia(songsOfPlaylist);
+        if (getUserVisibleHint()){
+            switch (item.getItemId()) {
+                case R.id.action_playlist_play:
+                    try {
+                        List<PlaylistMemberEntity> songsOfPlaylist =
+                                SourceTablePlaylistMember.getInstance(mContext).getList();
 
-                    mPlayerService.setPlayList(songsToPlay);
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
-                break;
+                        List<MediaEntity> songsToPlay =
+                                SourceTablePlaylistMember
+                                        .getInstance(mContext)
+                                        .convertPlaylistMemberToMedia(songsOfPlaylist);
 
-            case R.id.action_playlist_rename:
-                renamePlaylistDialog(mAdapter.getDataItem(mAdapter.positionContext));
-                break;
-            case R.id.action_playlist_delete:
-                deletePlaylistDialog(mAdapter.getDataItem(mAdapter.positionContext));
-                break;
+                        ((TabOfflineActivity) getActivity()).getPlayerService().setPlayList(songsToPlay);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+                    break;
 
+                case R.id.action_playlist_rename:
+                    renamePlaylistDialog(mAdapter.getDataItem(mAdapter.getContextMenuPosition()));
+                    break;
+                case R.id.action_playlist_delete:
+                    deletePlaylistDialog(mAdapter.getDataItem(mAdapter.getContextMenuPosition()));
+                    break;
+
+            }
         }
+
+
         return super.onContextItemSelected(item);
     }
 
