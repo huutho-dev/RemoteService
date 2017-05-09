@@ -14,10 +14,10 @@
         android:fitsSystemWindows="true">
 
         <android.support.design.widget.AppBarLayout
-            android:descendantFocusability="blocksDescendants"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="#fff"
+            android:descendantFocusability="blocksDescendants"
             android:fitsSystemWindows="true">
 
             <android.support.design.widget.CollapsingToolbarLayout
@@ -49,6 +49,39 @@
                         android:layout_marginBottom="@dimen/spacing_3_24dp"
                         android:background="@drawable/background_player"
                         app:layout_collapseMode="pin">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="@dimen/spacing_7_56dp">
+
+                            <ImageView
+                                android:id="@+id/act_player_download"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="@dimen/spacing_7_56dp"
+                                android:layout_marginRight="@dimen/spacing_7_56dp"
+                                android:src="@drawable/ic_download_24dp" />
+
+                            <ImageView
+                                android:id="@+id/act_player_capture_screen"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toLeftOf="@+id/act_player_download"
+                                android:src="@drawable/ic_camera_24dp" />
+
+                            <ImageView
+                                android:id="@+id/act_player_equalizer"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_toRightOf="@+id/act_player_download"
+                                android:src="@drawable/ic_equalizer_24dp" />
+
+                        </RelativeLayout>
+
 
                         <training.com.tplayer.custom.TextViewRoboto
                             android:id="@+id/act_player_song_name"
@@ -84,7 +117,6 @@
 
 
                         <ImageView
-                            android:scaleType="centerCrop"
                             android:id="@+id/act_player_control_imv_shuffle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -92,16 +124,15 @@
                             android:layout_below="@+id/act_player_txt_songs_artist"
                             android:layout_centerVertical="true"
                             android:layout_marginRight="@dimen/spacing_3_24dp"
+                            android:scaleType="centerCrop"
                             android:src="@drawable/ic_shuffle_active" />
-
 
 
                         <me.zhengken.lyricview.LyricView
                             android:id="@+id/lyricView"
                             android:layout_width="match_parent"
-                            android:layout_height="130dp"
+                            android:layout_height="160dp"
                             android:layout_above="@+id/act_player_control_seekbar"
-                            android:layout_marginBottom="@dimen/spacing_1_8dp"
                             android:background="@color/colorTransParent"
                             app:fadeInFadeOut="true"
                             app:highlightColor="@color/colorAccent"
@@ -109,7 +140,7 @@
                             app:lineSpace="@dimen/text_4_medium_16sp"
                             app:textAlign="center"
                             app:textColor="@color/colorWhite"
-                            app:textSize="@dimen/text_3_14sp" />
+                            app:textSize="@dimen/text_4_medium_16sp" />
 
                         <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
                             android:id="@+id/act_player_control_seekbar"
