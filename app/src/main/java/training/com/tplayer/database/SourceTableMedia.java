@@ -3,6 +3,7 @@ package training.com.tplayer.database;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.provider.MediaStore;
 
 import com.remote.communication.MediaEntity;
@@ -131,6 +132,8 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
         entity.art = cursor.getString(artIndex);
 
 
+        DatabaseUtils.dumpCurrentRow(cursor);
+
         closeDb();
         if (!cursor.isClosed())
             cursor.close();
@@ -141,7 +144,6 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
     public long insertRow(MediaEntity entity) {
         openDb();
         long insert = getSqlDb().insert(DataBaseUtils.TABLE_MEDIA, null, convertEntity2ContentValue(entity));
-
         closeDb();
         return insert;
     }
@@ -152,6 +154,7 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
         int del = getSqlDb().delete(DataBaseUtils.TABLE_MEDIA,
                 DataBaseUtils.DbStoreMediaColumn.MID + "=?",
                 new String[]{String.valueOf(entity.mId)});
+        closeDb();
         return del;
     }
 
@@ -162,6 +165,7 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
                 convertEntity2ContentValue(entity),
                 DataBaseUtils.DbStoreMediaColumn._ID + "=?",
                 new String[]{String.valueOf(entity.id)});
+        LogUtils.printLog(entity.toString() +"\n" + update);
         closeDb();
         return update;
     }
@@ -282,7 +286,6 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
 
     public List<MediaEntity> getFileInFolder(String path) {
         List<MediaEntity> entities = new ArrayList<>();
-        LogUtils.printLog("1223123123 + " + path);
         openDb();
         Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, MediaStore.Audio.Media.DATA + " LIKE '" + path + "/%'", null, null, null, null);
 

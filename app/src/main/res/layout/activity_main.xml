@@ -39,14 +39,6 @@
             app:icon="@drawable/menu_main_share" />
 
         <com.imangazaliev.circlemenu.CircleMenuButton
-            android:id="@+id/action_menu_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:colorNormal="#009688"
-            app:colorPressed="#00897B"
-            app:icon="@drawable/menu_main_rate" />
-
-        <com.imangazaliev.circlemenu.CircleMenuButton
             android:id="@+id/action_menu_favorite"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

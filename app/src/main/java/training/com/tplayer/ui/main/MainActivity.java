@@ -21,7 +21,6 @@ import training.com.tplayer.ui.favorite.FavoriteActivity;
 import training.com.tplayer.ui.offline.OfflineActivity;
 import training.com.tplayer.ui.online.OnlineActivity;
 import training.com.tplayer.ui.player.PlayerActivity;
-import training.com.tplayer.ui.rate.RateActivity;
 import training.com.tplayer.ui.setting.SettingActivity;
 import training.com.tplayer.ui.share.ShareActivity;
 import training.com.tplayer.utils.ImageUtils;
@@ -121,9 +120,6 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
             case R.id.action_menu_share:
                 targetActivity = ACTIVITY_SHARE;
                 break;
-            case R.id.action_menu_rate:
-                targetActivity = ACTIVITY_RATE;
-                break;
         }
     }
 
@@ -143,9 +139,6 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
                 break;
             case ACTIVITY_SHARE:
                 startActivity(new Intent(MainActivity.this, ShareActivity.class));
-                break;
-            case ACTIVITY_RATE:
-                startActivity(new Intent(MainActivity.this, RateActivity.class));
                 break;
         }
     }

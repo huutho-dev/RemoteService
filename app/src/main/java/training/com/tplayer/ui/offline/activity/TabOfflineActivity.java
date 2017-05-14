@@ -2,11 +2,13 @@ package training.com.tplayer.ui.offline.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.RemoteException;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +24,7 @@ import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.ui.adapter.offline.OfflinePagerAdapter;
 import training.com.tplayer.ui.player.PlayerActivity;
+import training.com.tplayer.utils.ImageUtils;
 import training.com.tplayer.utils.LogUtils;
 
 /**
@@ -171,7 +174,6 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
 
             switch (v.getId()) {
 
-
                 case R.id.panel_bottom_player_play_pause:
                     if (getPlayerService() != null) {
                         boolean isSongPlaying = getPlayerService().playPause();
@@ -198,4 +200,39 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
             e.printStackTrace();
         }
     }
+
+    @Override
+    public void serviceConnected() {
+        super.serviceConnected();
+        try {
+            boolean isStop = getPlayerService().isPlayerStop();
+            if (isStop) {
+                mPanelPlayer.setVisibility(View.GONE);
+            } else {
+                mPanelPlayer.setVisibility(View.VISIBLE);
+                mCurrentSong = getPlayerService().getCurrentSong();
+
+                if (mCurrentSong != null) {
+                    mTitle.setText(mCurrentSong.title);
+                    mArtist.setText(mCurrentSong.artist);
+
+                    boolean isSongPlaying = getPlayerService().isPlayerPlaying();
+
+                    if (isSongPlaying)
+                        mPlayPause.setImageResource(R.drawable.ic_player_pause);
+                    else
+                        mPlayPause.setImageResource(R.drawable.ic_player_play);
+
+                    if (mCurrentSong.art != null && TextUtils.isEmpty(mCurrentSong.art))
+                        ImageUtils.loadImagePlayList(this, mCurrentSong.art, mImage);
+                    else
+                        mImage.setImageResource(R.drawable.ic_offline_song);
+                }
+            }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
+    }
+
 }

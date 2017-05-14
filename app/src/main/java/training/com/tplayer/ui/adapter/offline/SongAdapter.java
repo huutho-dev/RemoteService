@@ -18,7 +18,9 @@ import training.com.tplayer.base.recyclerview.BaseRecyclerViewAdapter;
 import training.com.tplayer.base.recyclerview.BaseViewHolder;
 import training.com.tplayer.base.recyclerview.IRecyclerViewOnItemClickListener;
 import training.com.tplayer.custom.TextViewRoboto;
+import training.com.tplayer.database.SourceTableMedia;
 import training.com.tplayer.utils.ImageUtils;
+import training.com.tplayer.utils.LogUtils;
 
 /**
  * Created by ThoNH on 28/04/2017.
@@ -43,11 +45,20 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
 
     @Override
     public void onBindViewHolderAdapter(ViewHolder holder, final int position) {
-        MediaEntity entity = getDataItem(position);
-        if (entity.art != null && !entity.art.equals(""))
+        final MediaEntity entity = getDataItem(position);
+        LogUtils.printLog(entity.toString());
+        if (entity.art != null && !entity.art.equals("")) {
             holder.mArt.setImageURI(Uri.parse(entity.art));
-        else
+        } else {
             ImageUtils.loadRoundImage(mContext, R.drawable.dummy_image, holder.mArt);
+        }
+
+
+        if (entity.isFavorite) {
+            holder.mFav.setImageResource(R.drawable.ic_favorite_24dp);
+        } else {
+            holder.mFav.setImageResource(R.drawable.ic_favorite_border_24dp);
+        }
 
         holder.mTitle.setText(entity.title);
         holder.mArtist.setText(entity.artist);
@@ -59,10 +70,22 @@ public class SongAdapter extends BaseRecyclerViewAdapter<MediaEntity, SongAdapte
                 return false;
             }
         });
+
+        holder.mFav.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                entity.isFavorite = !entity.isFavorite;
+              int update =  SourceTableMedia.getInstance(mContext).updateRow(entity);
+                notifyItem(position);
+                LogUtils.printLog(update+"");
+            }
+        });
     }
 
 
     public class ViewHolder extends BaseViewHolder implements View.OnCreateContextMenuListener {
+        @BindView(R.id.item_fragment_song_fav)
+        ImageView mFav;
         @BindView(R.id.item_fragment_song_art)
         ImageView mArt;
         @BindView(R.id.item_fragment_song_title)

@@ -35,8 +35,6 @@
 
         <activity android:name=".ui.setting.SettingActivity" />
 
-        <activity android:name=".ui.rate.RateActivity" />
-
         <activity android:name=".ui.player.PlayerActivity" />
 
         <activity android:name=".ui.favorite.FavoriteActivity" />
@@ -44,6 +42,14 @@
         <activity android:name=".ui.offline.activity.TabOfflineActivity" />
 
         <service android:name=".network.service.LoadListDataCodeService" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1354350021301053"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true" />
     </application>
 
 </manifest>

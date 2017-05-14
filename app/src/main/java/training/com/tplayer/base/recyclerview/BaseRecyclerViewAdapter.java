@@ -97,6 +97,10 @@ public abstract class BaseRecyclerViewAdapter<E extends BaseEntity, VH extends B
         }
     }
 
+    public void notifyItem(int position ){
+       notifyItemChanged(position);
+    }
+
     public E getDataItem(int position) {
         return (!mDatas.isEmpty() && position < mDatas.size() ? mDatas.get(position) : null);
     }
