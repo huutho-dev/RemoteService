@@ -5,7 +5,9 @@ import android.os.RemoteException;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -23,6 +25,7 @@ import training.com.tplayer.database.SourceTableMedia;
 import training.com.tplayer.ui.offline.fragment.SongsFragment;
 import training.com.tplayer.ui.player.PlayerActivity;
 import training.com.tplayer.utils.ImageUtils;
+import training.com.tplayer.utils.LogUtils;
 
 /**
  * Created by ThoNH on 4/13/2017.
@@ -32,6 +35,9 @@ public class FavoriteActivity extends BaseActivity implements View.OnClickListen
 
     @BindView(R.id.layout_bottom_panel_player)
     ConstraintLayout mPanelPlayer;
+
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
 
     @BindView(R.id.panel_bottom_player_image)
     ImageView mImage;
@@ -58,6 +64,11 @@ public class FavoriteActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onBindView() {
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         mPlayPause.setOnClickListener(this);
         mForward.setOnClickListener(this);
         mPanelPlayer.setOnClickListener(this);
@@ -68,16 +79,25 @@ public class FavoriteActivity extends BaseActivity implements View.OnClickListen
 
         List<MediaEntity> entityList = SourceTableMedia
                 .getInstance(this)
-                .getList(DataBaseUtils.DbStoreMediaColumn._IS_FAVORITE , new String[]{"true"});
-
+                .getList(DataBaseUtils.DbStoreMediaColumn._IS_FAVORITE + "=?", new String[]{"1"});
+        LogUtils.printLog("hihi " + entityList.toString());
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_FAVORITE,entityList ));
+        ft.replace(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_FAVORITE, entityList));
+        ft.commit();
     }
 
     @Override
     protected void createPresenterImpl() {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

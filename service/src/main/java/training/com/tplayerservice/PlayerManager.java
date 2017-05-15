@@ -213,14 +213,15 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
     @Override
     public void onCompletion(MediaPlayer mp) {
-        mPlayLists.get(mCurrentSong).isPlaying = false;
-        mIsStop = true;
 
-        proccessAfterComplete(mIsShuffle, mCurrentRepeat);
+            mPlayLists.get(mCurrentSong).isPlaying = false;
+            mIsStop = true;
 
-        Intent intent = new Intent();
-        intent.setAction(Config.ACTION_PLAYER_COMPLETE);
-        mContext.getApplicationContext().sendBroadcast(intent);
+            proccessAfterComplete(mIsShuffle, mCurrentRepeat);
+
+            Intent intent = new Intent();
+            intent.setAction(Config.ACTION_PLAYER_COMPLETE);
+            mContext.getApplicationContext().sendBroadcast(intent);
     }
 
 

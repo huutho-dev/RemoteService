@@ -96,7 +96,7 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext)
-                .getList(DataBaseUtils.DbStoreArtistColumn._ARTIST, new String[]{artistEntity.author});
+                .getList(DataBaseUtils.DbStoreArtistColumn._ARTIST + "=?", new String[]{artistEntity.author});
         ft.add(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_ARTIST, entityList));
         ft.addToBackStack(null);
         ft.commit();
@@ -104,8 +104,8 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home :
+        switch (item.getItemId()) {
+            case android.R.id.home:
                 LogUtils.printLog("ArtistFragment");
                 break;
         }
@@ -115,11 +115,11 @@ public class ArtistsFragment extends BaseFragment implements ArtistAdapter.Artis
     @Override
     public boolean onContextItemSelected(MenuItem item) {
 
-        LogUtils.printLog(mAdapter.getContextMenuPosition() +"");
+        LogUtils.printLog(mAdapter.getContextMenuPosition() + "");
 
-        if (getUserVisibleHint()){
+        if (getUserVisibleHint()) {
             String artistName = mAdapter.getDataItem(mAdapter.getContextMenuPosition()).author;
-            List<MediaEntity> songsOfArtist = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreArtistColumn._ARTIST, new String[]{artistName});
+            List<MediaEntity> songsOfArtist = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreArtistColumn._ARTIST + "=?", new String[]{artistName});
 
             try {
                 switch (item.getItemId()) {

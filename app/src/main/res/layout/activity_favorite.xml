@@ -4,11 +4,16 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-   <FrameLayout
-       android:id="@+id/root"
-       android:layout_width="match_parent"
-       android:layout_above="@+id/layout_bottom_panel_player"
-       android:layout_height="match_parent"/>
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <FrameLayout
+        android:id="@+id/root"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/layout_bottom_panel_player"
+        android:layout_below="@+id/toolbar" />
 
 
     <include

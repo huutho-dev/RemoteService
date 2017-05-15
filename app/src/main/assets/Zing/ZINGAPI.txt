@@ -11,6 +11,9 @@ json
 
 http://api.mp3.zing.vn/api/mobile/song/getsonginfo?requestdata={"id":"IDBAIHAT"}
 
+search
+http://ac.mp3.zing.vn/complete/desktop?type=artist,album,video,song&num=10&query=yeu+la
+
 "source": {
     "128": "http:\/\/api.mp3.zing.vn\/api\/mobile\/source\/song\/LGJGTLGNQAGXLDETLDJTDGLG",
     "lossless": "http:\/\/api.mp3.zing.vn\/api\/mobile\/source\/song\/LGJGTLGNQAGXLDETUOKKUMKKTDGLG",

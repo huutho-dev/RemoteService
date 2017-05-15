@@ -38,6 +38,7 @@ import training.com.tplayer.database.DatabaseScanner;
 import training.com.tplayer.database.SourceTableMedia;
 import training.com.tplayer.ui.offline.activity.TabOfflineActivity;
 import training.com.tplayer.ui.player.PlayerActivity;
+import training.com.tplayer.ui.search.SearchActivity;
 import training.com.tplayer.utils.ImageUtils;
 import training.com.tplayer.utils.LogUtils;
 
@@ -260,6 +261,11 @@ public class OfflineActivity extends BaseActivity<OfflinePresenterImpl>
                 break;
             case R.id.action_about:
                 break;
+
+            case R.id.app_bar_search:
+                startActivity(new Intent(this, SearchActivity.class));
+                break;
+
             case android.R.id.home:
                 finish();
                 break;

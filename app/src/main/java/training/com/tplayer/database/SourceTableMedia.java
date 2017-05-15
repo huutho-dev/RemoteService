@@ -58,32 +58,31 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
         int lyricIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA_LYRIC);
         int artIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ART_MEDIA);
 
+        if (cursor.moveToFirst()) {
+            while (!cursor.isAfterLast()) {
+                MediaEntity entity = new MediaEntity();
+                entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+                entity.id = Integer.parseInt(cursor.getString(idIndex));
+                entity.data = cursor.getString(dataIndex);
+                entity.displayName = cursor.getString(displayNameIndex);
+                entity.size = Integer.parseInt(cursor.getString(sizeIndex));
+                entity.mimeType = cursor.getString(mimeTypeIndex);
+                entity.dateAdded = Integer.parseInt(cursor.getString(dateAddedIndex));
+                entity.title = cursor.getString(titleIndex);
+                entity.duration = Integer.parseInt(cursor.getString(durationIndex));
+                entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
+                entity.artist = cursor.getString(artistIndex);
+                entity.album = cursor.getString(albumIndex);
+                entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
+                entity.isFavorite = (cursor.getInt(isFavoriteIndex) == 1);
+                entity.lyric = cursor.getString(lyricIndex);
+                entity.art = cursor.getString(artIndex);
+                entities.add(entity);
 
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-
-            MediaEntity entity = new MediaEntity();
-            entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
-            entity.id = Integer.parseInt(cursor.getString(idIndex));
-            entity.data = cursor.getString(dataIndex);
-            entity.displayName = cursor.getString(displayNameIndex);
-            entity.size = Integer.parseInt(cursor.getString(sizeIndex));
-            entity.mimeType = cursor.getString(mimeTypeIndex);
-            entity.dateAdded = Integer.parseInt(cursor.getString(dateAddedIndex));
-            entity.title = cursor.getString(titleIndex);
-            entity.duration = Integer.parseInt(cursor.getString(durationIndex));
-            entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
-            entity.artist = cursor.getString(artistIndex);
-            entity.album = cursor.getString(albumIndex);
-            entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
-            entity.isFavorite = Boolean.parseBoolean(cursor.getString(isFavoriteIndex));
-            entity.lyric = cursor.getString(lyricIndex);
-            entity.art = cursor.getString(artIndex);
-            entities.add(entity);
-
-            cursor.moveToNext();
+                cursor.moveToNext();
+            }
+            closeDb();
         }
-        closeDb();
         if (!cursor.isClosed())
             cursor.close();
         return entities;
@@ -127,7 +126,7 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
         entity.artist = cursor.getString(artistIndex);
         entity.album = cursor.getString(albumIndex);
         entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
-        entity.isFavorite = Boolean.parseBoolean(cursor.getString(isFavoriteIndex));
+        entity.isFavorite = (cursor.getInt(isFavoriteIndex) == 1);
         entity.lyric = cursor.getString(lyricIndex);
         entity.art = cursor.getString(artIndex);
 
@@ -165,7 +164,7 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
                 convertEntity2ContentValue(entity),
                 DataBaseUtils.DbStoreMediaColumn._ID + "=?",
                 new String[]{String.valueOf(entity.id)});
-        LogUtils.printLog(entity.toString() +"\n" + update);
+        LogUtils.printLog(entity.toString() + "\n" + update);
         closeDb();
         return update;
     }
@@ -234,7 +233,7 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
     public List<MediaEntity> getList(String selection, String[] selectionArgs) {
         List<MediaEntity> entities = new ArrayList<>();
         openDb();
-        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, selection + "=?", selectionArgs, null, null, null);
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_MEDIA, null, selection, selectionArgs, null, null, null);
         int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn.MID);
         int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ID);
         int dataIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._DATA);
@@ -270,7 +269,7 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
             entity.artist = cursor.getString(artistIndex);
             entity.album = cursor.getString(albumIndex);
             entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
-            entity.isFavorite = Boolean.parseBoolean(cursor.getString(isFavoriteIndex));
+            entity.isFavorite = (cursor.getInt(isFavoriteIndex) == 1);
             entity.lyric = cursor.getString(lyricIndex);
             entity.art = cursor.getString(artIndex);
             entities.add(entity);
@@ -324,7 +323,7 @@ public class SourceTableMedia extends DatabaseSource<MediaEntity> {
             entity.artist = cursor.getString(artistIndex);
             entity.album = cursor.getString(albumIndex);
             entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
-            entity.isFavorite = Boolean.parseBoolean(cursor.getString(isFavoriteIndex));
+            entity.isFavorite = (cursor.getInt(isFavoriteIndex) == 1);
             entity.lyric = cursor.getString(lyricIndex);
             entity.art = cursor.getString(artIndex);
             entities.add(entity);

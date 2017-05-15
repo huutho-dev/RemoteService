@@ -13,6 +13,7 @@ import training.com.tplayer.ui.online.fragment.AlbumOnlineFragment;
 import training.com.tplayer.ui.online.fragment.ChartsOnlineFragment;
 import training.com.tplayer.ui.online.fragment.HotOnlineFragment;
 import training.com.tplayer.ui.online.fragment.TopOnlineFragment;
+import training.com.tplayer.ui.search.fragment.SearchFragment;
 
 /**
  * Created by ThoNH on 4/13/2017.
@@ -29,11 +30,13 @@ public class OnlinePagerAdapter extends FragmentPagerAdapter {
         fragments.add(HotOnlineFragment.newInstance());
         fragments.add(ChartsOnlineFragment.newInstance());
         fragments.add(AlbumOnlineFragment.newInstance());
+        fragments.add(SearchFragment.newInstance(SearchFragment.TYPE_SEARCH_ONLINE));
 
         titles.add(context.getResources().getString(R.string.tab_title_top));
         titles.add(context.getResources().getString(R.string.tab_title_hot));
         titles.add(context.getResources().getString(R.string.tab_title_charts));
         titles.add(context.getResources().getString(R.string.tab_title_album));
+        titles.add(context.getResources().getString(R.string.tab_title_search));
     }
 
     @Override

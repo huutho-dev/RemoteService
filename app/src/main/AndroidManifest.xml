@@ -41,6 +41,8 @@
 
         <activity android:name=".ui.offline.activity.TabOfflineActivity" />
 
+        <activity android:name=".ui.search.SearchActivity"/>
+
         <service android:name=".network.service.LoadListDataCodeService" />
 
         <meta-data

@@ -95,7 +95,7 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext)
-                .getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM, new String[]{albumEntity.album});
+                .getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM+"=?", new String[]{albumEntity.album});
 
         LogUtils.printLog(entityList.toString());
         ft.add(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_ALBUM, entityList));
@@ -119,7 +119,7 @@ public class AlbumsFragment extends BaseFragment implements AlbumAdapter.AlbumAd
 
         if (getUserVisibleHint()){
             String albumName = mAdapter.getDataItem(mAdapter.getPosMenuContext()).album;
-            List<MediaEntity> songsInAlbum = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM, new String[]{albumName});
+            List<MediaEntity> songsInAlbum = SourceTableMedia.getInstance(mContext).getList(DataBaseUtils.DbStoreAlbumColumn._ALBUM+"=?", new String[]{albumName});
             try {
                 switch (item.getItemId()) {
                     case R.id.action_album_play:

@@ -39,6 +39,7 @@ import training.com.tplayer.database.SourceTablePlaylist;
 import training.com.tplayer.database.SourceTablePlaylistMember;
 import training.com.tplayer.ui.adapter.offline.PlaylistAdapter;
 import training.com.tplayer.ui.adapter.offline.SongAdapter;
+import training.com.tplayer.ui.favorite.FavoriteActivity;
 import training.com.tplayer.ui.offline.activity.TabOfflineActivity;
 import training.com.tplayer.ui.player.PlayerActivity;
 import training.com.tplayer.utils.FileUtils;
@@ -90,6 +91,9 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
 
         } else if (fromWhere.equals(BUNDLE_FROM_FOLDER)) {
             args.putParcelableArrayList(BUNDLE_FROM_FOLDER, (ArrayList<? extends Parcelable>) entityList);
+
+        }else if (fromWhere.equals(BUNDLE_FROM_FAVORITE)){
+            args.putParcelableArrayList(BUNDLE_FROM_FAVORITE, (ArrayList<? extends Parcelable>) entityList);
         }
 
         SongsFragment fragment = new SongsFragment();
@@ -108,7 +112,13 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
 
-        mPlayerService = ((TabOfflineActivity) mActivity).getPlayerService();
+        if (getActivity() instanceof TabOfflineActivity) {
+            mPlayerService = ((TabOfflineActivity) mActivity).getPlayerService();
+        }
+        if (getActivity() instanceof FavoriteActivity) {
+            mPlayerService = ((FavoriteActivity) mActivity).getPlayerService();
+        }
+
 
         registerForContextMenu(mRvSong);
         mAdapter = new SongAdapter(mContext, this);
@@ -121,7 +131,7 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         Bundle bundle = getArguments();
         if (bundle != null) {
             fromWhere = bundle.getString(BUNDLE_FROM_WHERE);
-            List<MediaEntity> entityList;
+            List<MediaEntity> entityList = new ArrayList<>();
             if (fromWhere != null)
 
                 switch (fromWhere) {
@@ -137,8 +147,10 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
                         entityList = bundle.getParcelableArrayList(BUNDLE_FROM_PLAYLIST);
                         mAdapter.setDatas(entityList);
                         break;
-                    default:
-                        loadDataFromdDatabase();
+                    case BUNDLE_FROM_FAVORITE :
+                        entityList = bundle.getParcelableArrayList(BUNDLE_FROM_FAVORITE);
+                        mAdapter.setDatas(entityList);
+
                 }
             else loadDataFromdDatabase();
         }

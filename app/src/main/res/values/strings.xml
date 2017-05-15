@@ -119,6 +119,7 @@
     <string name="context_menu_album_add_end_playing">Add to end playlist</string>
     <string name="network_not_available">Network not available !</string>
     <string name="activity_share_title_toolbar">Share</string>
+    <string name="tab_title_search">Search</string>
 
 
 </resources>

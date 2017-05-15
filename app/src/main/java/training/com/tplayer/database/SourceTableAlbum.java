@@ -64,6 +64,40 @@ public class SourceTableAlbum extends DatabaseSource<AlbumEntity> {
         return entities;
     }
 
+    public List<AlbumEntity> getList(String selection, String [] args) {
+        List<AlbumEntity> entities = new ArrayList<>();
+        openDb();
+        Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ALBUM, null, selection , args, null, null, null);
+
+        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn.MID);
+        int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ID);
+        int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM);
+        int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ARTIST);
+        int artistIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ARTIST_ID);
+        int numberOfSongIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._NUMBER_OF_SONG);
+        int albumArtIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM_ART);
+
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            DatabaseUtils.dumpCurrentRow(cursor);
+            AlbumEntity entity = new AlbumEntity();
+            entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+            entity.id = Integer.parseInt(cursor.getString(idIndex));
+            entity.album = cursor.getString(albumIndex);
+            entity.artist = cursor.getString(artistIndex);
+            entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
+            entity.numberOfSong = Integer.parseInt(cursor.getString(numberOfSongIndex));
+            entity.albumArt = cursor.getString(albumArtIndex);
+
+            entities.add(entity);
+            cursor.moveToNext();
+        }
+        closeDb();
+        if (!cursor.isClosed())
+            cursor.close();
+        return entities;
+    }
+
     @Override
     public AlbumEntity getRow(String selection, String[] selectionArgs) {
         AlbumEntity entity = new AlbumEntity();

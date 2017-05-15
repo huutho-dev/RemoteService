@@ -5,6 +5,8 @@ import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.util.Log;
 
+import com.facebook.stetho.Stetho;
+
 import training.com.tplayer.utils.LogUtils;
 
 public class AppController extends Application {
@@ -31,6 +33,7 @@ public class AppController extends Application {
     public void onCreate() {
         super.onCreate();
         mInstance = this;
+        Stetho.initializeWithDefaults(this);
     }
 
     @Override

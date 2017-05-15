@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/fragment_search_edit"
+            style="@android:style/TextAppearance"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_margin="@dimen/spacing_1_8dp"
+            android:drawableLeft="@drawable/ic_menu_search"
+            android:drawablePadding="@dimen/spacing_2_16dp"
+            android:hint="@string/tab_title_search"
+            android:padding="@dimen/spacing_2_16dp"
+            android:textColor="@color/colorWhite"
+            android:textColorHint="@color/colorWhite" />
+
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_2_16dp"
+            android:text="Song" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_search_rv_song"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/spacing_2_16dp"
+            android:padding="@dimen/spacing_2_16dp"
+            android:text="Album" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/fragment_search_rv_album"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</android.support.v4.widget.NestedScrollView>

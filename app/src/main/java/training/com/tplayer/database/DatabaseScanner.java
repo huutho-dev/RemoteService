@@ -69,6 +69,7 @@ public class DatabaseScanner {
 
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
+                DatabaseUtils.dumpCurrentRow(cursor);
                 MediaEntity entity = new MediaEntity();
                 entity.id = Integer.parseInt(cursor.getString(idIndex));
                 entity.data = cursor.getString(dataIndex);
