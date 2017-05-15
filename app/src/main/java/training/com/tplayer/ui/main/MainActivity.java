@@ -155,7 +155,8 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
         super.serviceConnected();
         try {
             boolean isStop = getPlayerService().isPlayerStop();
-            if (isStop) {
+            int duration = getPlayerService().getCurrentPosition();
+            if (isStop || duration == 0) {
                 mPanelPlayer.setVisibility(View.GONE);
             } else {
                 mPanelPlayer.setVisibility(View.VISIBLE);

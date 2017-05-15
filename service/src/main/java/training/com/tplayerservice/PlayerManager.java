@@ -240,7 +240,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
                 case REPEAT_ONE:
 
-                    setLoop(true);
+                   startSong(mCurrentSong);
                     break;
 
                 case REPEAT_ALL:
@@ -266,7 +266,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                     break;
 
                 case REPEAT_ONE:
-                    setLoop(true);
+                    startSong(mCurrentSong);
                     break;
 
                 case REPEAT_ALL:
