@@ -239,7 +239,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                     break;
 
                 case REPEAT_ONE:
-
                    startSong(mCurrentSong);
                     break;
 

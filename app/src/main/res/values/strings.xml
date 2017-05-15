@@ -1,4 +1,5 @@
 <resources>
+    <string name="facebook_app_id">1354350021301053</string>
     <string name="app_name">RemoteService</string>
     <string name="act_splash_app_name">TPlayer</string>
 
@@ -117,6 +118,7 @@
     <string name="dialog_confirm_go_to_setting_request">Please go to setting and grant permission for this application</string>
     <string name="context_menu_album_add_end_playing">Add to end playlist</string>
     <string name="network_not_available">Network not available !</string>
+    <string name="activity_share_title_toolbar">Share</string>
 
 
 </resources>

@@ -49,4 +49,5 @@ dependencies {
     compile 'org.adw.library:discrete-seekbar:1.0.1'
     compile 'com.github.zhengken:LyricViewDemo:v1.0'
     compile 'com.google.code.gson:gson:2.8.0'
+    compile 'com.facebook.android:facebook-android-sdk:4.22.1'
 }

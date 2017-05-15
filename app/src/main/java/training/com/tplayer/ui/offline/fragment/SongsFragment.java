@@ -55,6 +55,7 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
     public static final String BUNDLE_FROM_ARTIST = "bundle.from.artist";
     public static final String BUNDLE_FROM_PLAYLIST = "bundle.from.playlist";
     public static final String BUNDLE_FROM_FOLDER = "bundle.from.folder";
+    public static final String BUNDLE_FROM_FAVORITE = "bundle.from.favorite";
 
     @BindView(R.id.fragment_offline_rv_songs)
     RecyclerView mRvSong;
@@ -206,7 +207,6 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
             @Override
             protected void onPostExecute(List<MediaEntity> mediaEntities) {
                 super.onPostExecute(mediaEntities);
-                LogUtils.printLog(mediaEntities.toString());
                 mAdapter.setDatas(mediaEntities);
             }
         }.execute();

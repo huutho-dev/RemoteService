@@ -3,17 +3,24 @@ package training.com.tplayer.ui.favorite;
 import android.content.Intent;
 import android.os.RemoteException;
 import android.support.constraint.ConstraintLayout;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.remote.communication.MediaEntity;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.custom.TextViewRoboto;
+import training.com.tplayer.database.DataBaseUtils;
+import training.com.tplayer.database.SourceTableMedia;
+import training.com.tplayer.ui.offline.fragment.SongsFragment;
 import training.com.tplayer.ui.player.PlayerActivity;
 import training.com.tplayer.utils.ImageUtils;
 
@@ -59,6 +66,13 @@ public class FavoriteActivity extends BaseActivity implements View.OnClickListen
     @Override
     public void onActivityCreated() {
 
+        List<MediaEntity> entityList = SourceTableMedia
+                .getInstance(this)
+                .getList(DataBaseUtils.DbStoreMediaColumn._IS_FAVORITE , new String[]{"true"});
+
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.add(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_FAVORITE,entityList ));
     }
 
     @Override
@@ -122,7 +136,7 @@ public class FavoriteActivity extends BaseActivity implements View.OnClickListen
                     break;
                 case R.id.layout_bottom_panel_player:
                     startActivity(new Intent(this, PlayerActivity.class));
-                    overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     break;
             }
         } catch (Exception e) {

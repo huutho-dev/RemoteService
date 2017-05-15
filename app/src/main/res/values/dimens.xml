@@ -25,8 +25,8 @@
 
 
     <!--player-->
-    <dimen name="player_size_header">450dp</dimen>
-    <dimen name="player_size_header_revert">-450dp</dimen>
+    <dimen name="player_size_header">510dp</dimen>
+    <dimen name="player_size_header_revert">-510dp</dimen>
 
     <dimen name="act_offline_item_art_size">64dp</dimen>
 
