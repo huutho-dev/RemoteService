@@ -121,5 +121,13 @@
     <string name="activity_share_title_toolbar">Share</string>
     <string name="tab_title_search">Search</string>
 
+    <string name="setting_language">Language</string>
+    <string name="setting_equalizer">Equalizer</string>
+    <string name="setting_download">Download only wifi</string>
+    <string name="setting_shake">Shake to change song</string>
+    <string name="setting_pause_when_disable_headset">Pause when disable headset</string>
+    <string name="setting_continued_when_enable_headset">Continue when enable headset</string>
+    <string name="setting_pause_when_other_sound_play">Pause when other sounds comming</string>
+
 
 </resources>

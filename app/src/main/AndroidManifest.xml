@@ -8,6 +8,9 @@
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
     <application
         android:name=".app.AppController"
         android:allowBackup="true"
@@ -42,6 +45,8 @@
         <activity android:name=".ui.offline.activity.TabOfflineActivity" />
 
         <activity android:name=".ui.search.SearchActivity"/>
+
+        <activity android:name=".ui.audioeffect.SoundEffectActivity" />
 
         <service android:name=".network.service.LoadListDataCodeService" />
 

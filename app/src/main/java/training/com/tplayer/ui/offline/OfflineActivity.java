@@ -309,8 +309,11 @@ public class OfflineActivity extends BaseActivity<OfflinePresenterImpl>
     }
 
 
-
-
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindTplayerService();
+    }
 
     private AsyncTask<Void, Void, Void> scanner = new AsyncTask<Void, Void, Void>() {
         @Override

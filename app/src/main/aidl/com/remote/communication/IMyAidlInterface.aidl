@@ -4,6 +4,10 @@ import com.remote.communication.MediaEntity;
 
 interface IMyAidlInterface {
 
+   int getAudioSS();
+
+   void setBassBoost(int id);
+
    void setSong(in MediaEntity song);
 
    void startSongPosition(int position);

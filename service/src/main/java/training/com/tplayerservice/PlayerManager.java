@@ -49,6 +49,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         this.mContext = context;
         this.mTPlayer = new TPlayer(context);
         this.mTPlayer.setOnCompletionListenerPlayer(this);
+        this.mTPlayer.setAuxEffectSendLevel(1.0f);
         this.mTPlayer.setOnCompletionListener(this);
 
     }
@@ -179,11 +180,11 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void addNextNowPlaying(List<MediaEntity> entities) {
-        mPlayLists.addAll(mCurrentSong +1, entities);
+        mPlayLists.addAll(mCurrentSong + 1, entities);
     }
 
     public void addNextNowPlaying(MediaEntity entity) {
-        mPlayLists.add(mCurrentSong+1, entity);
+        mPlayLists.add(mCurrentSong + 1, entity);
     }
 
     public void addToEndPlaying(MediaEntity entity) {
@@ -214,14 +215,16 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     @Override
     public void onCompletion(MediaPlayer mp) {
 
+        if (mPlayLists.size() != 0) {
             mPlayLists.get(mCurrentSong).isPlaying = false;
             mIsStop = true;
-
             proccessAfterComplete(mIsShuffle, mCurrentRepeat);
+        }
 
-            Intent intent = new Intent();
-            intent.setAction(Config.ACTION_PLAYER_COMPLETE);
-            mContext.getApplicationContext().sendBroadcast(intent);
+
+        Intent intent = new Intent();
+        intent.setAction(Config.ACTION_PLAYER_COMPLETE);
+        mContext.getApplicationContext().sendBroadcast(intent);
     }
 
 
@@ -240,7 +243,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                     break;
 
                 case REPEAT_ONE:
-                   startSong(mCurrentSong);
+                    startSong(mCurrentSong);
                     break;
 
                 case REPEAT_ALL:
@@ -279,6 +282,16 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
 
         }
+    }
+
+    public int getAudioSS() {
+        return mTPlayer.getAudioSessionIdPlayer();
+    }
+
+    public void attachEffBassBoost(int id) {
+
+//        this.mTPlayer.attachAuxEffectPlayer(id);
+
     }
 
 

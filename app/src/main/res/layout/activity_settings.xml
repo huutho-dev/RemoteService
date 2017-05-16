@@ -5,6 +5,170 @@
     android:orientation="vertical">
 
     <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/toolbar"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_language_24dp"
+                android:drawablePadding="@dimen/spacing_1_8dp"
+                android:gravity="center"
+                android:text="@string/setting_language" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/act_settings_spinner_language"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginLeft="@dimen/spacing_6_default_48dp" />
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+        <training.com.tplayer.custom.TextViewRoboto
+            android:id="@+id/act_settings_equalizer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_equalizer_black_24dp"
+            android:drawablePadding="@dimen/spacing_1_8dp"
+            android:gravity="center_vertical"
+            android:padding="@dimen/spacing_2_16dp"
+            android:text="@string/setting_equalizer" />
+
+        <include layout="@layout/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_arrow_downward_black_24dp"
+                android:drawablePadding="@dimen/spacing_1_8dp"
+                android:gravity="center_vertical"
+                android:text="@string/setting_download" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/act_settings_switch_download_opt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_shake_black_24dp"
+                android:drawablePadding="@dimen/spacing_1_8dp"
+                android:text="@string/setting_shake" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/act_settings_switch_shake"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right" />
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_pause_black_24dp"
+                android:drawablePadding="@dimen/spacing_1_8dp"
+                android:gravity="center_vertical"
+                android:text="@string/setting_pause_when_disable_headset" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/act_settings_switch_pause_when_disable_headset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_play_arrow_black_24dp"
+                android:drawablePadding="@dimen/spacing_1_8dp"
+                android:gravity="center_vertical"
+                android:text="@string/setting_continued_when_enable_headset" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/act_settings_switch_continue_when_enable_headset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@drawable/ic_pause_black_24dp"
+                android:drawablePadding="@dimen/spacing_1_8dp"
+                android:gravity="center_vertical"
+                android:text="@string/setting_pause_when_other_sound_play" />
+
+            <android.support.v7.widget.SwitchCompat
+                android:id="@+id/act_settings_switch_pause_when_other_sound_comming"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+    <include
         layout="@layout/layout_bottom_panel_player"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

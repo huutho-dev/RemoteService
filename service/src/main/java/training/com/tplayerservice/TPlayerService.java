@@ -63,6 +63,16 @@ public class TPlayerService extends Service {
     private IMyAidlInterface.Stub iBinder = new IMyAidlInterface.Stub() {
 
         @Override
+        public int getAudioSS() throws RemoteException {
+            return mPlayerManager.getAudioSS();
+        }
+
+        @Override
+        public void setBassBoost(int id) throws RemoteException {
+            mPlayerManager.attachEffBassBoost(id);
+        }
+
+        @Override
         public void setSong(MediaEntity song) throws RemoteException {
             LogUtils.printLog("Service_onDestroy");
             mPlayerManager.playSong(song);
