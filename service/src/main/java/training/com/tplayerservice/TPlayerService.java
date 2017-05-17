@@ -69,7 +69,7 @@ public class TPlayerService extends Service {
 
         @Override
         public void setBassBoost(int id) throws RemoteException {
-            mPlayerManager.attachEffBassBoost(id);
+            mPlayerManager.attachEffPresetReverb(id);
         }
 
         @Override

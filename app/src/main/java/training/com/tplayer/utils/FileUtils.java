@@ -4,11 +4,15 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
+import android.graphics.Bitmap;
 import android.media.MediaScannerConnection;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateFormat;
+import android.view.View;
 
 import com.google.gson.Gson;
 import com.remote.communication.MediaEntity;
@@ -16,6 +20,7 @@ import com.remote.communication.MediaEntity;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +30,7 @@ import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import training.com.tplayer.base.BaseEntity;
@@ -36,15 +42,20 @@ import training.com.tplayer.base.BaseEntity;
 public class FileUtils {
     public static final String PATH_DOWNLOAD = Environment
             .getExternalStorageDirectory()
-            .getAbsolutePath() + "/" + "TPlayer";
+            .getAbsolutePath() + "/" + "TPlayer" + "/" + "Songs";
 
     public static final String PATH_LYRIC = Environment
             .getExternalStorageDirectory()
-            .getAbsolutePath() + "/" + "Lyric";
+            .getAbsolutePath() + "/" + "TPlayer" + "/" + "Lyric";
 
     public static final String PATH_IMAGE = Environment
             .getExternalStorageDirectory()
-            .getAbsolutePath() + "/" + "Image";
+            .getAbsolutePath() + "/" + "TPlayer" + "/" + "Image";
+
+    public static final String PATH_SCREEN_SHOOT = Environment
+            .getExternalStorageDirectory().toString()+ "/TPlayer/ScreenShot";
+
+
 
     public interface IOnScanMediaComplete {
         void scanComplete(String path, Uri uri);
@@ -76,7 +87,41 @@ public class FileUtils {
         );
     }
 
-    public void downloadFile(String link, String dir, String name, String suffix) {
+    public static String captureScreen(AppCompatActivity activity) {
+        try {
+            Date now = new Date();
+            DateFormat.format("yyyy-MM-dd_hh:mm:ss", now);
+
+            File parent  = new File(PATH_SCREEN_SHOOT);
+            if (!parent.exists()) parent.mkdirs();
+
+            String mPath = PATH_SCREEN_SHOOT + "/" + now.getTime() + ".jpg";
+
+            // create bitmap screen capture
+            View view = activity.getWindow().getDecorView().getRootView();
+            view.setDrawingCacheEnabled(true);
+            Bitmap bitmap = Bitmap.createBitmap(view.getDrawingCache());
+            view.setDrawingCacheEnabled(false);
+
+            // save image
+            File file = new File(mPath);
+            FileOutputStream outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+            outputStream.flush();
+            outputStream.close();
+
+            return mPath;
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "null";
+    }
+
+    public static void downloadFile(String link, String dir, String name, String suffix) {
         InputStream input = null;
         OutputStream output = null;
         HttpURLConnection connection = null;

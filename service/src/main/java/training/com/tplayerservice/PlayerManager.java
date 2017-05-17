@@ -288,10 +288,8 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         return mTPlayer.getAudioSessionIdPlayer();
     }
 
-    public void attachEffBassBoost(int id) {
-
-//        this.mTPlayer.attachAuxEffectPlayer(id);
-
+    public void attachEffPresetReverb(int id) {
+        this.mTPlayer.attachAuxEffectPlayer(id);
     }
 
 

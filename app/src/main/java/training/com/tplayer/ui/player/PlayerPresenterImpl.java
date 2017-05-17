@@ -1,7 +1,13 @@
 package training.com.tplayer.ui.player;
 
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.os.RemoteException;
+import android.support.v7.app.AppCompatActivity;
 
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.remote.communication.IMyAidlInterface;
 import com.remote.communication.MediaEntity;
 
@@ -9,6 +15,8 @@ import java.io.File;
 import java.util.List;
 
 import training.com.tplayer.base.mvp.BasePresenterImpl;
+import training.com.tplayer.ui.audioeffect.SoundEffectActivity;
+import training.com.tplayer.utils.FileUtils;
 import training.com.tplayer.utils.LogUtils;
 
 /**
@@ -169,6 +177,40 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     @Override
     public void onUnregisterBroadcast() {
         mInteractor.onUnregisterBroadcast();
+    }
+
+    @Override
+    public void onDownloadClick() {
+
+    }
+
+    @Override
+    public void onEqualizerClick(AppCompatActivity activity) {
+        activity.startActivity(new Intent(activity, SoundEffectActivity.class));
+    }
+
+    @Override
+    public void onCaptureScreenClick(AppCompatActivity activity) {
+       String mPathImage = FileUtils.captureScreen(activity);
+
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(BitmapFactory.decodeFile(mPathImage))
+                .build();
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        ShareDialog shareDialog = new ShareDialog(activity);
+        shareDialog.show(content, ShareDialog.Mode.AUTOMATIC);
+
+
+//        File file = new File(mPathImage);
+//
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_VIEW);
+//        Uri uri = Uri.fromFile(file);
+//        intent.setDataAndType(uri, "image/*");
+//        activity.startActivity(intent);
     }
 
 

@@ -124,10 +124,11 @@
             android:id="@+id/act_sound_eff_layout_equalizer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/act_sound_eff_chkbox_equalizer"
-            android:layout_marginTop="@dimen/spacing_2_16dp"
             android:background="@color/colorPrimary"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true">
 
         </LinearLayout>
 

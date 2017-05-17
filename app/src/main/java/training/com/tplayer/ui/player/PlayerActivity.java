@@ -52,7 +52,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
 
     @BindView(R.id.act_player_scroll_view)
-    NestedScrollView mScroll ;
+    NestedScrollView mScroll;
 
     @BindView(R.id.act_player_total_song)
     TextViewRoboto mTxtTotalSong;
@@ -92,6 +92,15 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
     @BindView(R.id.act_player_play_list)
     RecyclerView mRvPlayList;
+
+    @BindView(R.id.act_player_capture_screen)
+    ImageView mImgCaptureScreen;
+
+    @BindView(R.id.act_player_download)
+    ImageView mImgDownload;
+
+    @BindView(R.id.act_player_equalizer)
+    ImageView mImgEqualizer;
 
 
     private PlayListInPlayerAdapter mAdapter;
@@ -136,6 +145,11 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         mImvPlayPause.setOnClickListener(this);
         mImvForward.setOnClickListener(this);
         mImvBackward.setOnClickListener(this);
+
+        mImgCaptureScreen.setOnClickListener(this);
+        mImgDownload.setOnClickListener(this);
+        mImgEqualizer.setOnClickListener(this);
+
         mSeekbar.setOnProgressChangeListener(this);
         mAdapter = new PlayListInPlayerAdapter(this, this);
         mAdapter.setDatas(songs);
@@ -199,7 +213,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
 
                 try {
-                  MediaEntity song =  getPlayerService().getCurrentSong();
+                    MediaEntity song = getPlayerService().getCurrentSong();
 
                     mTxtSongName.setText(song.title);
                     mTxtSongArtist.setText(song.artist);
@@ -208,7 +222,6 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                     ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
 
                     mAdapter.setActivePlaying(song);
-
 
 
                 } catch (RemoteException e) {
@@ -288,6 +301,17 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
             case R.id.act_player_control_imv_backward:
                 LogUtils.printLog("Client_backward");
                 mPresenter.backward();
+                break;
+
+            case R.id.act_player_capture_screen:
+                mPresenter.onCaptureScreenClick(this);
+                break;
+
+            case R.id.act_player_equalizer:
+                mPresenter.onEqualizerClick(this);
+                break;
+            case R.id.act_player_download:
+
                 break;
         }
     }

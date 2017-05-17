@@ -1,5 +1,7 @@
 package training.com.tplayer.ui.player;
 
+import android.support.v7.app.AppCompatActivity;
+
 import com.remote.communication.MediaEntity;
 
 import java.io.File;
@@ -52,6 +54,12 @@ public class PlayerContracts {
         void startSongPosition(int position);
 
         void onUnregisterBroadcast();
+
+        void onDownloadClick();
+
+        void onEqualizerClick(AppCompatActivity activity);
+
+        void onCaptureScreenClick(AppCompatActivity activity);
     }
 
     public interface Interactor extends BaseInteractor {
