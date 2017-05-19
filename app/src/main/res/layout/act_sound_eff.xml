@@ -113,24 +113,17 @@
             android:text="Equalizer    "
             app:textFonts="RobotoMedium" />
 
-        <android.support.v7.widget.AppCompatSpinner
+        <training.com.tplayer.custom.TextViewRoboto
             android:id="@+id/act_sound_eff_spn_equalizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/spacing_6_default_48dp"
-            android:layout_toRightOf="@+id/act_sound_eff_txt_equalizer" />
+            android:layout_toRightOf="@+id/act_sound_eff_txt_equalizer"
+            android:drawablePadding="@dimen/spacing_0_4dp"
+            android:drawableTop="@drawable/ic_graphic_eq_24dp"
+            android:gravity="center"
+            android:text="Flat" />
 
-        <LinearLayout
-            android:id="@+id/act_sound_eff_layout_equalizer"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorPrimary"
-            android:orientation="horizontal"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true">
-
-        </LinearLayout>
 
     </RelativeLayout>
 

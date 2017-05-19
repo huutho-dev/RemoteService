@@ -1,15 +1,21 @@
 package training.com.tplayerservice;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.view.View;
+import android.widget.RemoteViews;
 
 import com.remote.communication.IMyAidlInterface;
 import com.remote.communication.MediaEntity;
 
 import java.util.List;
 
+import training.com.tplayerservice.app.Constants;
 import training.com.utils.LogUtils;
 
 
@@ -17,6 +23,11 @@ public class TPlayerService extends Service {
     public static final String TAG = "[ThoNH]";
 
     private PlayerManager mPlayerManager;
+
+    private Notification status;
+    private RemoteViews views;
+    private RemoteViews bigViews;
+
 
     public TPlayerService() {
         LogUtils.printLog("Service_Contructor");
@@ -38,6 +49,44 @@ public class TPlayerService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         LogUtils.printLog("Service_onStartCommand");
+
+        if (intent != null) {
+            String action = intent.getAction();
+
+            if (action.equals(Constants.ACTION.STARTFOREGROUND_ACTION)) {
+                showNotification();
+
+            } else if (action.equals(Constants.ACTION.PREV_ACTION)) {
+
+                mPlayerManager.previousSong();
+
+            } else if (action.equals(Constants.ACTION.PLAY_ACTION)) {
+
+                mPlayerManager.changePlayStatus();
+
+            } else if (action.equals(Constants.ACTION.NEXT_ACTION)) {
+
+                mPlayerManager.nextSong();
+
+            } else if (action.equals(
+                    Constants.ACTION.STOPFOREGROUND_ACTION)) {
+
+                stopForeground(true);
+                stopSelf();
+            }
+
+            if (views != null && bigViews != null && mPlayerManager.getPlaylist().size() != 0) {
+                views.setTextViewText(R.id.status_bar_track_name, mPlayerManager.getCurrentSong().title);
+                bigViews.setTextViewText(R.id.status_bar_track_name, mPlayerManager.getCurrentSong().title);
+
+                views.setTextViewText(R.id.status_bar_artist_name, mPlayerManager.getCurrentSong().artist);
+                bigViews.setTextViewText(R.id.status_bar_artist_name, mPlayerManager.getCurrentSong().artist);
+
+                bigViews.setImageViewBitmap(R.id.status_bar_album_art,
+                        Constants.getImageNoti(mPlayerManager.getCurrentSong().art));
+            }
+
+        }
         return START_STICKY;
     }
 
@@ -147,7 +196,7 @@ public class TPlayerService extends Service {
 
         @Override
         public void setVolume(float value) throws RemoteException {
-            LogUtils.printLog("Service_setVolume = " +value);
+            LogUtils.printLog("Service_setVolume = " + value);
             mPlayerManager.setVolume(value);
         }
 
@@ -160,7 +209,7 @@ public class TPlayerService extends Service {
         @Override
         public boolean playPause() throws RemoteException {
             LogUtils.printLog("Service_playPause");
-           return mPlayerManager.changePlayStatus();
+            return mPlayerManager.changePlayStatus();
         }
 
         @Override
@@ -189,4 +238,91 @@ public class TPlayerService extends Service {
         }
 
     };
+
+
+    private void showNotification() {
+// Using RemoteViews to bind custom layouts into Notification
+        views = new RemoteViews(getPackageName(),
+                R.layout.status_bar);
+        bigViews = new RemoteViews(getPackageName(),
+                R.layout.status_bar_expanded);
+
+// showing default album image
+        views.setViewVisibility(R.id.status_bar_icon, View.VISIBLE);
+        views.setViewVisibility(R.id.status_bar_album_art, View.GONE);
+        bigViews.setImageViewBitmap(R.id.status_bar_album_art,
+                Constants.getDefaultAlbumArt(this));
+
+        Intent notificationIntent = new Intent();
+
+        // if Player isPlaying --> start to PlayerActivity
+        // else start to MainActivity
+
+        if (mPlayerManager.getPlaylist().size() != 0){
+            notificationIntent.setClassName("training.com.tplayer", "training.com.tplayer.ui.player.PlayerActivity");
+            notificationIntent.setComponent(new ComponentName("training.com.tplayer", "training.com.tplayer.ui.player.PlayerActivity"));
+            notificationIntent.setAction("android.intent.action.MAIN22");
+        }else {
+            notificationIntent.setClassName("training.com.tplayer", ".ui.main.MainActivity");
+            notificationIntent.setComponent(new ComponentName("training.com.tplayer", ".ui.main.MainActivity"));
+            notificationIntent.setAction("android.intent.action.MAIN");
+        }
+
+        notificationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+                notificationIntent, 0);
+
+        Intent previousIntent = new Intent(this, TPlayerService.class);
+        previousIntent.setAction(Constants.ACTION.PREV_ACTION);
+        PendingIntent ppreviousIntent = PendingIntent.getService(this, 0,
+                previousIntent, 0);
+
+        Intent playIntent = new Intent(this, TPlayerService.class);
+        playIntent.setAction(Constants.ACTION.PLAY_ACTION);
+        PendingIntent pplayIntent = PendingIntent.getService(this, 0,
+                playIntent, 0);
+
+        Intent nextIntent = new Intent(this, TPlayerService.class);
+        nextIntent.setAction(Constants.ACTION.NEXT_ACTION);
+        PendingIntent pnextIntent = PendingIntent.getService(this, 0,
+                nextIntent, 0);
+
+        Intent closeIntent = new Intent(this, TPlayerService.class);
+        closeIntent.setAction(Constants.ACTION.STOPFOREGROUND_ACTION);
+        PendingIntent pcloseIntent = PendingIntent.getService(this, 0,
+                closeIntent, 0);
+
+        views.setOnClickPendingIntent(R.id.status_bar_play, pplayIntent);
+        bigViews.setOnClickPendingIntent(R.id.status_bar_play, pplayIntent);
+
+        views.setOnClickPendingIntent(R.id.status_bar_next, pnextIntent);
+        bigViews.setOnClickPendingIntent(R.id.status_bar_next, pnextIntent);
+
+        views.setOnClickPendingIntent(R.id.status_bar_prev, ppreviousIntent);
+        bigViews.setOnClickPendingIntent(R.id.status_bar_prev, ppreviousIntent);
+
+        views.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
+        bigViews.setOnClickPendingIntent(R.id.status_bar_collapse, pcloseIntent);
+
+        views.setImageViewResource(R.id.status_bar_play,
+                R.drawable.apollo_holo_dark_pause);
+        bigViews.setImageViewResource(R.id.status_bar_play,
+                R.drawable.apollo_holo_dark_pause);
+
+        views.setTextViewText(R.id.status_bar_track_name, "Loading...");
+        bigViews.setTextViewText(R.id.status_bar_track_name, "Loading...");
+
+        views.setTextViewText(R.id.status_bar_artist_name, "");
+        bigViews.setTextViewText(R.id.status_bar_artist_name, "");
+
+
+        status = new Notification.Builder(this).build();
+        status.contentView = views;
+        status.bigContentView = bigViews;
+        status.flags = Notification.FLAG_ONGOING_EVENT;
+        status.icon = R.drawable.ic_launcher;
+        status.contentIntent = pendingIntent;
+        startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+    }
 }

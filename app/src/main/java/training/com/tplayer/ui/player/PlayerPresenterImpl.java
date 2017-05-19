@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Toast;
 
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
@@ -192,7 +193,10 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     @Override
     public void onCaptureScreenClick(AppCompatActivity activity) {
        String mPathImage = FileUtils.captureScreen(activity);
-
+        if (mPathImage.equals("null")){
+            Toast.makeText(activity,"Cannot capture image, pls try again !",Toast.LENGTH_SHORT).show();
+            return;
+        }
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(BitmapFactory.decodeFile(mPathImage))
                 .build();
@@ -203,14 +207,11 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
         ShareDialog shareDialog = new ShareDialog(activity);
         shareDialog.show(content, ShareDialog.Mode.AUTOMATIC);
 
-
-//        File file = new File(mPathImage);
-//
-//        Intent intent = new Intent();
-//        intent.setAction(Intent.ACTION_VIEW);
-//        Uri uri = Uri.fromFile(file);
-//        intent.setDataAndType(uri, "image/*");
-//        activity.startActivity(intent);
+        boolean canShow  = shareDialog.canShow(content,ShareDialog.Mode.AUTOMATIC);
+        if (!canShow){
+            Toast.makeText(activity,"Cannot find fb app on your phone, pls install fb application and try again !",Toast.LENGTH_SHORT).show();
+            return;
+        }
     }
 
 

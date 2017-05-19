@@ -111,6 +111,8 @@ public class FileUtils {
             outputStream.flush();
             outputStream.close();
 
+            LogUtils.printLog("captureScreen : " + mPath);
+
             return mPath;
 
         } catch (FileNotFoundException e) {

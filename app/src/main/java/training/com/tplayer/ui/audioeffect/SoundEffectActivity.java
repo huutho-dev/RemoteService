@@ -101,6 +101,11 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
 
     @Override
     public void onActivityCreated() {
+
+        mCheckPresetReverb.setChecked(AudioFxPreference.getInstance().isEnablePresetReverb());
+        mCheckBassBoost.setChecked(AudioFxPreference.getInstance().isEnableBassBoost());
+        mCheckVirtualizer.setChecked(AudioFxPreference.getInstance().isEnableVirtualizer());
+
         mCheckPresetReverb.setOnCheckedChangeListener(this);
         mCheckBassBoost.setOnCheckedChangeListener(this);
         mCheckVirtualizer.setOnCheckedChangeListener(this);
