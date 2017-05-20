@@ -63,6 +63,12 @@ public class ShareActivity extends BaseActivity<SharePresenterImpl> implements V
     @Override
     public void onBindView() {
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.title_activity_share);
+
         mShareApp.setOnClickListener(this);
         mShareSocial.setOnClickListener(this);
         mPlayPause.setOnClickListener(this);
@@ -182,4 +188,5 @@ public class ShareActivity extends BaseActivity<SharePresenterImpl> implements V
             e.printStackTrace();
         }
     }
+
 }

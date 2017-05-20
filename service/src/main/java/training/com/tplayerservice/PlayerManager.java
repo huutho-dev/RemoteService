@@ -35,8 +35,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
     private int mCurrentSong;
 
-    private boolean mLoopList;
-
     private boolean mIsShuffle;
 
     private boolean mIsStop = true;
@@ -45,9 +43,16 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
     private Random random = new Random();
 
-    public PlayerManager(Context context) {
+    public interface IOnSongChangeListener {
+        void onChange(MediaEntity mediaEntity);
+    }
+
+    private IOnSongChangeListener listener;
+
+    public PlayerManager(Context context, IOnSongChangeListener listener) {
         this.mContext = context;
         this.mTPlayer = new TPlayer(context);
+        this.listener = listener;
         this.mTPlayer.setOnCompletionListenerPlayer(this);
         this.mTPlayer.setAuxEffectSendLevel(1.0f);
         this.mTPlayer.setOnCompletionListener(this);
@@ -64,9 +69,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         MediaEntity song = mPlayLists.get(position);
         String data = song.data;
         startSong(data);
-
         song.isPlaying = true;
-
         mIsStop = false;
     }
 
@@ -106,6 +109,8 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
         intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
         mContext.getApplicationContext().sendBroadcast(intent);
+
+        listener.onChange(song);
     }
 
     public boolean changePlayStatus() {
@@ -161,8 +166,10 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
      * @param i kiểm tra đây là next hay previous
      */
     public void changeCurrentSong(int i) {
-        mCurrentSong += i;
-        startSong(mCurrentSong);
+        if (mPlayLists.size() != 0) {
+            mCurrentSong += i;
+            startSong(mCurrentSong);
+        }
     }
 
     public void playSong(MediaEntity song) {

@@ -128,6 +128,11 @@
     <string name="setting_pause_when_disable_headset">Pause when disable headset</string>
     <string name="setting_continued_when_enable_headset">Continue when enable headset</string>
     <string name="setting_pause_when_other_sound_play">Pause when other sounds comming</string>
+    <string name="title_activity_offline">Music Local</string>
+    <string name="title_activity_offline_tab_title" >Song</string>
+    <string name="title_activity_setting">Settings</string>
+    <string name="title_activity_favorite">Favorite</string>
+    <string name="title_activity_share" />
 
 
 </resources>

@@ -88,8 +88,6 @@ public class OfflineActivity extends BaseActivity<OfflinePresenterImpl>
     ImageView mForward;
 
 
-
-
     private MediaEntity mCurrentSong;
 
     @Override
@@ -101,7 +99,9 @@ public class OfflineActivity extends BaseActivity<OfflinePresenterImpl>
     public void onBindView() {
         ButterKnife.bind(this);
         setSupportActionBar(mToolbar);
-        mToolbar.setTitle("TPlayer");
+        getSupportActionBar().setTitle(R.string.title_activity_offline);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         findViewById(R.id.act_offline_item_songs).setOnClickListener(this);
         findViewById(R.id.act_offline_item_albums).setOnClickListener(this);
@@ -201,7 +201,7 @@ public class OfflineActivity extends BaseActivity<OfflinePresenterImpl>
                     break;
                 case R.id.layout_bottom_panel_player:
                     startActivity(new Intent(OfflineActivity.this, PlayerActivity.class));
-                    overridePendingTransition( R.anim.slide_in_up, R.anim.slide_out_up );
+                    overridePendingTransition(R.anim.slide_in_up, R.anim.slide_out_up);
                     break;
 
             }

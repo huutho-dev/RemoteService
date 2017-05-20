@@ -3,6 +3,7 @@ package training.com.tplayerservice.app;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.text.TextUtils;
 
 import training.com.tplayerservice.R;
 
@@ -38,13 +39,18 @@ public class Constants {
         return bm;
     }
 
-    public static Bitmap getImageNoti(String path) {
-        Bitmap bm = null;
-        try {
-            bm = BitmapFactory.decodeFile(path);
-        } catch (Error ee) {
-        } catch (Exception e) {
+    public static Bitmap getImageNoti(Context context,String path) {
+        if (!TextUtils.isEmpty(path)){
+            Bitmap bm = null;
+            try {
+
+                bm = BitmapFactory.decodeFile(path);
+            } catch (Error ee) {
+            } catch (Exception e) {
+            }
+            return bm;
+        }else {
+            return getDefaultAlbumArt(context);
         }
-        return bm;
     }
 }

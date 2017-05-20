@@ -3,6 +3,7 @@ package training.com.tplayer.ui.main;
 import android.content.Intent;
 import android.os.RemoteException;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -44,6 +45,9 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
 
     private MediaEntity mCurrentSong;
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar ;
+
     @BindView(R.id.circleMenu)
     MyCM mCircleMenu;
 
@@ -74,6 +78,10 @@ public class MainActivity extends BaseActivity<MainPresenterImpl>
     @Override
     public void onBindView() {
         ButterKnife.bind(this);
+
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setTitle("Tplayer");
+
         mCircleMenu.setOnItemClickListener(this);
         mCircleMenu.addOnFinish(new MyCM.OnFinish() {
             @Override

@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction(Constants.ACTION.STARTFOREGROUND_ACTION);
         startService(intent);
 
-
-
         finish();
     }
 }

@@ -85,6 +85,7 @@ public class SettingActivity extends BaseActivity<SettingPresenterImpl> implemen
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle(R.string.title_activity_setting);
 
         mPlayPause.setOnClickListener(this);
         mForward.setOnClickListener(this);

@@ -1,9 +1,11 @@
 package training.com.tplayerservice;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
@@ -19,7 +21,7 @@ import training.com.tplayerservice.app.Constants;
 import training.com.utils.LogUtils;
 
 
-public class TPlayerService extends Service {
+public class TPlayerService extends Service implements PlayerManager.IOnSongChangeListener {
     public static final String TAG = "[ThoNH]";
 
     private PlayerManager mPlayerManager;
@@ -27,17 +29,18 @@ public class TPlayerService extends Service {
     private Notification status;
     private RemoteViews views;
     private RemoteViews bigViews;
-
+    private NotificationManager mNotificationManager;
 
     public TPlayerService() {
         LogUtils.printLog("Service_Contructor");
-        mPlayerManager = new PlayerManager(this);
+        mPlayerManager = new PlayerManager(this, this);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
         LogUtils.printLog("Service_onCreate");
+        mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     }
 
     @Override
@@ -63,27 +66,20 @@ public class TPlayerService extends Service {
             } else if (action.equals(Constants.ACTION.PLAY_ACTION)) {
 
                 mPlayerManager.changePlayStatus();
+                updateStatus();
 
             } else if (action.equals(Constants.ACTION.NEXT_ACTION)) {
-
                 mPlayerManager.nextSong();
 
             } else if (action.equals(
                     Constants.ACTION.STOPFOREGROUND_ACTION)) {
 
-                stopForeground(true);
-                stopSelf();
+                removeNotification();
             }
 
             if (views != null && bigViews != null && mPlayerManager.getPlaylist().size() != 0) {
-                views.setTextViewText(R.id.status_bar_track_name, mPlayerManager.getCurrentSong().title);
-                bigViews.setTextViewText(R.id.status_bar_track_name, mPlayerManager.getCurrentSong().title);
-
-                views.setTextViewText(R.id.status_bar_artist_name, mPlayerManager.getCurrentSong().artist);
-                bigViews.setTextViewText(R.id.status_bar_artist_name, mPlayerManager.getCurrentSong().artist);
-
-                bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-                        Constants.getImageNoti(mPlayerManager.getCurrentSong().art));
+                MediaEntity entity = mPlayerManager.getCurrentSong();
+                updateView(entity);
             }
 
         }
@@ -209,6 +205,7 @@ public class TPlayerService extends Service {
         @Override
         public boolean playPause() throws RemoteException {
             LogUtils.printLog("Service_playPause");
+            updateStatus();
             return mPlayerManager.changePlayStatus();
         }
 
@@ -258,11 +255,11 @@ public class TPlayerService extends Service {
         // if Player isPlaying --> start to PlayerActivity
         // else start to MainActivity
 
-        if (mPlayerManager.getPlaylist().size() != 0){
+        if (mPlayerManager.getPlaylist().size() != 0) {
             notificationIntent.setClassName("training.com.tplayer", "training.com.tplayer.ui.player.PlayerActivity");
             notificationIntent.setComponent(new ComponentName("training.com.tplayer", "training.com.tplayer.ui.player.PlayerActivity"));
             notificationIntent.setAction("android.intent.action.MAIN22");
-        }else {
+        } else {
             notificationIntent.setClassName("training.com.tplayer", ".ui.main.MainActivity");
             notificationIntent.setComponent(new ComponentName("training.com.tplayer", ".ui.main.MainActivity"));
             notificationIntent.setAction("android.intent.action.MAIN");
@@ -324,5 +321,45 @@ public class TPlayerService extends Service {
         status.icon = R.drawable.ic_launcher;
         status.contentIntent = pendingIntent;
         startForeground(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+
+    }
+
+    private void updateStatus() {
+        if (!mPlayerManager.isPlayerPlaying()) {
+            views.setImageViewResource(R.id.status_bar_play,
+                    R.drawable.apollo_holo_dark_play);
+            bigViews.setImageViewResource(R.id.status_bar_play,
+                    R.drawable.apollo_holo_dark_play);
+        } else {
+            views.setImageViewResource(R.id.status_bar_play,
+                    R.drawable.apollo_holo_dark_pause);
+            bigViews.setImageViewResource(R.id.status_bar_play,
+                    R.drawable.apollo_holo_dark_pause);
+        }
+        mNotificationManager.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
+    }
+
+    private void updateView(MediaEntity entity) {
+        views.setTextViewText(R.id.status_bar_track_name, entity.title);
+        bigViews.setTextViewText(R.id.status_bar_track_name, entity.title);
+
+        views.setTextViewText(R.id.status_bar_artist_name, entity.artist);
+        bigViews.setTextViewText(R.id.status_bar_artist_name, entity.artist);
+
+        bigViews.setImageViewBitmap(R.id.status_bar_album_art,
+                Constants.getImageNoti(this,entity.art));
+    }
+
+    private void removeNotification() {
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        mNotificationManager.cancel(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE);
+    }
+
+    @Override
+    public void onChange(MediaEntity mediaEntity) {
+
+        updateView(mediaEntity);
+        updateStatus();
+        mNotificationManager.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
     }
 }

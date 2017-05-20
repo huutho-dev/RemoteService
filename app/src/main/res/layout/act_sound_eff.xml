@@ -80,7 +80,7 @@
             android:text="Virtualizer  "
             app:textFonts="RobotoMedium" />
 
-        <org.adw.library.widgets.discreteseekbar.DiscreteSeekBar
+        <SeekBar
             android:id="@+id/act_sound_eff_seekbar_virtualizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

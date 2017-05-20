@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -24,8 +23,8 @@ import training.com.tplayer.base.BaseActivity;
 import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.ui.adapter.offline.OfflinePagerAdapter;
 import training.com.tplayer.ui.player.PlayerActivity;
+import training.com.tplayer.ui.search.SearchActivity;
 import training.com.tplayer.utils.ImageUtils;
-import training.com.tplayer.utils.LogUtils;
 
 /**
  * Created by ThoNH on 28/04/2017.
@@ -91,6 +90,8 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.title_activity_offline_tab_title);
+
         mAdapter = new OfflinePagerAdapter(this, getSupportFragmentManager());
         mViewPager.setAdapter(mAdapter);
         mViewPager.addOnPageChangeListener(this);
@@ -154,6 +155,10 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
 
         switch (item.getItemId()) {
             case R.id.app_bar_search:
+                startActivity(new Intent(this, SearchActivity.class));
+                break;
+            case android.R.id.home:
+                finish();
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -163,17 +168,12 @@ public class TabOfflineActivity extends BaseActivity implements ViewPager.OnPage
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
-        FragmentManager fm = getSupportFragmentManager();
-        LogUtils.printLog("Count : " + fm.getBackStackEntryCount());
     }
 
     @Override
     public void onClick(View v) {
         try {
-
             switch (v.getId()) {
-
                 case R.id.panel_bottom_player_play_pause:
                     if (getPlayerService() != null) {
                         boolean isSongPlaying = getPlayerService().playPause();

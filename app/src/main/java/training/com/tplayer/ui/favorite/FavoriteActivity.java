@@ -68,6 +68,7 @@ public class FavoriteActivity extends BaseActivity implements View.OnClickListen
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(R.string.title_activity_favorite);
 
         mPlayPause.setOnClickListener(this);
         mForward.setOnClickListener(this);
@@ -163,4 +164,5 @@ public class FavoriteActivity extends BaseActivity implements View.OnClickListen
             e.printStackTrace();
         }
     }
+
 }

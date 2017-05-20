@@ -43,6 +43,7 @@
     </LinearLayout>
 
     <ImageView
+        android:padding="10dp"
         android:id="@+id/status_bar_play"
         android:layout_width="48dp"
         android:layout_height="48dp"
@@ -50,6 +51,7 @@
         android:src="@drawable/apollo_holo_dark_play" />
 
     <ImageView
+        android:padding="10dp"
         android:id="@+id/status_bar_next"
         android:layout_width="48dp"
         android:layout_height="48dp"
