@@ -95,7 +95,6 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     public void onBindView() {
         ButterKnife.bind(this);
 
-        mLinearLayout = (LinearLayout) findViewById(R.id.act_sound_eff_layout_equalizer);
     }
 
 
