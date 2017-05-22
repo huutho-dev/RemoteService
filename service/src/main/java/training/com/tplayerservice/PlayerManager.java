@@ -18,6 +18,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 import training.com.tplayerservice.app.Config;
+import training.com.utils.LogUtils;
 
 /**
  * Created by HuuTho on 4/9/2017.
@@ -56,12 +57,13 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         this.mTPlayer.setOnCompletionListenerPlayer(this);
         this.mTPlayer.setAuxEffectSendLevel(1.0f);
         this.mTPlayer.setOnCompletionListener(this);
-
+        LogUtils.printLog("PlayerManager");
     }
 
     public void setListSong(List<MediaEntity> origins) {
         mPlayLists.clear();
         mPlayLists.addAll(origins);
+        LogUtils.printLog("setListSong : " + origins.size());
     }
 
     public void startSong(int position) {
@@ -71,6 +73,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         startSong(data);
         song.isPlaying = true;
         mIsStop = false;
+        LogUtils.printLog("startSong : " + position);
     }
 
     public void startSong(MediaEntity entity) {
@@ -80,6 +83,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 return;
             }
         }
+        LogUtils.printLog("startSong : " + entity.toString());
     }
 
 
@@ -96,21 +100,27 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 public void onPrepared(final MediaPlayer mp) {
                     mp.start();
                     new DownloadLyric().execute(song);
+
+                    Intent intent = new Intent();
+                    intent.setAction(Config.ACTION_PLAYER_START_PLAY);
+                    intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
+                    intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
+                    mContext.getApplicationContext().sendBroadcast(intent);
                 }
             });
         } else {
             mTPlayer.setDataSourcePlayer(mContext, Uri.parse(data));
             mTPlayer.preparePlayer();
             mTPlayer.startPlayer();
+
+            Intent intent = new Intent();
+            intent.setAction(Config.ACTION_PLAYER_START_PLAY);
+            intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
+            intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
+            mContext.getApplicationContext().sendBroadcast(intent);
         }
-
-        Intent intent = new Intent();
-        intent.setAction(Config.ACTION_PLAYER_START_PLAY);
-        intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
-        intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
-        mContext.getApplicationContext().sendBroadcast(intent);
-
         listener.onChange(song);
+        LogUtils.printLog("startSong : " + data);
     }
 
     public boolean changePlayStatus() {
@@ -123,6 +133,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public int getPlayerDuration() {
+        LogUtils.printLog("getPlayerDuration");
         return mTPlayer.getDurationPlayer();
     }
 
@@ -152,6 +163,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public int getCurrentPosition() {
+        LogUtils.printLog("getCurrentPosition");
         return mTPlayer.getCurrentPosition();
     }
 
@@ -232,10 +244,13 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         Intent intent = new Intent();
         intent.setAction(Config.ACTION_PLAYER_COMPLETE);
         mContext.getApplicationContext().sendBroadcast(intent);
+
+        LogUtils.printLog("onCompletion");
     }
 
 
     private void proccessAfterComplete(boolean isShuffle, int currentRepeat) {
+        LogUtils.printLog("proccessAfterComplete");
         if (!isShuffle) {
 
             switch (currentRepeat) {
@@ -310,6 +325,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                     String text = new Scanner(url.openStream()).useDelimiter("\\A").next();
 
                     params[0].lyric = text;
+
 
                     Intent intent = new Intent();
                     intent.setAction(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);

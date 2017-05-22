@@ -25,6 +25,9 @@ public class PlayerContracts {
         void onRemotePlayCompleteASong();
 
         void onLoadLyricComplete(File lyric);
+
+        void onResumePlayer(MediaEntity song, int currentPosition);
+
     }
 
     public interface Presenter extends BasePresenter {

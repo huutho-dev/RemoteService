@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <!--https://github.com/ogaclejapan/SmartTabLayout-->
 
     <com.ogaclejapan.smarttablayout.SmartTabLayout
         android:id="@+id/act_onl_tablayout"

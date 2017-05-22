@@ -193,23 +193,23 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
             } else if (songs == null) {
                 // has been play before, click bottom panel
 
-                try {
-                    songs = mPresenter.getNowPlaylist();
-                    mAdapter.setDatas(songs);
-
-                    resetSeekbar();
-                    int maxDuration = getPlayerService().getDuration();
-                    mCurrentValueSeekbar = getPlayerService().getCurrentPosition();
-
-                    LogUtils.printLog(maxDuration + " - " + mCurrentValueSeekbar);
-
-                    mSeekbar.setMax(maxDuration);
-                    mSeekbar.setProgress(mCurrentValueSeekbar);
-                    mHandler.postDelayed(runUpdateSeekbar, 100);
-
-                } catch (RemoteException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    songs = mPresenter.getNowPlaylist();
+//                    mAdapter.setDatas(songs);
+//
+//                    resetSeekbar();
+//                    int maxDuration = getPlayerService().getDuration();
+//                    mCurrentValueSeekbar = getPlayerService().getCurrentPosition();
+//
+//                    LogUtils.printLog(maxDuration + " - " + mCurrentValueSeekbar);
+//
+//                    mSeekbar.setMax(maxDuration);
+//                    mSeekbar.setProgress(mCurrentValueSeekbar);
+//                    mHandler.postDelayed(runUpdateSeekbar, 100);
+//
+//                } catch (RemoteException e) {
+//                    e.printStackTrace();
+//                }
 
 
                 try {
@@ -400,9 +400,9 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
 
         } catch (FileNotFoundException e) {
-            // handle exception
+
         } catch (IOException e) {
-            // handle exception
+
         }
     }
 
