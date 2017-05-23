@@ -8,6 +8,7 @@
    >
 
     <RelativeLayout
+        android:background="@drawable/background_press"
         android:layout_width="@dimen/size_layout_image_recycler_simple"
         android:layout_height="match_parent"
         android:orientation="vertical">

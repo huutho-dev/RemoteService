@@ -9,6 +9,7 @@ public class AudioFxPreference extends BasePreferences {
     private final String KEY_PRESET_REVERB = "key.preset.reverb";
     private final String KEY_BASS_BOOST = "key.bass.boost";
     private final String KEY_VIRTUALIZER = "key.virtualizer";
+    private final String KEY_EQUALIZER = "key.equalizer";
 
     private static AudioFxPreference mInstance;
 
@@ -45,5 +46,13 @@ public class AudioFxPreference extends BasePreferences {
 
     public boolean isEnableVirtualizer() {
         return getSharePreferences().getBoolean(KEY_VIRTUALIZER, false);
+    }
+
+    public void setEnableEqualizer(boolean isEnable) {
+        getEditor().putBoolean(KEY_EQUALIZER, isEnable).commit();
+    }
+
+    public boolean isEnableEqualizer() {
+        return getSharePreferences().getBoolean(KEY_EQUALIZER, false);
     }
 }

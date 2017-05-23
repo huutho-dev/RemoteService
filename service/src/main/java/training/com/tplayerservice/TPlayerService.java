@@ -7,17 +7,27 @@ import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RemoteViews;
 
 import com.remote.communication.IMyAidlInterface;
 import com.remote.communication.MediaEntity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.List;
+import java.util.Scanner;
 
 import training.com.tplayerservice.app.Constants;
+import training.com.tplayerservice.utils.FileUtils;
 import training.com.utils.LogUtils;
 
 
@@ -234,6 +244,16 @@ public class TPlayerService extends Service implements PlayerManager.IOnSongChan
             mPlayerManager.addToEndPlaying(entities);
         }
 
+        @Override
+        public String download() throws RemoteException {
+            MediaEntity song = mPlayerManager.getCurrentSong();
+            FileUtils.downloadFile(song.data, FileUtils.PATH_DOWNLOAD + "/", song.title, ".mp3");
+//            FileUtils.downloadFile(song.art,FileUtils.PATH_IMAGE,song.title,".jpg");
+//            new DownloadLyric().execute(song);
+
+            return FileUtils.PATH_DOWNLOAD + "/" + song.title + ".mp3";
+        }
+
     };
 
 
@@ -347,7 +367,7 @@ public class TPlayerService extends Service implements PlayerManager.IOnSongChan
         bigViews.setTextViewText(R.id.status_bar_artist_name, entity.artist);
 
         bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-                Constants.getImageNoti(this,entity.art));
+                Constants.getImageNoti(this, entity.art));
     }
 
     private void removeNotification() {
@@ -362,4 +382,54 @@ public class TPlayerService extends Service implements PlayerManager.IOnSongChan
         updateStatus();
         mNotificationManager.notify(Constants.NOTIFICATION_ID.FOREGROUND_SERVICE, status);
     }
+
+
+    private class DownloadLyric extends AsyncTask<MediaEntity, Void, Void> {
+
+        @Override
+        protected Void doInBackground(MediaEntity... params) {
+            String text;
+            File file;
+            try {
+                if (params[0] != null && !TextUtils.isEmpty(params[0].lyric)) {
+
+//                    "lyric":"http://static.mp3.zdn.vn/lyrics/2017/04/10/437fd8dab336d63566e90d61e2dde4ea_1075841896.lrc"
+
+                    if (params[0].lyric.contains("http://")) {
+                        URL url = new URL(params[0].lyric);
+                        text = new Scanner(url.openStream()).useDelimiter("\\A").next();
+
+                    } else {
+                        text = params[0].lyric;
+                    }
+
+                    file = new File(FileUtils.PATH_LYRIC + "/" + params[0].title + ".lyric");
+
+                    FileOutputStream fos;
+                    byte[] data = new String(text.toString()).getBytes();
+
+                    try {
+                        fos = new FileOutputStream(file);
+                        fos.write(data);
+                        fos.flush();
+                        fos.close();
+
+                        params[0].lyric = text;
+
+                    } catch (FileNotFoundException e) {
+
+                    } catch (IOException e) {
+
+                    }
+
+                }
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+    }
+
 }

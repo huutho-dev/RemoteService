@@ -43,7 +43,6 @@ public abstract class BaseAsyncTask<E extends BaseEntity> extends AsyncTask<Void
         } else {
             return null;
         }
-
         return null;
     }
 

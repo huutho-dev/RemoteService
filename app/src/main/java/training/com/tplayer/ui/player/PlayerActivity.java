@@ -2,7 +2,6 @@ package training.com.tplayer.ui.player;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -18,9 +17,6 @@ import com.remote.communication.MediaEntity;
 import org.adw.library.widgets.discreteseekbar.DiscreteSeekBar;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -191,26 +187,8 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 mPresenter.setPlayLists(songs);
                 mPresenter.startSongPosition(0);
             } else if (songs == null) {
-                // has been play before, click bottom panel
 
-//                try {
-//                    songs = mPresenter.getNowPlaylist();
-//                    mAdapter.setDatas(songs);
-//
-//                    resetSeekbar();
-//                    int maxDuration = getPlayerService().getDuration();
-//                    mCurrentValueSeekbar = getPlayerService().getCurrentPosition();
-//
-//                    LogUtils.printLog(maxDuration + " - " + mCurrentValueSeekbar);
-//
-//                    mSeekbar.setMax(maxDuration);
-//                    mSeekbar.setProgress(mCurrentValueSeekbar);
-//                    mHandler.postDelayed(runUpdateSeekbar, 100);
-//
-//                } catch (RemoteException e) {
-//                    e.printStackTrace();
-//                }
-
+                // go to PlayerActivity by click bottom panel
 
                 try {
                     MediaEntity song = getPlayerService().getCurrentSong();
@@ -220,9 +198,12 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                     mImvPlayPause.setSelected(true);
                     ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
                     ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
-
+                    onLoadLyricComplete(new File(song.lyric));
+                    mSeekbar.setMax(mPresenter.getDuration());
+                    mCurrentValueSeekbar = mPresenter.getCurrentPosition();
+                    runSeekBarAndLyric(mCurrentValueSeekbar);
+                    mAdapter.setDatas(mPresenter.getNowPlaylist());
                     mAdapter.setActivePlaying(song);
-
 
                 } catch (RemoteException e) {
                     e.printStackTrace();
@@ -292,7 +273,14 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 LogUtils.printLog("Client_playPause");
                 boolean isPlaying = mPresenter.playPause();
                 mImvPlayPause.setSelected(isPlaying);
-                changeSeekbarState(isPlaying);
+
+                if (isPlaying){
+                    mCurrentValueSeekbar = mPresenter.getCurrentPosition();
+                    runSeekBarAndLyric(mCurrentValueSeekbar);
+                }else {
+                    pauseSeekbarAndLyric();
+                }
+
                 break;
             case R.id.act_player_control_imv_forward:
                 LogUtils.printLog("Client_forward");
@@ -311,7 +299,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 mPresenter.onEqualizerClick(this);
                 break;
             case R.id.act_player_download:
-
+                mPresenter.onDownloadClick(this);
                 break;
         }
     }
@@ -376,34 +364,22 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public void onLoadLyricComplete(File lyric) {
         LogUtils.printLog("Client_onDownloadLyricComplete : file = " + lyric.toString());
 
-        File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
-        LogUtils.printLog(file.getAbsolutePath());
-        FileOutputStream fos;
-        byte[] data = new String(lyric.toString()).getBytes();
-        try {
-            fos = new FileOutputStream(file);
-            fos.write(data);
-            fos.flush();
-            fos.close();
+        mLyricView.setLyricFile(lyric);
 
-            File getFile = new File(Environment.getExternalStorageDirectory() + "/temp.lrc");
-            mLyricView.setLyricFile(getFile);
+        mLyricView.setCurrentTimeMillis(mCurrentValueSeekbar);
 
-            mLyricView.setCurrentTimeMillis(mCurrentValueSeekbar);
+        mLyricView.setOnPlayerClickListener(new LyricView.OnPlayerClickListener() {
+            @Override
+            public void onPlayerClicked(long progress, String content) {
+                LogUtils.printLog("ihihi" + progress + " " + content);
+            }
+        });
 
-            mLyricView.setOnPlayerClickListener(new LyricView.OnPlayerClickListener() {
-                @Override
-                public void onPlayerClicked(long progress, String content) {
-                    LogUtils.printLog("ihihi" + progress + " " + content);
-                }
-            });
+    }
 
+    @Override
+    public void onResumePlayer(MediaEntity song, int currentPosition) {
 
-        } catch (FileNotFoundException e) {
-
-        } catch (IOException e) {
-
-        }
     }
 
 
@@ -423,11 +399,14 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         mHandler.removeCallbacks(runUpdateSeekbar);
     }
 
-    private void changeSeekbarState(boolean isPlaying) {
-        if (isPlaying) {
-            mHandler.post(runUpdateSeekbar);
-        }
-        mHandler.removeCallbacks(runUpdateSeekbar);
+    private void runSeekBarAndLyric(int currentPos) {
+        mHandler.post(runUpdateSeekbar);
+        mSeekbar.setProgress(currentPos);
+        mLyricView.setCurrentTimeMillis(currentPos);
+    }
+
+    private void pauseSeekbarAndLyric(){
+      mHandler.removeCallbacks(runUpdateSeekbar);
     }
 
     private void setViewShuffle(boolean isShuffle) {

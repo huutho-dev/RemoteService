@@ -5,10 +5,14 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.remote.communication.MediaEntity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -319,18 +323,49 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
         @Override
         protected Void doInBackground(MediaEntity... params) {
+
+            String lyricPath = null;
+
             try {
                 if (params[0] != null && !TextUtils.isEmpty(params[0].lyric)) {
-                    URL url = new URL(params[0].lyric);
-                    String text = new Scanner(url.openStream()).useDelimiter("\\A").next();
 
-                    params[0].lyric = text;
+//                    "lyric":"http://static.mp3.zdn.vn/lyrics/2017/04/10/437fd8dab336d63566e90d61e2dde4ea_1075841896.lrc"
+
+                    if (params[0].lyric.contains("http://")) {
+                        URL url = new URL(params[0].lyric);
+                        String text = new Scanner(url.openStream()).useDelimiter("\\A").next();
+//                        params[0].lyric = text;
+
+                        File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
+                        LogUtils.printLog(file.getAbsolutePath());
+                        FileOutputStream fos;
+                        byte[] data = new String(text.toString()).getBytes();
+
+                        try {
+                            fos = new FileOutputStream(file);
+                            fos.write(data);
+                            fos.flush();
+                            fos.close();
+
+                            lyricPath = file.getPath();
+                            params[0].lyric = text;
+
+                        } catch (FileNotFoundException e) {
+
+                        } catch (IOException e) {
+
+                        }
+                    } else {
+                        File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
+                        lyricPath = file.getPath();
+                    }
 
 
                     Intent intent = new Intent();
                     intent.setAction(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);
-                    intent.putExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC, text);
+                    intent.putExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC, lyricPath);
                     mContext.getApplicationContext().sendBroadcast(intent);
+
                 }
             } catch (MalformedURLException e) {
                 e.printStackTrace();

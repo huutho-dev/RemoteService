@@ -1,5 +1,6 @@
 package training.com.tplayer.ui.player;
 
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.remote.communication.MediaEntity;
@@ -58,7 +59,7 @@ public class PlayerContracts {
 
         void onUnregisterBroadcast();
 
-        void onDownloadClick();
+        void onDownloadClick(Context context);
 
         void onEqualizerClick(AppCompatActivity activity);
 
@@ -67,6 +68,7 @@ public class PlayerContracts {
 
     public interface Interactor extends BaseInteractor {
         void onUnregisterBroadcast();
+
     }
 
 

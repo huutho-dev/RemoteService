@@ -15,6 +15,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:background="@drawable/background_press"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/toolbar"
@@ -40,6 +41,7 @@
         <include layout="@layout/line" />
 
         <training.com.tplayer.custom.TextViewRoboto
+            android:background="@drawable/background_press"
             android:id="@+id/act_settings_equalizer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,6 +54,7 @@
         <include layout="@layout/line" />
 
         <LinearLayout
+            android:background="@drawable/background_press"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -76,6 +79,7 @@
         <include layout="@layout/line" />
 
         <LinearLayout
+            android:background="@drawable/background_press"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -98,6 +102,7 @@
         <include layout="@layout/line" />
 
         <LinearLayout
+            android:background="@drawable/background_press"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -120,6 +125,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:background="@drawable/background_press"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -144,6 +150,7 @@
         <include layout="@layout/line" />
 
         <LinearLayout
+            android:background="@drawable/background_press"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"

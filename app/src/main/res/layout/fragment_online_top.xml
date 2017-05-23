@@ -29,7 +29,7 @@
 
             <LinearLayout
                 android:clickable="true"
-
+                android:background="@drawable/background_press"
                 android:id="@+id/vietnam_young"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="8dp"
@@ -57,6 +57,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/vietnam_rap"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="8dp"
@@ -85,6 +86,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/vietnam_dance"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="8dp"
@@ -113,6 +115,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/vietnam_bolero"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="8dp"
@@ -139,6 +142,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/vietnam_trinh"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginBottom="8dp"
@@ -168,6 +172,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/vietnam_rock"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="0dp"
@@ -209,6 +214,7 @@
                 app:textFonts="RobotoBold" />
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/national_pop"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="8dp"
@@ -235,6 +241,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/national_kpop"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginBottom="8dp"
@@ -263,6 +270,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/national_edm"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="8dp"
@@ -291,6 +299,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/national_rock"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginLeft="8dp"
@@ -317,6 +326,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/nation_rap"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginBottom="8dp"
@@ -344,6 +354,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/nation_japan"
                 style="@style/LayoutItemTopMusic"
                 android:layout_marginTop="8dp"

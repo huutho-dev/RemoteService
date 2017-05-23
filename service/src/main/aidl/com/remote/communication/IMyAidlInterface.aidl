@@ -48,4 +48,6 @@ interface IMyAidlInterface {
    void addListNextPlaying(in List<MediaEntity> entity) ;
 
    void addToEndListNowPlaying(in List<MediaEntity> entity) ;
+
+   String download();
 }

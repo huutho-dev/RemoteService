@@ -55,6 +55,7 @@
                             android:layout_height="@dimen/spacing_7_56dp">
 
                             <ImageView
+                                android:background="@drawable/background_press"
                                 android:id="@+id/act_player_download"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -65,6 +66,7 @@
                                 android:src="@drawable/ic_download_24dp" />
 
                             <ImageView
+                                android:background="@drawable/background_press"
                                 android:id="@+id/act_player_capture_screen"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -73,6 +75,7 @@
                                 android:src="@drawable/ic_camera_24dp" />
 
                             <ImageView
+                                android:background="@drawable/background_press"
                                 android:id="@+id/act_player_equalizer"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -106,6 +109,7 @@
                             app:textFonts="RobotoRegular" />
 
                         <ImageView
+                            android:background="@drawable/background_press"
                             android:id="@+id/act_player_control_imv_repeat"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -117,6 +121,7 @@
 
 
                         <ImageView
+                            android:background="@drawable/background_press"
                             android:id="@+id/act_player_control_imv_shuffle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -162,6 +167,7 @@
                             android:layout_above="@+id/act_player_image_artist">
 
                             <ImageView
+                                android:background="@drawable/background_press"
                                 android:id="@+id/act_player_control_imv_play_pause"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -172,6 +178,7 @@
                                 android:src="@drawable/background_play_state" />
 
                             <ImageView
+                                android:background="@drawable/background_press"
                                 android:id="@+id/act_player_control_imv_forward"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -181,6 +188,7 @@
                                 android:src="@drawable/ic_player_forward" />
 
                             <ImageView
+                                android:background="@drawable/background_press"
                                 android:id="@+id/act_player_control_imv_backward"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

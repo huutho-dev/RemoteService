@@ -1,7 +1,9 @@
 package training.com.tplayer.ui.player;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
@@ -107,7 +109,7 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     @Override
     public List<MediaEntity> getNowPlaylist() {
         try {
-           return mService.getPlaylist();
+            return mService.getPlaylist();
         } catch (RemoteException e) {
             e.printStackTrace();
         }
@@ -175,14 +177,26 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     }
 
 
+
     @Override
     public void onUnregisterBroadcast() {
         mInteractor.onUnregisterBroadcast();
     }
 
     @Override
-    public void onDownloadClick() {
-
+    public void onDownloadClick(Context context) {
+        try {
+            String path = mService.download();
+            File file = new File(path);
+            FileUtils.scanFileAfterDownloaded(context, file, new FileUtils.IOnScanMediaComplete() {
+                @Override
+                public void scanComplete(String path, Uri uri) {
+                    LogUtils.printLog(path + " - " + uri);
+                }
+            });
+        } catch (RemoteException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -192,9 +206,9 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
 
     @Override
     public void onCaptureScreenClick(AppCompatActivity activity) {
-       String mPathImage = FileUtils.captureScreen(activity);
-        if (mPathImage.equals("null")){
-            Toast.makeText(activity,"Cannot capture image, pls try again !",Toast.LENGTH_SHORT).show();
+        String mPathImage = FileUtils.captureScreen(activity);
+        if (mPathImage.equals("null")) {
+            Toast.makeText(activity, "Cannot capture image, pls try again !", Toast.LENGTH_SHORT).show();
             return;
         }
         SharePhoto photo = new SharePhoto.Builder()
@@ -207,9 +221,9 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
         ShareDialog shareDialog = new ShareDialog(activity);
         shareDialog.show(content, ShareDialog.Mode.AUTOMATIC);
 
-        boolean canShow  = shareDialog.canShow(content,ShareDialog.Mode.AUTOMATIC);
-        if (!canShow){
-            Toast.makeText(activity,"Cannot find fb app on your phone, pls install fb application and try again !",Toast.LENGTH_SHORT).show();
+        boolean canShow = shareDialog.canShow(content, ShareDialog.Mode.AUTOMATIC);
+        if (!canShow) {
+            Toast.makeText(activity, "Cannot find fb app on your phone, pls install fb application and try again !", Toast.LENGTH_SHORT).show();
             return;
         }
     }

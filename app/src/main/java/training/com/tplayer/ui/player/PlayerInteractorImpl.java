@@ -37,8 +37,8 @@ public class PlayerInteractorImpl extends BaseInteractorImpl implements PlayerCo
                     break;
 
                 case Config.ACTION_PLAYER_DOWNLOAD_LYRIC:
-                    String textLyric = intent.getStringExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);
-                    File lyric = new File(textLyric);
+                    String lyricPath = intent.getStringExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);
+                    File lyric = new File(lyricPath);
                     mOnPlayerListener.onDownloadLyricComplete(lyric);
             }
         }
@@ -67,4 +67,6 @@ public class PlayerInteractorImpl extends BaseInteractorImpl implements PlayerCo
     public void onUnregisterBroadcast() {
         mContext.unregisterReceiver(mRemoteServiceReceiver);
     }
+
+
 }

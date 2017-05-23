@@ -32,6 +32,7 @@
                 android:background="@drawable/background_logo_header" />
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/act_offline_item_songs"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -63,6 +64,7 @@
             <include layout="@layout/view_sepator_line" />
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/act_offline_item_albums"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -94,6 +96,7 @@
             <include layout="@layout/view_sepator_line" />
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/act_offline_item_artist"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -124,6 +127,7 @@
             <include layout="@layout/view_sepator_line" />
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/act_offline_item_playlists"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -155,6 +159,7 @@
             <include layout="@layout/view_sepator_line" />
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/act_offline_item_folder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -186,6 +191,7 @@
             <include layout="@layout/view_sepator_line" />
 
             <LinearLayout
+                android:background="@drawable/background_press"
                 android:id="@+id/act_offline_item_download"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

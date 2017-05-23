@@ -1,130 +1,283 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-    <include
-        android:id="@+id/toolbar"
-        layout="@layout/toolbar" />
-
-    <LinearLayout
+    >
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_2_16dp">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/act_sound_eff_chkbox_preset_reverb"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/spacing_1_8dp" />
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
 
-        <training.com.tplayer.custom.TextViewRoboto
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Preset reverb"
-            app:textFonts="RobotoMedium" />
-
-        <android.support.v7.widget.AppCompatSpinner
-            android:id="@+id/act_sound_eff_spn_preset_reverb"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_6_default_48dp" />
+            android:padding="@dimen/spacing_2_16dp">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/act_sound_eff_chkbox_preset_reverb"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/spacing_1_8dp" />
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Preset reverb"
+                app:textFonts="RobotoMedium" />
+
+            <android.support.v7.widget.AppCompatSpinner
+                android:id="@+id/act_sound_eff_spn_preset_reverb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_6_default_48dp" />
+
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/act_sound_eff_chkbox_bass_boost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/spacing_1_8dp" />
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Bass boost"
+                app:textFonts="RobotoMedium" />
+
+            <SeekBar
+                android:id="@+id/act_sound_eff_seekbar_bass_boost"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_4_32dp" />
+
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/act_sound_eff_chkbox_virtualizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/spacing_1_8dp" />
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Virtualizer  "
+                app:textFonts="RobotoMedium" />
+
+            <SeekBar
+                android:id="@+id/act_sound_eff_seekbar_virtualizer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_4_32dp" />
+
+        </LinearLayout>
+
+        <include layout="@layout/line" />
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/spacing_2_16dp">
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/act_sound_eff_chkbox_equalizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/spacing_1_8dp" />
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:id="@+id/act_sound_eff_txt_equalizer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@+id/act_sound_eff_chkbox_equalizer"
+                android:layout_alignTop="@+id/act_sound_eff_chkbox_equalizer"
+                android:layout_toRightOf="@+id/act_sound_eff_chkbox_equalizer"
+                android:gravity="center"
+                android:text="Equalizer    "
+                app:textFonts="RobotoMedium" />
+
+            <training.com.tplayer.custom.TextViewRoboto
+                android:id="@+id/act_sound_eff_spn_equalizer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/spacing_6_default_48dp"
+                android:layout_toRightOf="@+id/act_sound_eff_txt_equalizer"
+                android:drawablePadding="@dimen/spacing_0_4dp"
+                android:drawableTop="@drawable/ic_graphic_eq_24dp"
+                android:gravity="center"
+                android:text="Flat" />
+
+            <LinearLayout
+                android:id="@+id/layout_equalizer"
+                android:layout_marginBottom="@dimen/spacing_3_24dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/act_sound_eff_chkbox_equalizer"
+                android:layout_marginTop="@dimen/spacing_4_32dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_5"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_6"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_6"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_7"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_7"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+
+                <TextView
+                    android:layout_marginTop="@dimen/spacing_2_16dp"
+                    android:id="@+id/slider_label_8"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+
+                <SeekBar
+                    android:id="@+id/slider_8"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:max="100"
+                    android:progress="50"
+                    android:progressDrawable="@drawable/progress_drawable"
+                    android:secondaryProgress="50"
+                    android:thumb="@drawable/ic_android_black_24dp" />
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
 
-    <include layout="@layout/line" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_2_16dp">
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/act_sound_eff_chkbox_bass_boost"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/spacing_1_8dp" />
-
-        <training.com.tplayer.custom.TextViewRoboto
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Bass boost"
-            app:textFonts="RobotoMedium" />
-
-        <SeekBar
-            android:id="@+id/act_sound_eff_seekbar_bass_boost"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_4_32dp" />
-
-    </LinearLayout>
-
-    <include layout="@layout/line" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_2_16dp">
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/act_sound_eff_chkbox_virtualizer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/spacing_1_8dp" />
-
-        <training.com.tplayer.custom.TextViewRoboto
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Virtualizer  "
-            app:textFonts="RobotoMedium" />
-
-        <SeekBar
-            android:id="@+id/act_sound_eff_seekbar_virtualizer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_4_32dp" />
-
-    </LinearLayout>
-
-    <include layout="@layout/line" />
-
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="@dimen/spacing_2_16dp">
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/act_sound_eff_chkbox_equalizer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/spacing_1_8dp" />
-
-        <training.com.tplayer.custom.TextViewRoboto
-            android:id="@+id/act_sound_eff_txt_equalizer"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/act_sound_eff_chkbox_equalizer"
-            android:layout_alignTop="@+id/act_sound_eff_chkbox_equalizer"
-            android:layout_toRightOf="@+id/act_sound_eff_chkbox_equalizer"
-            android:gravity="center"
-            android:text="Equalizer    "
-            app:textFonts="RobotoMedium" />
-
-        <training.com.tplayer.custom.TextViewRoboto
-            android:id="@+id/act_sound_eff_spn_equalizer"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/spacing_6_default_48dp"
-            android:layout_toRightOf="@+id/act_sound_eff_txt_equalizer"
-            android:drawablePadding="@dimen/spacing_0_4dp"
-            android:drawableTop="@drawable/ic_graphic_eq_24dp"
-            android:gravity="center"
-            android:text="Flat" />
-
-
-    </RelativeLayout>
-
-</LinearLayout>

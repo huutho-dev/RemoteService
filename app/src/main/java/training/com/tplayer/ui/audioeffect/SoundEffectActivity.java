@@ -7,9 +7,8 @@ import android.media.audiofx.Virtualizer;
 import android.os.RemoteException;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSpinner;
-import android.view.Gravity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
@@ -24,16 +23,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseActivity;
+import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.utils.LogUtils;
 import training.com.tplayer.utils.preferences.AudioFxPreference;
 
+import static android.R.attr.level;
 import static android.R.attr.value;
 
 /**
  * Created by hnc on 16/05/2017.
  */
 
-public class SoundEffectActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener {
+public class SoundEffectActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener, SeekBar.OnSeekBarChangeListener {
     // Preset Reverb
     // Bass boost
     // Virtualizer
@@ -54,9 +55,6 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     private PresetReverb mPresetReverb;
     private BassBoost mBassBoost;
     private Virtualizer mVirtualizer;
-    private Equalizer mEqualizer;
-
-    private LinearLayout mLinearLayout;
 
     private int mAudioSession = 0;
 
@@ -64,12 +62,14 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     private List<String> mKeyPreset = new ArrayList<>();
     private List<Short> mValuePreset = new ArrayList<>();
 
+    @BindView(R.id.toolbar)
+    Toolbar mToolbar;
+
     @BindView(R.id.act_sound_eff_chkbox_preset_reverb)
     AppCompatCheckBox mCheckPresetReverb;
 
     @BindView(R.id.act_sound_eff_spn_preset_reverb)
     AppCompatSpinner mSpnPresetReverb;
-
 
     @BindView(R.id.act_sound_eff_chkbox_bass_boost)
     AppCompatCheckBox mCheckBassBoost;
@@ -80,8 +80,28 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     @BindView(R.id.act_sound_eff_chkbox_virtualizer)
     AppCompatCheckBox mCheckVirtualizer;
 
+    @BindView(R.id.act_sound_eff_chkbox_equalizer)
+    AppCompatCheckBox mCheckEqualizer;
+
     @BindView(R.id.act_sound_eff_seekbar_virtualizer)
     SeekBar mSeekVirtualizer;
+
+    @BindView(R.id.layout_equalizer)
+    LinearLayout mLayoutEQ;
+
+
+    // EQ
+    @BindView(R.id.act_sound_eff_spn_equalizer)
+    TextViewRoboto mFlatButton;
+
+    private Equalizer mEqualizer;
+
+    private int min_level = 0;
+    private int max_level = 100;
+    private final int MAX_SLIDERS = 8; // Must match the XML layout
+    private SeekBar sliders[] = new SeekBar[MAX_SLIDERS];
+    private TextView slider_labels[] = new TextView[MAX_SLIDERS];
+    int num_sliders = 0;
 
 
     @Override
@@ -93,6 +113,80 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     public void onBindView() {
         ButterKnife.bind(this);
 
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setTitle("Audio Fx");
+
+        sliders[0] = (SeekBar) findViewById(R.id.slider_1);
+        slider_labels[0] = (TextView) findViewById(R.id.slider_label_1);
+        sliders[1] = (SeekBar) findViewById(R.id.slider_2);
+        slider_labels[1] = (TextView) findViewById(R.id.slider_label_2);
+        sliders[2] = (SeekBar) findViewById(R.id.slider_3);
+        slider_labels[2] = (TextView) findViewById(R.id.slider_label_3);
+        sliders[3] = (SeekBar) findViewById(R.id.slider_4);
+        slider_labels[3] = (TextView) findViewById(R.id.slider_label_4);
+        sliders[4] = (SeekBar) findViewById(R.id.slider_5);
+        slider_labels[4] = (TextView) findViewById(R.id.slider_label_5);
+        sliders[5] = (SeekBar) findViewById(R.id.slider_6);
+        slider_labels[5] = (TextView) findViewById(R.id.slider_label_6);
+        sliders[6] = (SeekBar) findViewById(R.id.slider_7);
+        slider_labels[6] = (TextView) findViewById(R.id.slider_label_7);
+        sliders[7] = (SeekBar) findViewById(R.id.slider_8);
+        slider_labels[7] = (TextView) findViewById(R.id.slider_label_8);
+
+        mEqualizer = new Equalizer(0, 0);
+        mEqualizer.setEnabled(true);
+        int num_bands = mEqualizer.getNumberOfBands();
+        num_sliders = num_bands;
+        short r[] = mEqualizer.getBandLevelRange();
+        min_level = r[0];
+        max_level = r[1];
+
+        for (int i = 0; i < num_sliders && i < MAX_SLIDERS; i++) {
+            int[] freq_range = mEqualizer.getBandFreqRange((short) i);
+            sliders[i].setOnSeekBarChangeListener(this);
+            slider_labels[i].setText(formatBandLabel(freq_range));
+        }
+
+        for (int i = num_sliders; i < MAX_SLIDERS; i++) {
+            sliders[i].setVisibility(View.GONE);
+            slider_labels[i].setVisibility(View.GONE);
+        }
+
+        mFlatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFlat();
+            }
+        });
+
+
+    }
+
+    private void updateUiEQ() {
+        updateSliders();
+    }
+
+    private void updateSliders() {
+        for (int i = 0; i < num_sliders; i++) {
+            int level;
+            if (mEqualizer != null)
+                level = mEqualizer.getBandLevel((short) i);
+            else
+                level = 0;
+            int pos = 100 * level / (max_level - min_level) + 50;
+            sliders[i].setProgress(pos);
+        }
+    }
+
+    public void setFlat() {
+        if (mEqualizer != null) {
+            for (int i = 0; i < num_sliders; i++) {
+                mEqualizer.setBandLevel((short) i, (short) 0);
+            }
+        }
+        updateUiEQ();
     }
 
 
@@ -102,11 +196,14 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
         mCheckPresetReverb.setChecked(AudioFxPreference.getInstance().isEnablePresetReverb());
         mCheckBassBoost.setChecked(AudioFxPreference.getInstance().isEnableBassBoost());
         mCheckVirtualizer.setChecked(AudioFxPreference.getInstance().isEnableVirtualizer());
+        mCheckEqualizer.setChecked(AudioFxPreference.getInstance().isEnableEqualizer());
 
         mCheckPresetReverb.setOnCheckedChangeListener(this);
         mCheckBassBoost.setOnCheckedChangeListener(this);
         mCheckVirtualizer.setOnCheckedChangeListener(this);
+        mCheckEqualizer.setOnCheckedChangeListener(this);
 
+        updateUiEQ(AudioFxPreference.getInstance().isEnableEqualizer());
     }
 
     @Override
@@ -123,36 +220,58 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
             mAudioSession = getPlayerService().getAudioSS();
             LogUtils.printLog("Audio ss : " + mAudioSession);
 
-            mPresetReverb = new PresetReverb(1000, mAudioSession);
-            mBassBoost = new BassBoost(1000, mAudioSession);
-            mEqualizer = new Equalizer(1000, mAudioSession);
-            mVirtualizer = new Virtualizer(1000, mAudioSession);
+            mPresetReverb = new PresetReverb(0, 0);
+            mBassBoost = new BassBoost(0, 0);
+            mEqualizer = new Equalizer(0, 0);
+            mVirtualizer = new Virtualizer(0, 0);
+
+
+            boolean isEQEnable = AudioFxPreference.getInstance().isEnablePresetReverb();
+            LogUtils.printLog("isPresetEnable : " + isEQEnable);
+            if (isEQEnable) {
+                mEqualizer.setEnabled(true);
+                mLayoutEQ.setEnabled(true);
+                mLayoutEQ.setClickable(true);
+            }else {
+                mEqualizer.setEnabled(false);
+                mLayoutEQ.setEnabled(false);
+                mLayoutEQ.setClickable(false);
+            }
+
 
             boolean isPresetEnable = AudioFxPreference.getInstance().isEnablePresetReverb();
             LogUtils.printLog("isPresetEnable : " + isPresetEnable);
             initEffectPresetReverb();
             if (isPresetEnable) {
                 mPresetReverb.setEnabled(true);
+                mSpnPresetReverb.setEnabled(true);
+            }else {
+                mPresetReverb.setEnabled(false);
+                mSpnPresetReverb.setEnabled(false);
             }
 
             boolean isBassEnable = AudioFxPreference.getInstance().isEnableBassBoost();
             LogUtils.printLog("isBassEnable : " + isBassEnable);
             if (isBassEnable) {
                 mBassBoost.setEnabled(true);
+                mSeekBassBoost.setEnabled(true);
                 initEffectBassBoost();
+            }else {
+                mBassBoost.setEnabled(false);
+                mSeekBassBoost.setEnabled(false);
             }
 
             boolean isVirtualizerEnable = AudioFxPreference.getInstance().isEnableVirtualizer();
             LogUtils.printLog("isVirtualizerEnable : " + isVirtualizerEnable);
             if (isVirtualizerEnable) {
                 mVirtualizer.setEnabled(true);
+                mSeekVirtualizer.setEnabled(true);
                 initEffectVirtualizer();
+            }else {
+                mVirtualizer.setEnabled(false);
+                mSeekVirtualizer.setEnabled(false);
             }
 
-
-            mEqualizer.setEnabled(true);
-            initEffectEqualizer();
-//            setupEqualizerFxAndUI();
 
         } catch (RemoteException e) {
             e.printStackTrace();
@@ -202,22 +321,7 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
 
 
     private void initEffectBassBoost() {
-
-        BassBoost.Settings tempSetting = mBassBoost.getProperties();
-        BassBoost.Settings mySetting = new BassBoost.Settings(tempSetting.toString());
-        mySetting.strength = MAX_STRENGTH_FOR_BASS;
-        mBassBoost.setProperties(mySetting);
-        mSeekBassBoost.setMax(1000);
-
-
-        mCheckBassBoost.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                LogUtils
-                        .printLog("Current" + mSeekBassBoost.getProgress());
-            }
-        });
-
+        mSeekBassBoost.setMax(MAX_STRENGTH_FOR_BASS);
         mSeekBassBoost.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -241,17 +345,11 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
 
 
     private void initEffectVirtualizer() {
-        Virtualizer.Settings tempSetting = mVirtualizer.getProperties();
-        Virtualizer.Settings mySetting = new Virtualizer.Settings(tempSetting.toString());
-        mySetting.strength = MAX_STRENGTH_FOR_VIRTUALIZER;
-        mVirtualizer.setProperties(mySetting);
         mSeekVirtualizer.setMax(MAX_STRENGTH_FOR_VIRTUALIZER);
-
-
         mSeekVirtualizer.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser){
+                if (fromUser) {
                     mVirtualizer.setStrength((short) value);
                 }
             }
@@ -269,80 +367,9 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     }
 
 
-    private void initEffectEqualizer() {
-        LogUtils.printLog("Equalizer");
-        LogUtils.printLog(mEqualizer.getBandLevelRange()[0] + " - " + mEqualizer.getBandLevelRange()[1]);
-        LogUtils.printLog(mEqualizer.getNumberOfPresets() + " - " + mEqualizer.getNumberOfBands());
-    }
-
-    private void setupEqualizerFxAndUI() throws RemoteException {
-        // Create the Equalizer object (an AudioEffect subclass) and attach it to our media player,
-        // with a default priority (0).
-        mEqualizer = new Equalizer(0, getPlayerService().getAudioSS());
-        mEqualizer.setEnabled(true);
-
-        TextView eqTextView = new TextView(this);
-        eqTextView.setText("Equalizer:");
-
-        short bands = mEqualizer.getNumberOfBands();
-
-        final short minEQLevel = mEqualizer.getBandLevelRange()[0];
-        final short maxEQLevel = mEqualizer.getBandLevelRange()[1];
-
-        for (short i = 0; i < bands; i++) {
-            final short band = i;
-
-            TextView freqTextView = new TextView(this);
-            freqTextView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            freqTextView.setGravity(Gravity.CENTER_HORIZONTAL);
-            freqTextView.setText((mEqualizer.getCenterFreq(band) / 1000) + " Hz");
-
-            LinearLayout row = new LinearLayout(this);
-            row.setOrientation(LinearLayout.HORIZONTAL);
-
-            TextView minDbTextView = new TextView(this);
-            minDbTextView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            minDbTextView.setText((minEQLevel / 100) + " dB");
-
-            TextView maxDbTextView = new TextView(this);
-            maxDbTextView.setLayoutParams(new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.WRAP_CONTENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
-            maxDbTextView.setText((maxEQLevel / 100) + " dB");
-
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                    ViewGroup.LayoutParams.FILL_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT);
-            layoutParams.weight = 1;
-            SeekBar bar = new SeekBar(this);
-            bar.setLayoutParams(layoutParams);
-            bar.setMax(maxEQLevel - minEQLevel);
-            bar.setProgress(mEqualizer.getBandLevel(band));
-
-            bar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                public void onProgressChanged(SeekBar seekBar, int progress,
-                                              boolean fromUser) {
-                    mEqualizer.setBandLevel(band, (short) (progress + minEQLevel));
-                }
-
-                public void onStartTrackingTouch(SeekBar seekBar) {}
-                public void onStopTrackingTouch(SeekBar seekBar) {}
-            });
-
-            row.addView(minDbTextView);
-            row.addView(bar);
-            row.addView(maxDbTextView);
-
-            mLinearLayout.addView(row);
-        }
-    }
-
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
         switch (buttonView.getId()) {
             case R.id.act_sound_eff_chkbox_preset_reverb:
                 AudioFxPreference.getInstance().setEnablePresetReverb(isChecked);
@@ -359,14 +386,30 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
                 mVirtualizer.setEnabled(isChecked);
                 updateUiVirtualizer(isChecked);
                 break;
+            case R.id.act_sound_eff_chkbox_equalizer:
+                AudioFxPreference.getInstance().setEnableEqualizer(isChecked);
+                mEqualizer.setEnabled(isChecked);
+                updateUiEQ(isChecked);
+                break;
         }
+    }
+
+    private void updateUiEQ(boolean isEnable) {
+        if (isEnable) {
+            mLayoutEQ.setAlpha(1);
+        } else {
+            mLayoutEQ.setAlpha(0.4f);
+        }
+        mLayoutEQ.setClickable(isEnable);
+        mLayoutEQ.setEnabled(isEnable);
+        mEqualizer.setEnabled(isEnable);
     }
 
     private void updateUiPreset(boolean isEnable) {
         if (isEnable) {
             mSpnPresetReverb.setAlpha(1);
         } else {
-            mSpnPresetReverb.setAlpha(0.1f);
+            mSpnPresetReverb.setAlpha(0.4f);
         }
         mSpnPresetReverb.setClickable(isEnable);
         mSpnPresetReverb.setEnabled(isEnable);
@@ -376,7 +419,7 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
         if (isEnable) {
             mSeekBassBoost.setAlpha(1);
         } else {
-            mSeekBassBoost.setAlpha(0.1f);
+            mSeekBassBoost.setAlpha(0.4f);
         }
         mSeekBassBoost.setClickable(isEnable);
         mSeekBassBoost.setEnabled(isEnable);
@@ -386,9 +429,45 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
         if (isEnable) {
             mSeekVirtualizer.setAlpha(1);
         } else {
-            mSeekVirtualizer.setAlpha(0.1f);
+            mSeekVirtualizer.setAlpha(0.4f);
         }
         mSeekVirtualizer.setClickable(isEnable);
         mSeekVirtualizer.setEnabled(isEnable);
     }
+
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (mEqualizer != null) {
+            int new_level = min_level + (max_level - min_level) * level / 100;
+
+            for (int i = 0; i < num_sliders; i++) {
+                if (sliders[i] == seekBar) {
+                    mEqualizer.setBandLevel((short) i, (short) new_level);
+                    break;
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+
+    }
+
+    public String formatBandLabel(int[] band) {
+        return milliHzToString(band[0]) + "-" + milliHzToString(band[1]);
+    }
+    public String milliHzToString(int milliHz) {
+        if (milliHz < 1000) return "";
+        if (milliHz < 1000000)
+            return "" + (milliHz / 1000) + "Hz";
+        else
+            return "" + (milliHz / 1000000) + "kHz";
+    }
+
 }
