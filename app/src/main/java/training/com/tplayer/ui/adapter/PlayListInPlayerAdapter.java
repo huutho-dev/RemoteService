@@ -56,21 +56,6 @@ public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<MediaEntity
         holder.mTxtSongName.setText(song.title);
         holder.mTxtSongArtist.setText(song.artist);
 
-        holder.mImvStatePlay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mListener.onRecyclerViewImagePlayItemClick(v, song, position);
-            }
-        });
-
-
-        if (song.isPlaying) {
-            holder.mImvStatePlay.setVisibility(View.VISIBLE);
-            holder.mImvStatePlay.setImageResource(R.drawable.ic_player_pause);
-        } else {
-            holder.mImvStatePlay.setVisibility(View.GONE);
-        }
-
         if (song.art != null && TextUtils.isEmpty(song.art)) {
             ImageUtils.loadImagePlayList(mContext, song.art, holder.mImvArtist);
         } else {
@@ -90,12 +75,11 @@ public class PlayListInPlayerAdapter extends BaseRecyclerViewAdapter<MediaEntity
         @BindView(R.id.txt_song_artist)
         TextViewRoboto mTxtSongArtist;
 
-        @BindView(R.id.imv_state_play)
-        ImageView mImvStatePlay;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+
         }
     }
 

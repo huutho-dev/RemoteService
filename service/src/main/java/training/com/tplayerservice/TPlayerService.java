@@ -42,6 +42,7 @@ public class TPlayerService extends Service implements PlayerManager.IOnSongChan
         super.onCreate();
         LogUtils.printLog("Service_onCreate");
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        showNotification();
     }
 
     @Override
@@ -347,14 +348,16 @@ public class TPlayerService extends Service implements PlayerManager.IOnSongChan
     }
 
     private void updateView(MediaEntity entity) {
-        views.setTextViewText(R.id.status_bar_track_name, entity.title);
-        bigViews.setTextViewText(R.id.status_bar_track_name, entity.title);
+        if (entity != null && views != null && bigViews != null){
+            views.setTextViewText(R.id.status_bar_track_name, entity.title);
+            bigViews.setTextViewText(R.id.status_bar_track_name, entity.title);
 
-        views.setTextViewText(R.id.status_bar_artist_name, entity.artist);
-        bigViews.setTextViewText(R.id.status_bar_artist_name, entity.artist);
+            views.setTextViewText(R.id.status_bar_artist_name, entity.artist);
+            bigViews.setTextViewText(R.id.status_bar_artist_name, entity.artist);
 
-        bigViews.setImageViewBitmap(R.id.status_bar_album_art,
-                Constants.getImageNoti(this, entity.art));
+            bigViews.setImageViewBitmap(R.id.status_bar_album_art,
+                    Constants.getImageNoti(this, entity.art));
+        }
     }
 
     private void removeNotification() {

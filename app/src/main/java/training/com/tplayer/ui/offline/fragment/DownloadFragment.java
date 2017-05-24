@@ -1,10 +1,9 @@
 package training.com.tplayer.ui.offline.fragment;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -12,24 +11,17 @@ import com.remote.communication.MediaEntity;
 
 import java.util.List;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
 import training.com.tplayer.R;
 import training.com.tplayer.base.BaseFragment;
 import training.com.tplayer.database.SourceTableMedia;
-import training.com.tplayer.ui.adapter.offline.DownloadAdapter;
 import training.com.tplayer.utils.FileUtils;
 
 /**
  * Created by ThoNH on 28/04/2017.
  */
 
-public class DownloadFragment extends BaseFragment implements DownloadAdapter.DownloadAdapterListener {
-
-    @BindView(R.id.fragment_offline_rv_download)
-    RecyclerView mRvDownload;
-
-    private DownloadAdapter mAdapter;
+public class DownloadFragment extends BaseFragment {
 
     public static DownloadFragment newInstance() {
 
@@ -47,32 +39,18 @@ public class DownloadFragment extends BaseFragment implements DownloadAdapter.Do
     @Override
     public void onViewCreatedFragment(View view, @Nullable Bundle savedInstanceState) {
         ButterKnife.bind(this, getView());
-        registerForContextMenu(mRvDownload);
-        mAdapter = new DownloadAdapter(mContext, this);
-        mRvDownload.setLayoutManager(new LinearLayoutManager(mContext));
-        mRvDownload.setAdapter(mAdapter);
 
-
-        new AsyncTask<Void, Void, List<MediaEntity>>() {
-            @Override
-            protected List<MediaEntity> doInBackground(Void... params) {
-                List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext).getFileInFolder(FileUtils.PATH_DOWNLOAD);
-                return entityList;
-            }
-
-            @Override
-            protected void onPostExecute(List<MediaEntity> mediaEntities) {
-                super.onPostExecute(mediaEntities);
-                mAdapter.setDatas(mediaEntities);
-            }
-        }.execute();
-    }
-
-
-    @Override
-    public void onRecyclerViewItemClick(View view, MediaEntity mediaEntity, int position) {
+        FragmentManager fm = getChildFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        List<MediaEntity> entityList = SourceTableMedia.getInstance(mContext)
+                .getFileInFolder(FileUtils.PATH_DOWNLOAD);
+        ft.replace(R.id.root, SongsFragment.newInstance(SongsFragment.BUNDLE_FROM_DOWNLOAD, entityList));
+        ft.addToBackStack(null);
+        ft.commit();
 
     }
+
+
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {

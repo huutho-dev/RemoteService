@@ -69,13 +69,16 @@ public class SourceTableArtist extends DatabaseSource<ArtistEntity> {
         int numberOfAlbumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_ALBUMS);
         int numberOfTrackIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreArtistColumn._NUMBER_OF_TRACK);
 
-        cursor.moveToFirst();
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
 
-        entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
-        entity.id = Integer.parseInt(cursor.getString(idIndex));
-        entity.author = cursor.getString(artistIndex);
-        entity.numberOfAlbum = Integer.parseInt(cursor.getString(numberOfAlbumIndex));
-        entity.numberOfTrack = Integer.parseInt(cursor.getString(numberOfTrackIndex));
+            entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+            entity.id = Integer.parseInt(cursor.getString(idIndex));
+            entity.author = cursor.getString(artistIndex);
+            entity.numberOfAlbum = Integer.parseInt(cursor.getString(numberOfAlbumIndex));
+            entity.numberOfTrack = Integer.parseInt(cursor.getString(numberOfTrackIndex));
+
+        }
 
         if (!cursor.isClosed())
             cursor.close();

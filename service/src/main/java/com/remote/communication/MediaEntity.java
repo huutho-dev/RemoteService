@@ -247,4 +247,27 @@ public class MediaEntity extends BaseEntity {
             return new MediaEntity[size];
         }
     };
+
+    @Override
+    public String toString() {
+        return "MediaEntity{" +
+                "mId=" + mId +
+                ", id=" + id +
+                ", data='" + data + '\'' +
+                ", displayName='" + displayName + '\'' +
+                ", size=" + size +
+                ", mimeType='" + mimeType + '\'' +
+                ", dateAdded=" + dateAdded +
+                ", title='" + title + '\'' +
+                ", duration=" + duration +
+                ", artistId=" + artistId +
+                ", artist='" + artist + '\'' +
+                ", album='" + album + '\'' +
+                ", albumId=" + albumId +
+                ", isFavorite=" + isFavorite +
+                ", lyric='" + lyric + '\'' +
+                ", art='" + art + '\'' +
+                ", isPlaying=" + isPlaying +
+                '}';
+    }
 }

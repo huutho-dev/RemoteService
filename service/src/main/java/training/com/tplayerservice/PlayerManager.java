@@ -68,6 +68,10 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         mPlayLists.clear();
         mPlayLists.addAll(origins);
         LogUtils.printLog("setListSong : " + origins.size());
+
+        if (mTPlayer !=null){
+            mTPlayer.resetPlayer();
+        }
     }
 
     public void startSong(int position) {
@@ -94,7 +98,12 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     private void startSong(String data) {
         mTPlayer.resetPlayer();
         final MediaEntity song = mPlayLists.get(mCurrentSong);
-        if (data.startsWith("http://")) {
+        File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
+        if (file.exists()){
+            file.delete();
+        }
+
+        if (data.startsWith("http")) {
             mTPlayer.setDataSourcePlayer(data);
             mTPlayer.setPlayerStreamOverNetwork(mContext);
             mTPlayer.prepareAsyncPlayer();
@@ -103,6 +112,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                 @Override
                 public void onPrepared(final MediaPlayer mp) {
                     mp.start();
+
                     new DownloadLyric().execute(song);
 
                     Intent intent = new Intent();
@@ -110,6 +120,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                     intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
                     intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
                     mContext.getApplicationContext().sendBroadcast(intent);
+                    return;
                 }
             });
         } else {
@@ -122,6 +133,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
             intent.putExtra(Config.ACTION_PLAYER_START_PLAY, song);
             intent.putExtra(Config.ACTION_PLAYER_BUFFER, mTPlayer.getDuration());
             mContext.getApplicationContext().sendBroadcast(intent);
+
         }
         listener.onChange(song);
         LogUtils.printLog("startSong : " + data);
@@ -333,6 +345,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
     public void attachEffPresetReverb(int id) {
         this.mTPlayer.attachAuxEffectPlayer(id);
+        this.mTPlayer.setAuxEffectSendLevel(1.0f);
     }
 
 
@@ -341,9 +354,10 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
         @Override
         protected Void doInBackground(MediaEntity... params) {
 
-            String lyricPath = null;
+            File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
 
             try {
+                file.createNewFile();
                 if (params[0] != null && !TextUtils.isEmpty(params[0].lyric)) {
 
 //                    "lyric":"http://static.mp3.zdn.vn/lyrics/2017/04/10/437fd8dab336d63566e90d61e2dde4ea_1075841896.lrc"
@@ -354,8 +368,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                         LogUtils.printLog(text);
 //                        params[0].lyric = text;
 
-                        File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
-                        LogUtils.printLog(file.getAbsolutePath());
                         FileOutputStream fos;
                         byte[] data = new String(text.toString()).getBytes();
 
@@ -365,7 +377,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                             fos.flush();
                             fos.close();
 
-                            lyricPath = file.getPath();
                             params[0].lyric = text;
 
                         } catch (FileNotFoundException e) {
@@ -373,15 +384,12 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                         } catch (IOException e) {
 
                         }
-                    } else {
-                        File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
-                        lyricPath = file.getPath();
                     }
 
 
                     Intent intent = new Intent();
                     intent.setAction(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);
-                    intent.putExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC, lyricPath);
+                    intent.putExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC, file.getPath());
                     mContext.getApplicationContext().sendBroadcast(intent);
 
                 }

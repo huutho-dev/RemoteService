@@ -103,28 +103,31 @@ public class SourceTableAlbum extends DatabaseSource<AlbumEntity> {
         AlbumEntity entity = new AlbumEntity();
         openDb();
         Cursor cursor = getSqlDb().query(DataBaseUtils.TABLE_ALBUM, null, selection, selectionArgs, null, null, null);
-        cursor.moveToFirst();
-        int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn.MID);
-        int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ID);
-        int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM);
-        int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ARTIST);
-        int artistIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ARTIST_ID);
-        int numberOfSongIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._NUMBER_OF_SONG);
-        int albumArtIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM_ART);
 
-        cursor.moveToFirst();
+        if (cursor.getCount() > 0){
+            cursor.moveToFirst();
+            int mIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn.MID);
+            int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ID);
+            int albumIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM);
+            int artistIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ARTIST);
+            int artistIdIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ARTIST_ID);
+            int numberOfSongIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._NUMBER_OF_SONG);
+            int albumArtIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreAlbumColumn._ALBUM_ART);
 
-        entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
-        entity.id = Integer.parseInt(cursor.getString(idIndex));
-        entity.album = cursor.getString(albumIndex);
-        entity.artist = cursor.getString(artistIndex);
-        entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
-        entity.numberOfSong = Integer.parseInt(cursor.getString(numberOfSongIndex));
-        entity.albumArt = String.valueOf(Integer.parseInt(cursor.getString(albumArtIndex)));
+            entity.mId = Integer.parseInt(cursor.getString(mIdIndex));
+            entity.id = Integer.parseInt(cursor.getString(idIndex));
+            entity.album = cursor.getString(albumIndex);
+            entity.artist = cursor.getString(artistIndex);
+            entity.artistId = Integer.parseInt(cursor.getString(artistIdIndex));
+            entity.numberOfSong = Integer.parseInt(cursor.getString(numberOfSongIndex));
+            entity.albumArt = String.valueOf(cursor.getString(albumArtIndex));
 
-        if (!cursor.isClosed())
-            cursor.close();
-        closeDb();
+            if (!cursor.isClosed())
+                cursor.close();
+            closeDb();
+        }
+
+
         return entity;
     }
 

@@ -12,6 +12,7 @@ import java.io.File;
 
 import training.com.tplayer.app.Config;
 import training.com.tplayer.base.mvp.BaseInteractorImpl;
+import training.com.tplayer.utils.LogUtils;
 
 /**
  * Created by ThoNH on 4/16/2017.
@@ -38,8 +39,12 @@ public class PlayerInteractorImpl extends BaseInteractorImpl implements PlayerCo
 
                 case Config.ACTION_PLAYER_DOWNLOAD_LYRIC:
                     String lyricPath = intent.getStringExtra(Config.ACTION_PLAYER_DOWNLOAD_LYRIC);
-                    File lyric = new File(lyricPath);
-                    mOnPlayerListener.onDownloadLyricComplete(lyric);
+                    LogUtils.printLog("aa : " + lyricPath);
+                    if (lyricPath!= null){
+                        File lyric = new File(lyricPath);
+                        mOnPlayerListener.onDownloadLyricComplete(lyric);
+                    }
+
             }
         }
     };

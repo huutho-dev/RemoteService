@@ -70,6 +70,13 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
         mHandler = new Handler();
         LogUtils.printLogDetail("onCreate");
 
+
+        createPresenterImpl();
+        if (!isBinded) {
+            bindTPlayerService();
+            LogUtils.printLogDetail("bindTPlayerService onResume");
+        }
+        LogUtils.printLogDetail("onResume");
     }
 
     // Set layout(xml)
@@ -85,18 +92,14 @@ public abstract class BaseActivity<PresenterImpl extends BasePresenterImpl> exte
     @Override
     protected void onStart() {
         super.onStart();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         // create presenterImpl here
-        createPresenterImpl();
-        if (!isBinded) {
-            bindTPlayerService();
-            LogUtils.printLogDetail("bindTPlayerService onResume");
-        }
-        LogUtils.printLogDetail("onResume");
+
     }
 
     protected abstract void createPresenterImpl();

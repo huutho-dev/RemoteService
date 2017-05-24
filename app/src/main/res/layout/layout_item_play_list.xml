@@ -25,7 +25,6 @@
         android:layout_height="50dp"
         android:layout_centerInParent="true"
         android:layout_marginLeft="@dimen/spacing_2_16dp"
-        android:layout_toLeftOf="@+id/imv_state_play"
         android:layout_toRightOf="@+id/imv_artist"
         android:gravity="center_vertical"
         android:orientation="vertical">
@@ -54,17 +53,6 @@
     </LinearLayout>
 
 
-    <ImageView
-        android:id="@+id/imv_state_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="@dimen/spacing_2_16dp"
-        android:adjustViewBounds="true"
-        android:cropToPadding="true"
-        android:src="@drawable/ic_player_play"
-        android:tint="@color/colorPrimary" />
 
     <View
         android:layout_width="match_parent"

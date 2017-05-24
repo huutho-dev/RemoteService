@@ -60,6 +60,7 @@
                 app:textFonts="RobotoMedium" />
 
             <SeekBar
+                android:max="1000"
                 android:id="@+id/act_sound_eff_seekbar_bass_boost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -87,6 +88,7 @@
                 app:textFonts="RobotoMedium" />
 
             <SeekBar
+                android:max="1000"
                 android:id="@+id/act_sound_eff_seekbar_virtualizer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

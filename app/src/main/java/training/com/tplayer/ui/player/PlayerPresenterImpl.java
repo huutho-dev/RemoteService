@@ -192,49 +192,51 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     @Override
     public void onDownloadClick(final Context context) {
         try {
-            String path = mService.download();
-            File file = new File(path);
-            FileUtils.scanFileAfterDownloaded(context, file, new FileUtils.IOnScanMediaComplete() {
-                @Override
-                public void scanComplete(String path, Uri uri) {
-                    try {
-                        new DatabaseScanner(context).insertAfterDownload(new File(path));
-                        MediaEntity entity = SourceTableMedia.getInstance(context).getRow(DataBaseUtils.DbStoreMediaColumn._DATA + "=?", new String[]{path});
-                        if (mService.getCurrentSong().lyric != null &&
-                                TextUtils.isEmpty(mService.getCurrentSong().lyric)) {
+            if (mService != null){
+                String path = mService.download();
+                File file = new File(path);
+                FileUtils.scanFileAfterDownloaded(context, file, new FileUtils.IOnScanMediaComplete() {
+                    @Override
+                    public void scanComplete(String path, Uri uri) {
+                        try {
+                            new DatabaseScanner(context).insertAfterDownload(new File(path));
+                            MediaEntity entity = SourceTableMedia.getInstance(context).getRow(DataBaseUtils.DbStoreMediaColumn._DATA + "=?", new String[]{path});
+                            if (mService.getCurrentSong().lyric != null &&
+                                    TextUtils.isEmpty(mService.getCurrentSong().lyric)) {
 
-                            File pathLyric = new File(FileUtils.PATH_LYRIC + "/" + entity.title + ".lyric");
-                            FileOutputStream fos;
-                            byte[] data = new String(mService.getCurrentSong().lyric.toString()).getBytes();
+                                File pathLyric = new File(FileUtils.PATH_LYRIC + "/" + entity.title + ".lyric");
+                                FileOutputStream fos;
+                                byte[] data = new String(mService.getCurrentSong().lyric.toString()).getBytes();
 
-                            try {
-                                fos = new FileOutputStream(pathLyric);
-                                fos.write(data);
-                                fos.flush();
-                                fos.close();
+                                try {
+                                    fos = new FileOutputStream(pathLyric);
+                                    fos.write(data);
+                                    fos.flush();
+                                    fos.close();
 
-                                entity.lyric = pathLyric.getPath();
-                              int update =  SourceTableMedia.getInstance(context).updateRow(entity);
-                                if (update!=0){
-                                    Toast.makeText(context,"Download complete",Toast.LENGTH_SHORT).show();
+                                    entity.lyric = pathLyric.getPath();
+                                    int update =  SourceTableMedia.getInstance(context).updateRow(entity);
+                                    if (update!=0){
+                                        Toast.makeText(context,"Download complete",Toast.LENGTH_SHORT).show();
+                                    }
+
+                                } catch (FileNotFoundException e) {
+
+                                } catch (IOException e) {
+
                                 }
-
-                            } catch (FileNotFoundException e) {
-
-                            } catch (IOException e) {
 
                             }
 
+
+                            LogUtils.printLog(mService.getCurrentSong().lyric);
+                        } catch (RemoteException e) {
+                            e.printStackTrace();
                         }
 
-
-                        LogUtils.printLog(mService.getCurrentSong().lyric);
-                    } catch (RemoteException e) {
-                        e.printStackTrace();
                     }
-
-                }
-            });
+                });
+            }
         } catch (RemoteException e) {
             e.printStackTrace();
         }

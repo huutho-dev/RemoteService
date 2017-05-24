@@ -57,6 +57,7 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
     public static final String BUNDLE_FROM_PLAYLIST = "bundle.from.playlist";
     public static final String BUNDLE_FROM_FOLDER = "bundle.from.folder";
     public static final String BUNDLE_FROM_FAVORITE = "bundle.from.favorite";
+    public static final String BUNDLE_FROM_DOWNLOAD = "bundle.from.download";
 
     @BindView(R.id.fragment_offline_rv_songs)
     RecyclerView mRvSong;
@@ -92,8 +93,11 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
         } else if (fromWhere.equals(BUNDLE_FROM_FOLDER)) {
             args.putParcelableArrayList(BUNDLE_FROM_FOLDER, (ArrayList<? extends Parcelable>) entityList);
 
-        }else if (fromWhere.equals(BUNDLE_FROM_FAVORITE)){
+        } else if (fromWhere.equals(BUNDLE_FROM_FAVORITE)) {
             args.putParcelableArrayList(BUNDLE_FROM_FAVORITE, (ArrayList<? extends Parcelable>) entityList);
+
+        } else if (fromWhere.equals(BUNDLE_FROM_DOWNLOAD)) {
+            args.putParcelableArrayList(BUNDLE_FROM_DOWNLOAD, (ArrayList<? extends Parcelable>) entityList);
         }
 
         SongsFragment fragment = new SongsFragment();
@@ -147,9 +151,18 @@ public class SongsFragment extends BaseFragment implements SongAdapter.SongAdapt
                         entityList = bundle.getParcelableArrayList(BUNDLE_FROM_PLAYLIST);
                         mAdapter.setDatas(entityList);
                         break;
-                    case BUNDLE_FROM_FAVORITE :
+                    case BUNDLE_FROM_FAVORITE:
                         entityList = bundle.getParcelableArrayList(BUNDLE_FROM_FAVORITE);
                         mAdapter.setDatas(entityList);
+                        break;
+                    case BUNDLE_FROM_FOLDER:
+                        entityList = bundle.getParcelableArrayList(BUNDLE_FROM_FOLDER);
+                        mAdapter.setDatas(entityList);
+                        break;
+                    case BUNDLE_FROM_DOWNLOAD:
+                        entityList = bundle.getParcelableArrayList(BUNDLE_FROM_DOWNLOAD);
+                        mAdapter.setDatas(entityList);
+                        break;
 
                 }
             else loadDataFromdDatabase();

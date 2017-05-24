@@ -2,6 +2,7 @@ package training.com.tplayer.ui.player;
 
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.RemoteException;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.NestedScrollView;
@@ -183,9 +184,10 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public void serviceConnected() {
         super.serviceConnected();
 
+
         try {
 
-            if (getPlayerService() != null) {
+            if (getPlayerService() != null ) {
                 mPresenter.setService(getPlayerService());
                 getPlayerService().setShuffle(mIsShuffle);
                 getPlayerService().repeat(mCurrentRepeat);
@@ -194,20 +196,29 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                     mAdapter.setDatas(songs);
                     mPresenter.setPlayLists(songs);
                     mPresenter.startSongPosition(0);
+
+
+                    File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
+                    if (file.exists()){
+                        file.delete();
+                    }
+
                 } else if (songs == null) {
 
                     // go to PlayerActivity by click bottom panel
 
 
                     MediaEntity song = getPlayerService().getCurrentSong();
-
+                    disableDownload(mImgDownload, song.data);
                     mTxtSongName.setText(song.title);
                     mTxtSongArtist.setText(song.artist);
                     mImvPlayPause.setSelected(true);
                     ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
                     ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
                     if (song.lyric != null) {
-                        onLoadLyricComplete(new File(song.lyric));
+                        LogUtils.printLog("lyric " + song.lyric);
+                        File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");
+                        onLoadLyricComplete(file);
                     }
                     mSeekbar.setMax(mPresenter.getDuration());
                     mCurrentValueSeekbar = mPresenter.getCurrentPosition();
@@ -311,13 +322,13 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 break;
             case R.id.act_player_download:
                 boolean isWifiConnected = NetworkUtils.isConnectedWifi(this);
-                if (SettingPreference.getInstance().getDownloadOnlyOverWifi()){
-                    if (isWifiConnected){
+                if (SettingPreference.getInstance().getDownloadOnlyOverWifi()) {
+                    if (isWifiConnected) {
                         mPresenter.onDownloadClick(this);
-                    }else {
-                        Toast.makeText(this,R.string.download_only_wifi,Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this, R.string.download_only_wifi, Toast.LENGTH_SHORT).show();
                     }
-                }else {
+                } else {
                     mPresenter.onDownloadClick(this);
                 }
 
@@ -349,16 +360,23 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
 
     }
 
-
     @Override
     public void onRemotePlayNewSong(MediaEntity song) {
         LogUtils.printLog("Client_onRemotePlayNewSong :" + song.toString());
+        disableDownload(mImgDownload, song.data);
         mTxtSongName.setText(song.title);
         mTxtSongArtist.setText(song.artist);
         mImvPlayPause.setSelected(true);
         ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
-        ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
+        ImageUtils.loadRoundImage(this, song.art, mImvSongCover);
 
+
+        if (song.lyric != null) {
+            File file = new File(song.lyric);
+            mLyricView.setLyricFile(file);
+        } else {
+            mLyricView.reset();
+        }
         mAdapter.setActivePlaying(song);
 
         resetSeekbar();
@@ -445,6 +463,17 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 break;
             case REPEAT_ALL:
                 mImvRepeat.setImageResource(R.drawable.ic_player_repeat_active);
+        }
+    }
+
+
+    private void disableDownload(ImageView imageView, String data) {
+        if (data.contains("storage")) {
+            imageView.setEnabled(false);
+            imageView.setImageAlpha(100);
+        } else {
+            imageView.setEnabled(true);
+            imageView.setImageAlpha(225);
         }
     }
 

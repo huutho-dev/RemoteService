@@ -43,6 +43,7 @@ public class ImageUtils {
                 .into(imageView);
     }
 
+
     public static class CircleTransform implements Transformation {
         @Override
         public Bitmap transform(Bitmap source) {

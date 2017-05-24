@@ -84,9 +84,9 @@ public class DatabaseScanner {
                 entity.album = cursor.getString(albumIndex);
                 entity.albumId = Integer.parseInt(cursor.getString(albumIdIndex));
 
-                Cursor cursorArt = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,null,
+                Cursor cursorArt = resolver.query(MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI, null,
                         MediaStore.Audio.Albums._ID + "=?", new String[]{String.valueOf(entity.albumId)}, null);
-                if (cursorArt!=null &&  cursorArt.moveToFirst()){
+                if (cursorArt != null && cursorArt.moveToFirst()) {
                     entity.art = cursorArt.getString(cursorArt.getColumnIndex(MediaStore.Audio.AlbumColumns.ALBUM_ART));
                     LogUtils.printLog("Art : " + entity.art);
                     cursorArt.close();
@@ -237,6 +237,7 @@ public class DatabaseScanner {
                         MediaStore.Audio.AudioColumns.ALBUM_ID};
 
                 Cursor cursor = mContext.getContentResolver().query(uri, projection, null, null, null);
+
                 if (cursor != null) {
 
                     int idIndex = cursor.getColumnIndex(DataBaseUtils.DbStoreMediaColumn._ID);
@@ -273,20 +274,19 @@ public class DatabaseScanner {
 
                     AlbumEntity rowAlbumOfOs = SourceTableAlbum
                             .getInstance(mContext)
-                            .getRow(DataBaseUtils.DbStoreAlbumColumn._ID,
+                            .getRow(DataBaseUtils.DbStoreAlbumColumn._ID  + "=?",
                                     new String[]{String.valueOf(entity.albumId)});
 
 
                     ArtistEntity rowArtistOfOs = SourceTableArtist
                             .getInstance(mContext)
-                            .getRow(DataBaseUtils.DbStoreArtistColumn._ID,
+                            .getRow(DataBaseUtils.DbStoreArtistColumn._ID + "=?",
                                     new String[]{String.valueOf(entity.artistId)});
 
 
-                    SourceTableArtist.getInstance(mContext).updateRow(rowArtistOfOs);
-                    SourceTableAlbum.getInstance(mContext).updateRow(rowAlbumOfOs);
-                    SourceTableMedia.getInstance(mContext).insertRow(entity);
-
+                    int updateArtist = SourceTableArtist.getInstance(mContext).updateRow(rowArtistOfOs);
+                    int updateAlbum = SourceTableAlbum.getInstance(mContext).updateRow(rowAlbumOfOs);
+                    long updateMedia = SourceTableMedia.getInstance(mContext).insertRow(entity);
 
                     if (!cursor.isClosed()) {
                         cursor.close();

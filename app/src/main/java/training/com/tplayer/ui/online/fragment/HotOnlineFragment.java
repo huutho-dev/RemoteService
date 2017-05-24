@@ -322,6 +322,7 @@ public class HotOnlineFragment extends BaseFragment implements HotAlbumAdapter.H
             public void onReceive(Context context, Intent intent) {
                 ArrayList<MediaEntity> songs =
                         intent.getParcelableArrayListExtra(LoadListDataCodeService.EXTRA_CALL_BACK);
+                if (isAdded())
                 startActivity(songs);
 
             }

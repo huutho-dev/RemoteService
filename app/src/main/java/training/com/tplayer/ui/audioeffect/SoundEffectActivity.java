@@ -4,6 +4,7 @@ import android.media.audiofx.BassBoost;
 import android.media.audiofx.Equalizer;
 import android.media.audiofx.PresetReverb;
 import android.media.audiofx.Virtualizer;
+import android.media.audiofx.Visualizer;
 import android.os.RemoteException;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatSpinner;
@@ -27,7 +28,6 @@ import training.com.tplayer.custom.TextViewRoboto;
 import training.com.tplayer.utils.LogUtils;
 import training.com.tplayer.utils.preferences.AudioFxPreference;
 
-import static android.R.attr.level;
 import static android.R.attr.value;
 
 /**
@@ -95,6 +95,7 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     TextViewRoboto mFlatButton;
 
     private Equalizer mEqualizer;
+    private Visualizer visualizer ;
 
     private int min_level = 0;
     private int max_level = 100;
@@ -134,33 +135,6 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
         slider_labels[6] = (TextView) findViewById(R.id.slider_label_7);
         sliders[7] = (SeekBar) findViewById(R.id.slider_8);
         slider_labels[7] = (TextView) findViewById(R.id.slider_label_8);
-
-        mEqualizer = new Equalizer(0, 0);
-        mEqualizer.setEnabled(true);
-        int num_bands = mEqualizer.getNumberOfBands();
-        num_sliders = num_bands;
-        short r[] = mEqualizer.getBandLevelRange();
-        min_level = r[0];
-        max_level = r[1];
-
-        for (int i = 0; i < num_sliders && i < MAX_SLIDERS; i++) {
-            int[] freq_range = mEqualizer.getBandFreqRange((short) i);
-            sliders[i].setOnSeekBarChangeListener(this);
-            slider_labels[i].setText(formatBandLabel(freq_range));
-        }
-
-        for (int i = num_sliders; i < MAX_SLIDERS; i++) {
-            sliders[i].setVisibility(View.GONE);
-            slider_labels[i].setVisibility(View.GONE);
-        }
-
-        mFlatButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setFlat();
-            }
-        });
-
 
     }
 
@@ -203,7 +177,7 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
         mCheckVirtualizer.setOnCheckedChangeListener(this);
         mCheckEqualizer.setOnCheckedChangeListener(this);
 
-        updateUiEQ(AudioFxPreference.getInstance().isEnableEqualizer());
+
     }
 
     @Override
@@ -220,10 +194,15 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
             mAudioSession = getPlayerService().getAudioSS();
             LogUtils.printLog("Audio ss : " + mAudioSession);
 
-            mPresetReverb = new PresetReverb(0, 0);
-            mBassBoost = new BassBoost(0, 0);
-            mEqualizer = new Equalizer(0, 0);
-            mVirtualizer = new Virtualizer(0, 0);
+            visualizer = new Visualizer(mAudioSession);
+            visualizer.setEnabled(true);
+
+            mPresetReverb = new PresetReverb(1, 0);
+            mBassBoost = new BassBoost(1, mAudioSession);
+            mVirtualizer = new Virtualizer(1, mAudioSession);
+            mEqualizer = new Equalizer(1, mAudioSession);
+
+
 
 
             boolean isEQEnable = AudioFxPreference.getInstance().isEnablePresetReverb();
@@ -237,6 +216,8 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
                 mLayoutEQ.setEnabled(false);
                 mLayoutEQ.setClickable(false);
             }
+            initEq();
+            updateUiEQ(AudioFxPreference.getInstance().isEnableEqualizer());
 
 
             boolean isPresetEnable = AudioFxPreference.getInstance().isEnablePresetReverb();
@@ -273,9 +254,38 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
             }
 
 
+
+
         } catch (RemoteException e) {
             e.printStackTrace();
         }
+    }
+
+    private void initEq() {
+        mEqualizer.setEnabled(true);
+        int num_bands = mEqualizer.getNumberOfBands();
+        num_sliders = num_bands;
+        short r[] = mEqualizer.getBandLevelRange();
+        min_level = r[0];
+        max_level = r[1];
+
+        for (int i = 0; i < num_sliders && i < MAX_SLIDERS; i++) {
+            int[] freq_range = mEqualizer.getBandFreqRange((short) i);
+            sliders[i].setOnSeekBarChangeListener(this);
+            slider_labels[i].setText(formatBandLabel(freq_range));
+        }
+
+        for (int i = num_sliders; i < MAX_SLIDERS; i++) {
+            sliders[i].setVisibility(View.GONE);
+            slider_labels[i].setVisibility(View.GONE);
+        }
+
+        mFlatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setFlat();
+            }
+        });
     }
 
 
@@ -308,8 +318,13 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
         mSpnPresetReverb.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mPresetReverb.setEnabled(true);
+                try {
+                    getPlayerService().setBassBoost(mPresetReverb.getId());
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
                 mPresetReverb.setPreset(mValuePreset.get(position));
-
             }
 
             @Override
@@ -326,6 +341,7 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
+                    mBassBoost.setEnabled(true);
                     mBassBoost.setStrength((short) value);
                 }
             }
@@ -350,6 +366,7 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (fromUser) {
+                    mVirtualizer.setEnabled(true);
                     mVirtualizer.setStrength((short) value);
                 }
             }
@@ -438,11 +455,12 @@ public class SoundEffectActivity extends BaseActivity implements CompoundButton.
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (mEqualizer != null) {
-            int new_level = min_level + (max_level - min_level) * level / 100;
+            int new_level = min_level + (max_level - min_level) * progress / 100;
 
             for (int i = 0; i < num_sliders; i++) {
                 if (sliders[i] == seekBar) {
                     mEqualizer.setBandLevel((short) i, (short) new_level);
+                    mEqualizer.setEnabled(true);
                     break;
                 }
             }
