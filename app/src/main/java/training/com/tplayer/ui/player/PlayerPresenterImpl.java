@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.RemoteException;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.facebook.share.model.SharePhoto;
@@ -15,9 +16,15 @@ import com.remote.communication.IMyAidlInterface;
 import com.remote.communication.MediaEntity;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 import training.com.tplayer.base.mvp.BasePresenterImpl;
+import training.com.tplayer.database.DataBaseUtils;
+import training.com.tplayer.database.DatabaseScanner;
+import training.com.tplayer.database.SourceTableMedia;
 import training.com.tplayer.ui.audioeffect.SoundEffectActivity;
 import training.com.tplayer.utils.FileUtils;
 import training.com.tplayer.utils.LogUtils;
@@ -177,21 +184,55 @@ public class PlayerPresenterImpl extends BasePresenterImpl<PlayerActivity, Playe
     }
 
 
-
     @Override
     public void onUnregisterBroadcast() {
         mInteractor.onUnregisterBroadcast();
     }
 
     @Override
-    public void onDownloadClick(Context context) {
+    public void onDownloadClick(final Context context) {
         try {
             String path = mService.download();
             File file = new File(path);
             FileUtils.scanFileAfterDownloaded(context, file, new FileUtils.IOnScanMediaComplete() {
                 @Override
                 public void scanComplete(String path, Uri uri) {
-                    LogUtils.printLog(path + " - " + uri);
+                    try {
+                        new DatabaseScanner(context).insertAfterDownload(new File(path));
+                        MediaEntity entity = SourceTableMedia.getInstance(context).getRow(DataBaseUtils.DbStoreMediaColumn._DATA + "=?", new String[]{path});
+                        if (mService.getCurrentSong().lyric != null &&
+                                TextUtils.isEmpty(mService.getCurrentSong().lyric)) {
+
+                            File pathLyric = new File(FileUtils.PATH_LYRIC + "/" + entity.title + ".lyric");
+                            FileOutputStream fos;
+                            byte[] data = new String(mService.getCurrentSong().lyric.toString()).getBytes();
+
+                            try {
+                                fos = new FileOutputStream(pathLyric);
+                                fos.write(data);
+                                fos.flush();
+                                fos.close();
+
+                                entity.lyric = pathLyric.getPath();
+                              int update =  SourceTableMedia.getInstance(context).updateRow(entity);
+                                if (update!=0){
+                                    Toast.makeText(context,"Download complete",Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (FileNotFoundException e) {
+
+                            } catch (IOException e) {
+
+                            }
+
+                        }
+
+
+                        LogUtils.printLog(mService.getCurrentSong().lyric);
+                    } catch (RemoteException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             });
         } catch (RemoteException e) {

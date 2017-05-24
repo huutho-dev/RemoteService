@@ -142,11 +142,24 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     }
 
     public void nextSong() {
-        changeCurrentSong(1);
+        if (mIsShuffle) {
+            if (mPlayLists.size() > 2) {
+                mCurrentSong = random.nextInt(mPlayLists.size()-1);
+                startSong(mCurrentSong);
+            }
+        } else {
+            changeCurrentSong(1);
+        }
     }
 
     public void previousSong() {
-        changeCurrentSong(-1);
+        if (mIsShuffle) {
+            mCurrentSong = random.nextInt(mPlayLists.size()-1);
+            startSong(mCurrentSong);
+        } else {
+            changeCurrentSong(-1);
+        }
+
     }
 
     public void seek(int milis) {
@@ -239,7 +252,6 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
     public void onCompletion(MediaPlayer mp) {
 
         if (mPlayLists.size() != 0) {
-            mPlayLists.get(mCurrentSong).isPlaying = false;
             mIsStop = true;
             proccessAfterComplete(mIsShuffle, mCurrentRepeat);
         }
@@ -290,8 +302,10 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
             switch (currentRepeat) {
                 case REPEAT_NO:
                     setLoop(false);
-                    mCurrentSong = random.nextInt(mPlayLists.size() - 1);
-                    startSong(mCurrentSong);
+                    if (mPlayLists.size() > 1) {
+                        mCurrentSong = random.nextInt(mPlayLists.size() - 1);
+                        startSong(mCurrentSong);
+                    }
                     break;
 
                 case REPEAT_ONE:
@@ -300,8 +314,11 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
 
                 case REPEAT_ALL:
                     setLoop(false);
-                    mCurrentSong = random.nextInt(mPlayLists.size() - 1);
-                    startSong(mCurrentSong);
+                    if (mPlayLists.size() == 1) {
+                        startSong(mCurrentSong);
+                    } else {
+                        mCurrentSong = random.nextInt(mPlayLists.size() - 1);
+                    }
                     setLoop(true);
                     break;
             }
@@ -334,6 +351,7 @@ public class PlayerManager implements MediaPlayer.OnCompletionListener {
                     if (params[0].lyric.contains("http://")) {
                         URL url = new URL(params[0].lyric);
                         String text = new Scanner(url.openStream()).useDelimiter("\\A").next();
+                        LogUtils.printLog(text);
 //                        params[0].lyric = text;
 
                         File file = new File(Environment.getExternalStorageDirectory(), "temp.lrc");

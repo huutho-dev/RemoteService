@@ -20,8 +20,8 @@
             android:drawablePadding="@dimen/spacing_2_16dp"
             android:hint="@string/tab_title_search"
             android:padding="@dimen/spacing_2_16dp"
-            android:textColor="@color/colorWhite"
-            android:textColorHint="@color/colorWhite" />
+            android:textColor="@color/colorPrimary"
+            android:textColorHint="@color/colorTextDisable_Hint" />
 
 
         <training.com.tplayer.custom.TextViewRoboto

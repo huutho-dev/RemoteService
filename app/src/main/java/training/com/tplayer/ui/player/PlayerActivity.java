@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.remote.communication.MediaEntity;
 
@@ -30,7 +31,9 @@ import training.com.tplayer.ui.adapter.PlayListInPlayerAdapter;
 import training.com.tplayer.utils.DateTimeUtils;
 import training.com.tplayer.utils.ImageUtils;
 import training.com.tplayer.utils.LogUtils;
+import training.com.tplayer.utils.NetworkUtils;
 import training.com.tplayer.utils.preferences.PlayerPreference;
+import training.com.tplayer.utils.preferences.SettingPreference;
 
 /**
  * Created by ThoNH on 4/16/2017.
@@ -154,6 +157,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         mIsShuffle = PlayerPreference.getInstance().getPlayerShuffle();
         mCurrentRepeat = PlayerPreference.getInstance().getPlayerRepeat();
 
+
         setViewShuffle(mIsShuffle);
         setViewRepeat(mCurrentRepeat);
 
@@ -178,19 +182,23 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     @Override
     public void serviceConnected() {
         super.serviceConnected();
-        if (getPlayerService() != null) {
-            mPresenter.setService(getPlayerService());
 
-            // setPlaylist from source
-            if (songs != null && songs.size() != 0) {
-                mAdapter.setDatas(songs);
-                mPresenter.setPlayLists(songs);
-                mPresenter.startSongPosition(0);
-            } else if (songs == null) {
+        try {
 
-                // go to PlayerActivity by click bottom panel
+            if (getPlayerService() != null) {
+                mPresenter.setService(getPlayerService());
+                getPlayerService().setShuffle(mIsShuffle);
+                getPlayerService().repeat(mCurrentRepeat);
+                // setPlaylist from source
+                if (songs != null && songs.size() != 0) {
+                    mAdapter.setDatas(songs);
+                    mPresenter.setPlayLists(songs);
+                    mPresenter.startSongPosition(0);
+                } else if (songs == null) {
 
-                try {
+                    // go to PlayerActivity by click bottom panel
+
+
                     MediaEntity song = getPlayerService().getCurrentSong();
 
                     mTxtSongName.setText(song.title);
@@ -198,17 +206,20 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                     mImvPlayPause.setSelected(true);
                     ImageUtils.loadRoundImage(this, song.art, mImvArtistCover);
                     ImageUtils.loadImageBasic(this, song.art, mImvSongCover);
-                    onLoadLyricComplete(new File(song.lyric));
+                    if (song.lyric != null) {
+                        onLoadLyricComplete(new File(song.lyric));
+                    }
                     mSeekbar.setMax(mPresenter.getDuration());
                     mCurrentValueSeekbar = mPresenter.getCurrentPosition();
                     runSeekBarAndLyric(mCurrentValueSeekbar);
                     mAdapter.setDatas(mPresenter.getNowPlaylist());
                     mAdapter.setActivePlaying(song);
 
-                } catch (RemoteException e) {
-                    e.printStackTrace();
                 }
             }
+
+        } catch (RemoteException e) {
+            e.printStackTrace();
         }
     }
 
@@ -274,10 +285,10 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 boolean isPlaying = mPresenter.playPause();
                 mImvPlayPause.setSelected(isPlaying);
 
-                if (isPlaying){
+                if (isPlaying) {
                     mCurrentValueSeekbar = mPresenter.getCurrentPosition();
                     runSeekBarAndLyric(mCurrentValueSeekbar);
-                }else {
+                } else {
                     pauseSeekbarAndLyric();
                 }
 
@@ -299,7 +310,17 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
                 mPresenter.onEqualizerClick(this);
                 break;
             case R.id.act_player_download:
-                mPresenter.onDownloadClick(this);
+                boolean isWifiConnected = NetworkUtils.isConnectedWifi(this);
+                if (SettingPreference.getInstance().getDownloadOnlyOverWifi()){
+                    if (isWifiConnected){
+                        mPresenter.onDownloadClick(this);
+                    }else {
+                        Toast.makeText(this,R.string.download_only_wifi,Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    mPresenter.onDownloadClick(this);
+                }
+
                 break;
         }
     }
@@ -357,7 +378,6 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
     public void onRemotePlayCompleteASong() {
         LogUtils.printLog("Client_onRemotePlayCompleteASong");
         mImvPlayPause.setSelected(false);
-        resetSeekbar();
     }
 
     @Override
@@ -365,9 +385,7 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         LogUtils.printLog("Client_onDownloadLyricComplete : file = " + lyric.toString());
 
         mLyricView.setLyricFile(lyric);
-
         mLyricView.setCurrentTimeMillis(mCurrentValueSeekbar);
-
         mLyricView.setOnPlayerClickListener(new LyricView.OnPlayerClickListener() {
             @Override
             public void onPlayerClicked(long progress, String content) {
@@ -405,8 +423,8 @@ public class PlayerActivity extends BaseActivity<PlayerPresenterImpl>
         mLyricView.setCurrentTimeMillis(currentPos);
     }
 
-    private void pauseSeekbarAndLyric(){
-      mHandler.removeCallbacks(runUpdateSeekbar);
+    private void pauseSeekbarAndLyric() {
+        mHandler.removeCallbacks(runUpdateSeekbar);
     }
 
     private void setViewShuffle(boolean isShuffle) {

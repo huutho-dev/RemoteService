@@ -7,6 +7,7 @@ import android.database.DatabaseUtils;
 import android.media.MediaScannerConnection;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 
@@ -40,8 +41,7 @@ public class FileUtils {
             .getAbsolutePath() + "/" + "TPlayer" + "/" + "Image";
 
     public static final String PATH_SCREEN_SHOOT = Environment
-            .getExternalStorageDirectory().toString()+ "/TPlayer/ScreenShot";
-
+            .getExternalStorageDirectory().toString() + "/TPlayer/ScreenShot";
 
 
     public interface IOnScanMediaComplete {
@@ -75,56 +75,71 @@ public class FileUtils {
     }
 
 
-    public static void downloadFile(String link, String dir, String name, String suffix) {
-        InputStream input = null;
-        OutputStream output = null;
-        HttpURLConnection connection = null;
-        try {
+    public static String downloadFile(final String link, final String dir, final String name, final String suffix) {
 
-            // create dir
-            File folder = new File(dir);
-            if (!folder.exists()) {
-                folder.mkdirs();
+        new AsyncTask<Void, Void, String>() {
+            File file ;
+
+            @Override
+            protected String doInBackground(Void... params) {
+
+                InputStream input = null;
+                OutputStream output = null;
+                HttpURLConnection connection = null;
+                try {
+
+                    // create dir
+                    File folder = new File(dir);
+                    if (!folder.exists()) {
+                        folder.mkdirs();
+                    }
+
+                    // create file
+                     file = new File(dir + name + suffix);
+                    if (!file.exists()) {
+                        file.createNewFile();
+                    }
+
+                    URL url = new URL(link);
+                    connection = (HttpURLConnection) url.openConnection();
+                    connection.connect();
+
+
+                    int fileLength = connection.getContentLength();
+
+                    input = connection.getInputStream();
+                    output = new FileOutputStream(file);
+
+
+                    byte data[] = new byte[4096];
+                    int count;
+                    while ((count = input.read(data)) != -1) {
+                        if (fileLength > 0)
+                            output.write(data, 0, count);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally {
+                    try {
+                        if (output != null)
+                            output.close();
+                        if (input != null)
+                            input.close();
+                    } catch (IOException ignored) {
+                    }
+
+                    if (connection != null)
+                        connection.disconnect();
+                }
+
+
+                return file.getPath();
             }
 
-            // create file
-            File file = new File(dir + name + suffix);
-            if (!file.exists()) {
-                file.createNewFile();
-            }
+        }.execute();
 
-            URL url = new URL(link);
-            connection = (HttpURLConnection) url.openConnection();
-            connection.connect();
-
-
-            int fileLength = connection.getContentLength();
-
-            input = connection.getInputStream();
-            output = new FileOutputStream(file);
-
-
-            byte data[] = new byte[4096];
-            int count;
-            while ((count = input.read(data)) != -1) {
-                if (fileLength > 0)
-                    output.write(data, 0, count);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (output != null)
-                    output.close();
-                if (input != null)
-                    input.close();
-            } catch (IOException ignored) {
-            }
-
-            if (connection != null)
-                connection.disconnect();
-        }
+        return dir + name + suffix ;
 
     }
 

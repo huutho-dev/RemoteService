@@ -133,6 +133,7 @@
     <string name="title_activity_setting">Settings</string>
     <string name="title_activity_favorite">Favorite</string>
     <string name="title_activity_share" />
+    <string name="download_only_wifi">Download only wifi connect</string>
 
 
 </resources>
